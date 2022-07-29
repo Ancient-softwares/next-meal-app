@@ -62,14 +62,14 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
       <BottomTab.Screen
-        name="TabOne"
+        name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
           title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerRight: () => (
@@ -89,7 +89,7 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Home"
         component={AccountScreen}
         options={{
           title: 'Account',
@@ -97,7 +97,15 @@ function BottomTabNavigator() {
         }}
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Mapa"
+        component={MapsScreen}
+        options={{
+          title: 'Account',
+          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Reservas"
         component={MapsScreen}
         options={{
           title: 'Account',
