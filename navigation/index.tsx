@@ -89,26 +89,26 @@ function BottomTabNavigator() {
         })}
       />
       <BottomTab.Screen
-        name="Home"
+        name="Map"
         component={AccountScreen}
         options={{
-          title: 'Account',
+          title: 'Mapa',
           tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
         }}
       />
       <BottomTab.Screen
-        name="Mapa"
-        component={MapsScreen}
+        name="Books"
+        component={AccountScreen}
         options={{
-          title: 'Account',
+          title: 'Reservas',
           tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
         }}
       />
       <BottomTab.Screen
-        name="Reservas"
-        component={MapsScreen}
+        name="Account"
+        component={AccountScreen}
         options={{
-          title: 'Account',
+          title: 'Conta',
           tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
         }}
       />
