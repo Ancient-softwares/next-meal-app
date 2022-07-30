@@ -3,7 +3,7 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome, Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -22,6 +22,7 @@ import LinkingConfiguration from './LinkingConfiguration';
 import AccountScreen from '../screens/AccountScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
+import BookScreen from '../screens/BookScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -70,38 +71,23 @@ function BottomTabNavigator() {
         name="Home"
         component={HomeScreen}
         options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-          title: 'Home',
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
         })}
       />
       <BottomTab.Screen
         name="Map"
-        component={AccountScreen}
+        component={MapsScreen}
         options={{
           title: 'Mapa',
-          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
+          tabBarIcon: ({ color }) => <FontAwesome name="map-marker" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Books"
-        component={AccountScreen}
+        component={BookScreen}
         options={{
           title: 'Reservas',
-          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
+          tabBarIcon: ({ color }) => <Ionicons name="restaurant" size={24} color={color} />,
         }}
       />
       <BottomTab.Screen
@@ -109,7 +95,7 @@ function BottomTabNavigator() {
         component={AccountScreen}
         options={{
           title: 'Conta',
-          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} color={color} />,
         }}
       />
     </BottomTab.Navigator>
