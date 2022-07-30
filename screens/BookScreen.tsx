@@ -10,7 +10,10 @@ import Card from 'react-bootstrap/Card';
 export default function BookScreen() {
   return (
     <SafeAreaView style={styles.container}>
-    <ScrollView>
+    <ScrollView
+     showsVerticalScrollIndicator ={false}
+     showsHorizontalScrollIndicator={false}
+    >
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
         <Card.Img variant="top" src="../assets/images/example.jpeg" />
         <Card.Body>

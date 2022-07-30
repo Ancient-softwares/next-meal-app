@@ -1,6 +1,6 @@
-import { Ionicons, MaterialIcons, FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, Ionicons, MaterialIcons, FontAwesome, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -9,13 +9,24 @@ import Badge from 'react-bootstrap/Badge';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button } from 'react-bootstrap';
 
 export default function AccountScreen() {
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView
+       showsVerticalScrollIndicator ={false}
+       showsHorizontalScrollIndicator={false}
+      >
       <MaterialIcons style={styles.accountIcon} name="account-circle" size={64} color='#963333' />
       <Text style={styles.title}>Olá, visitante!</Text>
       <Text style={styles.text}>Crie ou acesse sua conta</Text>
+      <Button variant="outline-danger"
+      style={{
+        width: '8em',
+        marginTop: 15
+      }}
+      >Entrar</Button>
       <Text style={styles.subtitle}>Meu app, NextMeal</Text>
       <ListGroup as="ul">
       <ListGroup.Item
@@ -58,7 +69,7 @@ export default function AccountScreen() {
       >
         <Ionicons name="notifications-off-outline" size={24} color="black" />
         <div className="ms-2 me-auto">
-          <div className="fw-bold">Configura</div>
+          <div className="fw-bold">Política de privacidade</div>
         </div>
       </ListGroup.Item>
       <ListGroup.Item
@@ -66,7 +77,17 @@ export default function AccountScreen() {
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
       >
-        <FontAwesome name="calendar-check-o" size={24} color="black" />
+        <Entypo name="text-document" size={24} color="black" />
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Termos de uso</div>
+        </div>
+      </ListGroup.Item>
+      <ListGroup.Item
+        as="li"
+        className="d-flex justify-content-between align-items-start"
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+      >
+        <Feather name="info" size={24} color="black" />
         <div className="ms-2 me-auto">
           <div className="fw-bold">Sobre nós</div>
         </div>
@@ -76,12 +97,13 @@ export default function AccountScreen() {
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
       >
-        <MaterialCommunityIcons name="human-queue" size={24} color="black" />
+        <MaterialCommunityIcons name="file-document-edit-outline" size={24} color="black" />
         <div className="ms-2 me-auto">
-          <div className="fw-bold">Meu lugar nas filas</div>
+          <div className="fw-bold">Ajuda e suporte</div>
         </div>
       </ListGroup.Item>
     </ListGroup>
+    </ScrollView>
     </SafeAreaView>
   );
 }
@@ -104,14 +126,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 5,
   },
-  marginVertical: {
-    marginVertical: 25,
-  },
-  rowTitle: {
-    fontSize: 16,
-    marginTop: 30,
-    marginHorizontal: 15,
-  },
   subtitle: {
     marginVertical: 30,
     fontSize: 16,
@@ -124,35 +138,5 @@ const styles = StyleSheet.create({
   },
   accountIcon: {
     paddingBottom: 10,
-  },
-  row: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingVertical: -300,
-  },
-  firstIcon: {
-    paddingTop: 25,
-  },
-  secondIcon: {
-    marginTop: -50,
-  },
-  secondText: {
-    marginTop: -50,
-    fontSize: 16,
-    marginHorizontal: 15,
-  },
-  thirdIcon: {
-    marginTop: -140,
-  },
-  thirdText: {
-    marginTop: -140,
-    fontSize: 16,
-    marginHorizontal: 15,
-  },
-  secondSubtitle: {
-    marginTop: -180,
-    fontSize: 16,
-    color: '#963333',
   },
 });
