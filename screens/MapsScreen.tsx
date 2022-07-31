@@ -1,6 +1,6 @@
 // import React from 'react';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Image } from 'react-native';
 import MapView from 'react-native-maps'
 
 import EditScreenInfo from '../components/EditScreenInfo';
