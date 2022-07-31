@@ -13,6 +13,9 @@ export default function BookScreen() {
     <ScrollView
      showsVerticalScrollIndicator ={false}
      showsHorizontalScrollIndicator={false}
+     style={{
+        marginLeft: 50,
+      }}
     >
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
         <Card.Img variant="top" src="../assets/images/example.jpeg" />
