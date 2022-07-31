@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, SafeAreaView } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -20,8 +20,14 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const exampleImage = require('../assets/images/example.jpeg');
 
   return (
-    <View style={styles.container}>
-    <Carousel fade>
+    <SafeAreaView style={styles.container}>
+    <Carousel 
+    style={{
+      flex: 1,
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start',
+    }}
+    fade>
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
@@ -50,7 +56,6 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           src={require('../assets/images/example.jpeg')}
           alt="Third slide"
         />
-
         <Carousel.Caption>
           <h3>Third slide label</h3>
           <p>
@@ -58,9 +63,11 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
           </p>
         </Carousel.Caption>
       </Carousel.Item>
-    </Carousel><Carousel fade>
     </Carousel>
+    <View>
+      <Text style={styles.subtitle}>Categorias</Text>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -78,5 +85,10 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+  },
+  subtitle: {
+    marginVertical: 30,
+    fontSize: 16,
+    color: '#963333',
   },
 });

@@ -14,10 +14,19 @@ export default function BookScreen() {
      showsVerticalScrollIndicator ={false}
      showsHorizontalScrollIndicator={false}
      style={{
-        marginLeft: 50,
+        marginLeft: 5,
+        marginHorizontal: 15,
+        height: '100%',
+        width: '100%',
       }}
     >
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Bar do João</Card.Title>
@@ -31,7 +40,13 @@ export default function BookScreen() {
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center',
+      }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Mocotó</Card.Title>
@@ -45,7 +60,13 @@ export default function BookScreen() {
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+      }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Le Bife</Card.Title>
@@ -59,7 +80,13 @@ export default function BookScreen() {
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+      }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Arturito</Card.Title>
@@ -73,7 +100,13 @@ export default function BookScreen() {
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+      }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Mocotó</Card.Title>
@@ -87,7 +120,13 @@ export default function BookScreen() {
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
+      <Card style={{ 
+        width: '22em', 
+        border: 'none', 
+        flex: 1, 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+      }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Tropikall Bar</Card.Title>
@@ -109,8 +148,8 @@ export default function BookScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
     backgroundColor: 'white',
   },
   title: {
@@ -122,4 +161,14 @@ const styles = StyleSheet.create({
     height: 1,
     width: '80%',
   },
+  cardImg: {
+    flex: 1,
+  },
+  card: {
+    width: '22em', 
+      border: 'none', 
+      flex: 1, 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+  }
 });
