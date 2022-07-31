@@ -1,5 +1,5 @@
 import React from 'react';
-import { SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -8,18 +8,58 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 export default function BookScreen() {
-  return (
-    <SafeAreaView style={styles.container}>
-    <ScrollView
-     showsVerticalScrollIndicator ={false}
-     showsHorizontalScrollIndicator={false}
-     style={{
-        marginLeft: 5,
-        marginHorizontal: 15,
-        height: '100%',
-        width: '100%',
-      }}
-    >
+  type TYPES = [
+    {
+      id: string;
+      title: string;
+      rating: number;
+      kitchenType: string;
+    },
+    {
+      id: string;
+      title: string;
+      rating: number;
+      kitchenType: string;
+    },
+    {
+      id: string;
+      title: string;
+      rating: number;
+      kitchenType: string;
+    },
+  ];
+  
+  const DATA: TYPES = [
+    {
+      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
+      title: 'Bar do João',
+      rating: 4.5,
+      kitchenType: 'Brasileira',
+    },
+    {
+      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
+      title: 'Bar do José',
+      rating: 5.0,
+      kitchenType: 'Argentina',
+    },
+    {
+      id: '58694a0f-3da1-471f-bd96-145571e29d72',
+      title: 'Bar do Pedro',
+      rating: 4.2,
+      kitchenType: 'Mexicana',
+    },
+  ];
+
+  const renderItem = ({ item, rating, kitchenType }: { item: string; rating: number; kitchenType: string; } ) => (
+    <Item 
+    title={ item.title }
+    rating={ item.rating }
+    kitchenType={ item.kitchenType }
+    />
+  );
+  
+  const Item = ({ title, rating, kitchenType }: { title: string, rating: number, kitchenType: string }) => (
+    <View>
       <Card style={{ 
         width: '22em', 
         border: 'none', 
@@ -29,118 +69,27 @@ export default function BookScreen() {
         }}>
         <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
-          <Card.Title>Bar do João</Card.Title>
+          <Card.Title>{ title }</Card.Title>
           <Card.Text>
-            Tipo de cozinha: Brasileira
+            Tipo de cozinha: { kitchenType }
           </Card.Text>
           <Card.Text>
-            Nota: 4.9 / 5.0
+            Nota: { rating } / 5.0
           </Card.Text>
           <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
           <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
         </Card.Body>
       </Card>
-      <Card style={{ 
-        width: '22em', 
-        border: 'none', 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center',
-      }}>
-        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
-        <Card.Body>
-          <Card.Title>Mocotó</Card.Title>
-          <Card.Text> 
-            Tipo de cozinha: Brasileira
-          </Card.Text>
-          <Card.Text>
-            Nota: 4.9 / 5.0
-          </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
-        </Card.Body>
-      </Card>
-      <Card style={{ 
-        width: '22em', 
-        border: 'none', 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-      }}>
-        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
-        <Card.Body>
-          <Card.Title>Le Bife</Card.Title>
-          <Card.Text>
-            Tipo de cozinha: Brasileira
-          </Card.Text>
-          <Card.Text>
-            Nota: 4.9 / 5.0
-          </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
-        </Card.Body>
-      </Card>
-      <Card style={{ 
-        width: '22em', 
-        border: 'none', 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-      }}>
-        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
-        <Card.Body>
-          <Card.Title>Arturito</Card.Title>
-          <Card.Text>
-            Tipo de cozinha: Brasileira
-          </Card.Text>
-          <Card.Text>
-            Nota: 4.9 / 5.0
-          </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
-        </Card.Body>
-      </Card>
-      <Card style={{ 
-        width: '22em', 
-        border: 'none', 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-      }}>
-        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
-        <Card.Body>
-          <Card.Title>Mocotó</Card.Title>
-          <Card.Text>
-            Tipo de cozinha: Brasileira
-          </Card.Text>
-          <Card.Text>
-            Nota: 4.9 / 5.0
-          </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
-        </Card.Body>
-      </Card>
-      <Card style={{ 
-        width: '22em', 
-        border: 'none', 
-        flex: 1, 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-      }}>
-        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
-        <Card.Body>
-          <Card.Title>Tropikall Bar</Card.Title>
-          <Card.Text>
-            Tipo de cozinha: Brasileira
-          </Card.Text>
-          <Card.Text>
-            Nota: 4.9 / 5.0
-          </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
-        </Card.Body>
-      </Card>
-      </ScrollView>
+    </View>
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
     </SafeAreaView>
   );
 }
