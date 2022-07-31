@@ -18,7 +18,7 @@ export default function BookScreen() {
       }}
     >
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Bar do João</Card.Title>
           <Card.Text>
@@ -32,7 +32,7 @@ export default function BookScreen() {
         </Card.Body>
       </Card>
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Mocotó</Card.Title>
           <Card.Text> 
@@ -46,7 +46,7 @@ export default function BookScreen() {
         </Card.Body>
       </Card>
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Le Bife</Card.Title>
           <Card.Text>
@@ -60,7 +60,7 @@ export default function BookScreen() {
         </Card.Body>
       </Card>
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Arturito</Card.Title>
           <Card.Text>
@@ -74,7 +74,7 @@ export default function BookScreen() {
         </Card.Body>
       </Card>
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Mocotó</Card.Title>
           <Card.Text>
@@ -88,7 +88,7 @@ export default function BookScreen() {
         </Card.Body>
       </Card>
       <Card style={{ width: '24em', border: 'none', flex: 1, alignItems: 'flex-start' }}>
-        <Card.Img variant="top" src="../assets/images/example.jpeg" />
+        <Card.Img variant="top" src={require('../assets/images/example.jpeg')} />
         <Card.Body>
           <Card.Title>Tropikall Bar</Card.Title>
           <Card.Text>
