@@ -7,8 +7,12 @@ import { RootTabScreenProps } from '../types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Carousel from 'react-bootstrap/Carousel';
-
+import Account from './AccountScreen';
+import Books from './BookScreen';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-native-gesture-handler';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [index, setIndex] = useState(0);
@@ -18,6 +22,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   };
 
   const exampleImage = require('../assets/images/example.jpeg');
+  const Stack = createStackNavigator();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -25,7 +30,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
-          src={require('../assets/images/example.jpeg')}
+          src={exampleImage}
           alt="First slide"
         />
         <Carousel.Caption>
@@ -36,7 +41,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
-          src={require('../assets/images/example.jpeg')}
+          src={exampleImage}
           alt="Second slide"
         />
         <Carousel.Caption>
@@ -47,7 +52,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
-          src={require('../assets/images/example.jpeg')}
+          src={exampleImage}
           alt="Third slide"
         />
         <Carousel.Caption>
@@ -61,6 +66,13 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     <View>
       <Text style={styles.subtitle}>Categorias</Text>
     </View>
+    <ScrollView horizontal={true}>
+
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10  }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
+
+    </ScrollView>
     </SafeAreaView>
   );
 }

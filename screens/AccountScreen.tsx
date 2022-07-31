@@ -171,17 +171,17 @@ export default function AccountScreen() {
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Nome</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control type="text" placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CPF</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control type="text" placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CEP</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control type="text" placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">

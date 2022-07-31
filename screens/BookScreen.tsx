@@ -7,7 +7,15 @@ import { Text, View } from '../components/Themed';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-export default function BookScreen() {
+import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+import Operation from './OperationScreen'
+import { RootTabScreenProps } from '../types';
+
+export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) {
+  const Stack = createStackNavigator();
+
   type TYPES = [
     {
       id: string;
