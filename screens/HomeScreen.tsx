@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -6,33 +6,60 @@ import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Carousel from 'react-bootstrap/Carousel';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+  const [index, setIndex] = useState(0);
+
+  const handleSelect = (selectedIndex: React.SetStateAction<number>, e: any) => {
+    setIndex(selectedIndex);
+  };
+
+  const exampleImage = require('../assets/images/example.jpeg');
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bem vindo ao Next Meal!</Text>
-      <Form>
-      <Form.Group className="mb-3" controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control type="email" placeholder="Enter email" />
-        <Form.Text className="text-muted">
-          We'll never share your email with anyone else.
-        </Form.Text>
-      </Form.Group>
+    <Carousel fade>
+      <Carousel.Item interval={1000}>
+        <img
+          className="d-block w-100"
+          src={require('../assets/images/example.jpeg')}
+          alt="First slide"
+        />
+        <Carousel.Caption>
+          <h3>First slide label</h3>
+          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item interval={1000}>
+        <img
+          className="d-block w-100"
+          src={require('../assets/images/example.jpeg')}
+          alt="Second slide"
+        />
+        <Carousel.Caption>
+          <h3>Second slide label</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item interval={1000}>
+        <img
+          className="d-block w-100"
+          src={require('../assets/images/example.jpeg')}
+          alt="Third slide"
+        />
 
-      <Form.Group className="mb-3" controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control type="password" placeholder="Password" />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="formBasicCheckbox">
-        <Form.Check type="checkbox" label="Check me out" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel><Carousel fade>
+    </Carousel>
     </View>
   );
 }

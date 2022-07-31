@@ -11,16 +11,17 @@ export default function MapsScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tela dos mapas</Text>
-      <MapView style={{
-        flex: 1
+      {/* <MapView style={{
+        flex: 1,
+        width: '100%',
+        height: '100%',
       }}
       region={{
         latitude: 42.882004, 
         longitude: 74.582748, 
         latitudeDelta: 0.0922, 
         longitudeDelta: 0.0421
-      }}
-      showsUserLocation={true}/>
+      }}/> */}
     </View>
   );
 }
