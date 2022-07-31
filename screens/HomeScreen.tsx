@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, Image, FlatList, ScrollView, DrawerLayoutAndroid } from 'react-native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
@@ -21,13 +21,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <SafeAreaView style={styles.container}>
-    <Carousel 
-    style={{
-      flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
-    }}
-    fade>
+    <Carousel fade>
       <Carousel.Item interval={1000}>
         <img
           className="d-block w-100"
@@ -74,8 +68,9 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: 'white',
   },
   title: {
     fontSize: 20,
@@ -87,6 +82,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   subtitle: {
+    marginLeft: 20,
     marginVertical: 30,
     fontSize: 16,
     color: '#963333',
