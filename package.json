@@ -53,5 +53,8 @@
     "react-test-renderer": "17.0.2",
     "typescript": "~4.3.5"
   },
+  "resolutions": {
+    "expo-modules-autolinking": "~0.8.1"
+  },
   "private": true
 }

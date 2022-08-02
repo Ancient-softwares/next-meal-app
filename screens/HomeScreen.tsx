@@ -66,10 +66,17 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     <View>
       <Text style={styles.subtitle}>Categorias</Text>
     </View>
-    <ScrollView horizontal={true}>
+    <ScrollView 
+      horizontal={true}
+      contentContainerStyle={{ flexGrow: 1, flex: 1 }}
+    >
 
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10  }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
+      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
 
     </ScrollView>
