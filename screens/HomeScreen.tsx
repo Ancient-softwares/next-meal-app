@@ -1,18 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, Image, FlatList, ScrollView, DrawerLayoutAndroid } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import Carousel from 'react-bootstrap/Carousel';
-import Account from './AccountScreen';
-import Books from './BookScreen';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [index, setIndex] = useState(0);

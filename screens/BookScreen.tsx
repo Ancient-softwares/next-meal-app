@@ -1,16 +1,13 @@
 import React from 'react';
-import { FlatList, SafeAreaView, ScrollView, StyleSheet } from 'react-native';
+import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
-import { Text, View } from '../components/Themed';
+import { View } from '../components/Themed';
 
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import Operation from './OperationScreen'
 import { RootTabScreenProps } from '../types';
 
 export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) {
@@ -40,7 +37,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
   const DATA: TYPES = [
     {
       id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'Bar do João',
+      title: 'SELECT nome FROM suamae',
       rating: 4.5,
       kitchenType: 'Brasileira',
     },
@@ -50,6 +47,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
       rating: 5.0,
       kitchenType: 'Argentina',
     },
+                                           
     {
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
       title: 'Bar do Pedro',
@@ -97,6 +95,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
         data={DATA}
         renderItem={renderItem}
         keyExtractor={item => item.id}
+        showsVerticalScrollIndicator={false}
       />
     </SafeAreaView>
   );
