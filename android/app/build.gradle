@@ -1,4 +1,5 @@
 apply plugin: "com.android.application"
+apply plugin: 'com.google.gms.google-services' // <- Add this line
 
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
@@ -283,6 +284,14 @@ android {
             android.packagingOptions[prop] += it
         }
     }
+}
+
+buildscript {
+  dependencies {
+    // ... other dependencies
+    classpath 'com.google.gms:google-services:4.3.13'
+    // Add me --- /\
+  }
 }
 
 dependencies {

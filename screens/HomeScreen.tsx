@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
@@ -7,6 +7,7 @@ import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ListGroup } from 'react-bootstrap';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [index, setIndex] = useState(0);
@@ -20,52 +21,19 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <SafeAreaView style={styles.container}>
-    <Carousel fade>
-      <Carousel.Item interval={1000}>
-        <img
-          className="d-block w-100"
-          src={exampleImage}
-          alt="First slide"
-        />
-        <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item interval={1000}>
-        <img
-          className="d-block w-100"
-          src={exampleImage}
-          alt="Second slide"
-        />
-        <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-        </Carousel.Caption>
-      </Carousel.Item>
-      <Carousel.Item interval={1000}>
-        <img
-          className="d-block w-100"
-          src={exampleImage}
-          alt="Third slide"
-        />
-        <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
-        </Carousel.Caption>
-      </Carousel.Item>
-    </Carousel>
+      <ScrollView
+      showsVerticalScrollIndicator
+      >
     <View>
       <Text style={styles.subtitle}>Categorias</Text>
     </View>
+    <View>
     <ScrollView 
       horizontal={true}
       contentContainerStyle={{ flexGrow: 1, flex: 1 }}
     >
 
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+<img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10  }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
@@ -73,6 +41,53 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
       <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
 
+    </ScrollView>
+    </View>
+    <View>
+      <Text style={styles.subtitle}>Reservados recentemente</Text>
+      <ListGroup as='ul'>
+        <ListGroup.Item 
+        as="li"
+        className="d-flex justify-content-between align-items-start"
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+      >
+        <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Bar do Armando</div>
+        </div>
+        </ListGroup.Item>
+        <ListGroup.Item 
+        as="li"
+        className="d-flex justify-content-between align-items-start"
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+      >
+        <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Bar do João</div>
+        </div>
+        </ListGroup.Item>
+        <ListGroup.Item 
+        as="li"
+        className="d-flex justify-content-between align-items-start"
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+      >
+        <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Bar do Zézin</div>
+        </div>
+        </ListGroup.Item>
+        <ListGroup.Item 
+        as="li"
+        className="d-flex justify-content-between align-items-start"
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+      >
+        <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
+        <div className="ms-2 me-auto">
+          <div className="fw-bold">Bar do Edinaldo</div>
+        </div>
+        </ListGroup.Item>
+      </ListGroup>
+    </View>
     </ScrollView>
     </SafeAreaView>
   );
