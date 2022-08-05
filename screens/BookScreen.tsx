@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
 import { createStackNavigator } from '@react-navigation/stack';
-
+import style from '../styles/BooksScreen.style';
 import { RootTabScreenProps } from '../types';
 
 export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) {
@@ -15,22 +15,22 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
 
   type TYPES = [
     {
-      id: string;
-      title: string;
-      rating: number;
-      kitchenType: string;
+      id: any;
+      title: any;
+      rating: any;
+      kitchenType: any;
     },
     {
-      id: string;
-      title: string;
-      rating: number;
-      kitchenType: string;
+      id: any;
+      title: any;
+      rating: any;
+      kitchenType: any;
     },
     {
-      id: string;
-      title: string;
-      rating: number;
-      kitchenType: string;
+      id: any;
+      title: any;
+      rating: any;
+      kitchenType: any;
     },
   ];
   
@@ -56,7 +56,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
     },
   ];
 
-  const renderItem = ({ item, rating, kitchenType }: { item: string; rating: number; kitchenType: string; } ) => (
+  const renderItem = ({ item, rating, kitchenType }: { item: any; rating: any; kitchenType: any; } ) => (
     <Item 
     title={ item.title }
     rating={ item.rating }
@@ -64,7 +64,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
     />
   );
   
-  const Item = ({ title, rating, kitchenType }: { title: string, rating: number, kitchenType: string }) => (
+  const Item = ({ title, rating, kitchenType }: { title: any, rating: any, kitchenType: any }) => (
     <View>
       <Card style={{ 
         width: '22em', 
@@ -90,7 +90,7 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
   );
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={style.container}>
       <FlatList
         data={DATA}
         renderItem={renderItem}
@@ -101,30 +101,4 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  cardImg: {
-    flex: 1,
-  },
-  card: {
-    width: '22em', 
-      border: 'none', 
-      flex: 1, 
-      alignItems: 'center', 
-      justifyContent: 'center', 
-  }
-});
+
