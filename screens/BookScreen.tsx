@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet } from 'react-native';
 
 import { View } from '../components/Themed';
@@ -6,12 +6,15 @@ import { View } from '../components/Themed';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-import { createStackNavigator } from '@react-navigation/stack';
 import style from '../styles/BooksScreen.style';
 import { RootTabScreenProps } from '../types';
+import { Form, Modal } from 'react-bootstrap';
 
 export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) {
-  const Stack = createStackNavigator();
+  const [Rshow, setRShow] = useState(false);
+  
+  const handleRShow = () => setRShow(true);
+  const handleRClose = () => setRShow(false);
 
   type TYPES = [
     {
@@ -82,12 +85,53 @@ export default function BookScreen({ navigation }: RootTabScreenProps<'Books'>) 
           <Card.Text>
             Nota: { rating } / 5.0
           </Card.Text>
-          <Button variant="primary" style={{ marginRight: 5 }}>Fazer reserva</Button>
-          <Button variant="success" style={{ marginLeft: 5 }}>Entrar na fila</Button>
+          <Button variant="outline-danger" onClick={handleRShow}>Mais informações</Button>
         </Card.Body>
       </Card>
     </View>
   );
+
+  <Modal show={Rshow} onHide={handleRClose}>
+  <Modal.Header closeButton>
+    <Modal.Title>Registrar</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+  <Form>
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Label>Email</Form.Label>
+      <Form.Control type="email" placeholder="Enter email" />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Label>Nome</Form.Label>
+      <Form.Control type="email" placeholder="Enter email" />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Label>CPF</Form.Label>
+      <Form.Control type="email" placeholder="Enter email" />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Label>CEP</Form.Label>
+      <Form.Control type="email" placeholder="Enter email" />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="formBasicEmail">
+      <Form.Label>CEP</Form.Label>
+      <Form.Control type="email" placeholder="Enter email" />
+    </Form.Group>
+
+    <Form.Group className="mb-3" controlId="formBasicPassword">
+      <Form.Label>Senha</Form.Label>
+      <Form.Control type="password" placeholder="Password" />
+    </Form.Group>
+    <Button variant="primary" type="submit">
+      Registrar-se
+    </Button>
+  </Form>
+  </Modal.Body>
+</Modal>
 
   return (
     <SafeAreaView style={style.container}>
