@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, Image } from 'react-native';
-
+import { SafeAreaView, ScrollView } from 'react-native';
+import styles from '../styles/HomeScreen.style';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
-import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -92,27 +91,3 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-  subtitle: {
-    marginLeft: 20,
-    marginVertical: 30,
-    fontSize: 16,
-    color: '#963333',
-  },
-});
