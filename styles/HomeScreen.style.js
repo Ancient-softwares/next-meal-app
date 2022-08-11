@@ -19,8 +19,19 @@ export default StyleSheet.create({
     subtitle: {
       marginLeft: 20,
       marginVertical: 30,
+      marginBottom: 5,
       fontSize: 16,
       color: '#963333',
     },
-  });
+    carousel: {
+      flex: 1,
+    },
+    description: {
+      fontSize: 14,
+      fontStyle: 'italic',
+      color: 'grey',
+      marginLeft: 20,
+      marginBottom: 40,
+    },
+});
   
