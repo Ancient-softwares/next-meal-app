@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { Dimensions, Pressable, SafeAreaView, ScrollView } from 'react-native';
 import styles from '../styles/HomeScreen.style';
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
-import { ListGroup } from 'react-bootstrap';
+import { ListGroup, Carousel } from 'react-bootstrap';
+import { SearchBar } from 'react-native-screens';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [index, setIndex] = useState(0);
@@ -20,30 +21,80 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
 
   return (
     <SafeAreaView style={styles.container}>
+      <SearchBar
+        
+      />
       <ScrollView
       showsVerticalScrollIndicator
       >
+      <View style={styles.carousel}>
+        <Carousel fade>
+      <Carousel.Item interval={3000}>
+        <img
+          className="d-block w-100"
+          src={exampleImage}
+          alt="First slide"
+        />
+        <Carousel.Caption>
+          <h3>Destaques</h3>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item interval={3000}>
+        <img
+          className="d-block w-100"
+          src={exampleImage}
+          alt="Second slide"
+        />
+
+        <Carousel.Caption>
+          <h3>Destaques</h3>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item interval={3000}>
+        <img
+          className="d-block w-100"
+          src={exampleImage}
+          alt="Third slide"
+        />
+
+        <Carousel.Caption>
+          <h3>Third slide label</h3>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+        </View>
     <View>
       <Text style={styles.subtitle}>Categorias</Text>
+      <Text style={styles.description}>Escolha entre as categorias de restaurantes</Text>
     </View>
-    <View>
+      <View style={{ width: 'auto' ,maxWidth: Dimensions.get('screen').width }}>
     <ScrollView 
       horizontal={true}
-      contentContainerStyle={{ flexGrow: 1, flex: 1 }}
+      showsHorizontalScrollIndicator={false}
     >
-
-<img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10  }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
-      <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70,  marginLeft: 10, marginRight: 10  }}/>
-
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
+        <Pressable>
+          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        </Pressable>
     </ScrollView>
-    </View>
+      </View>
     <View>
       <Text style={styles.subtitle}>Reservados recentemente</Text>
+      <Text style={styles.description}>Estabelecimentos que você visitou recentemente</Text>
       <ListGroup as='ul'>
         <ListGroup.Item 
         as="li"
