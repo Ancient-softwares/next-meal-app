@@ -97,6 +97,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+        onClick={() => navigation.navigate('Operation')}
       >
         <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
         <div className="ms-2 me-auto">
