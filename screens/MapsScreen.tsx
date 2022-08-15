@@ -15,7 +15,7 @@ export default function MapsScreen() {
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyBg1UtZII7XxZhq82Arr1noy99uShCP3Bs"
+    googleMapsApiKey: "AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw"
   })
 
   const [map, setMap] = React.useState(null)
