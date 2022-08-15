@@ -3,9 +3,9 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
+      alignItems: 'center',
       backgroundColor: 'white',
+      marginVertical: 10,
     },
     title: {
       fontSize: 20,
@@ -33,5 +33,9 @@ export default StyleSheet.create({
       marginLeft: 20,
       marginBottom: 40,
     },
+    image: {
+      width: '10vw',
+      height: '10vh',
+    }
 });
   

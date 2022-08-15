@@ -28,7 +28,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      >
       <RootNavigator />
     </NavigationContainer>
   );
@@ -43,13 +44,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false, headerStyle: { backgroundColor: 'white' } }} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!', headerShown: false }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
-      <Stack.Screen name="Operation" component={OperationScreen} options={{ title: 'Operation' }} />
-      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ title: 'Restaurant' }} />
+      <Stack.Screen name="Operation" component={OperationScreen} options={{ title: 'Operation', headerStyle: { backgroundColor: 'white' } }} />
+      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ title: 'Restaurant', headerStyle: { backgroundColor: 'white' } }} />
     </Stack.Navigator>
   );
 }
