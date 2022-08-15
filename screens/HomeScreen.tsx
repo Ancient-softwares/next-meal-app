@@ -20,10 +20,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const Stack = createStackNavigator();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SearchBar
-        
-      />
+    <SafeAreaView style={styles.container}> 
       <ScrollView
       showsVerticalScrollIndicator
       >
