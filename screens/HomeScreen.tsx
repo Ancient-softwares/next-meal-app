@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListGroup, Carousel } from 'react-bootstrap';
-import { SearchBar } from 'react-native-screens';
 
 export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   const [index, setIndex] = useState(0);
@@ -108,6 +107,7 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
+        onClick={() => navigation.navigate('Restaurant')}
       >
         <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
         <div className="ms-2 me-auto">
