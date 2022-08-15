@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
     container: {
       flex: 1,
-      alignItems: 'flex-start',
-      justifyContent: 'flex-start',
+      alignItems: 'center',
+      justifyContent: 'center',
       backgroundColor: 'white',
     },
     title: {
@@ -25,5 +25,13 @@ export default StyleSheet.create({
         flex: 1, 
         alignItems: 'center', 
         justifyContent: 'center', 
+    },
+    searchBar: {
+      backgroundColor: 'none',
+    },
+    searchBarInput: {
+      backgroundColor: 'none',
+      color: 'black',
+      fontSize: 20,
     },
   });
