@@ -49,6 +49,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
+    "@types/node": "^18.7.2",
     "@types/react": "^17.0.21",
     "@types/react-native": "~0.66.13",
     "find-my-way": "^7.0.1",
