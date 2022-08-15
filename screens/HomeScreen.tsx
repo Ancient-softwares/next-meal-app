@@ -16,12 +16,11 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
   };
 
   const exampleImage = require('../assets/images/example.jpeg');
-  const Stack = createStackNavigator();
 
   return (
     <SafeAreaView style={styles.container}> 
       <ScrollView
-      showsVerticalScrollIndicator
+      showsVerticalScrollIndicator={false}
       >
       <View style={styles.carousel}>
         <Carousel fade>

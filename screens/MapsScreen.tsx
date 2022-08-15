@@ -7,8 +7,8 @@ import styles from '../styles/MapsScreen.style';
 
 export default function MapsScreen() {
   const center = {
-    lat: -3.745,
-    lng: -38.523
+    lat: -23.552990263455296,
+    lng: -46.39968223122055
   };
 
   const { isLoaded } = useJsApiLoader({
