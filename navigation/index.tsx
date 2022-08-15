@@ -21,6 +21,7 @@ import AccountScreen from '../screens/AccountScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
 import BookScreen from '../screens/BookScreen';
+import OperationScreen from '../screens/OperationScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -46,6 +47,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
+      <Stack.Screen name="Operation" component={OperationScreen} options={{ title: 'Operation' }} />
     </Stack.Navigator>
   );
 }
