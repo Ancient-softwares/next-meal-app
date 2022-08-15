@@ -22,6 +22,7 @@ import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
 import BookScreen from '../screens/BookScreen';
 import OperationScreen from '../screens/OperationScreen';
+import RestaurantScreen from '../screens/RestaurantScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -48,6 +49,7 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
       <Stack.Screen name="Operation" component={OperationScreen} options={{ title: 'Operation' }} />
+      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ title: 'Restaurant' }} />
     </Stack.Navigator>
   );
 }
