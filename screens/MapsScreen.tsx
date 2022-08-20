@@ -30,17 +30,6 @@ export default function MapsScreen() {
   
   return isLoaded ? (
     <View style={styles.container}>
-      {/* <MapView style={{ 
-        flex: 1,
-        width: '100%',
-        height: '100%',
-      }}
-      region={{
-        latitude: 42.882004, 
-        longitude: 74.582748, 
-        latitudeDelta: 0.0922, 
-        longitudeDelta: 0.0421
-      }}/> */}
       <GoogleMap
         mapContainerStyle={{
           width: '100%',
