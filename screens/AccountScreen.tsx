@@ -1,12 +1,85 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, Platform } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/AccountList.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 
+const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
+
+
 const AccountScreen = () => {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [isError, setIsError] = useState(false)
+  const [message, setMessage] = useState('')
+  const [isLogin, setIsLogin] = useState(true)
+
+  const onChangeHandler = () => {
+      setIsLogin(!isLogin)
+      setMessage('')
+  }
+
+  const onLoggedIn = (token: string) => {
+      fetch(`${API_URL}/private`, {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+          }
+      }).then(async response => {
+          try {
+              const jsonResponse = await response.json()
+              if (response.status === 200) {
+                  setMessage(jsonResponse.message)
+              }
+          } catch (error) {
+              console.error(error)
+          }
+      })
+  }
+
+  const onSubmitHandler = () => {
+      const payload = {
+          email,
+          name,
+          password,
+      };
+      fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+      })
+      .then(async response => { 
+          try {e
+              const jsonResponse = await response.json()
+              if (response.status !== 200) {
+                  setIsError(true)
+                  setMessage(jsonResponse.message)
+              } else {
+                  onLoggedIn(jsonResponse.token)
+                  setIsError(false)
+                  setMessage(jsonResponse.message)
+              }
+          } catch (error) {
+              console.error(error)
+          }
+      })
+      .catch(error => {
+          console.error(error)
+      })
+  }
+
+  const getMessage = () => {
+      const status = isError ? 'Error' : 'Success'
+      return status + message
+  }
+
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
