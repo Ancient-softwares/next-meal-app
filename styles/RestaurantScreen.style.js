@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     },
     carousel: {
       flex: 1,
+      justifyContent: 'flex-start',
     },
     description: {
       fontSize: 14,

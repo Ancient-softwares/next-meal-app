@@ -1,14 +1,10 @@
 // import React from 'react';
 import React from 'react';
-import { StyleSheet, Image } from 'react-native';
-import MapView from 'react-native-maps'
-
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
-
 import { Button, Form } from 'react-bootstrap';
+import styles from '../styles/OperationScreen.style';
 
-export default function MapsScreen() {
+const OperationScreen = () => {
   return (
     <View style={styles.container}>
         <Form>
@@ -50,19 +46,6 @@ export default function MapsScreen() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
+export default OperationScreen
+
+

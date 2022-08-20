@@ -5,7 +5,7 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from '../styles/MapsScreen.style';
 
 
-export default function MapsScreen() {
+const MapsScreen = () => {
   const center = {
     lat: -23.552990263455296,
     lng: -46.39968223122055
@@ -49,4 +49,4 @@ export default function MapsScreen() {
   </View>
 }
 
-
+export default MapsScreen

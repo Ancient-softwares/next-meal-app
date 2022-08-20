@@ -6,14 +6,14 @@ import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/AccountList.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 
-export default function AccountScreen() {
-  const [Lshow, setLShow] = useState(false);
-  const [Rshow, setRShow] = useState(false);
+const AccountScreen = () => {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   
-  const handleLShow = () => setLShow(true);
-  const handleRShow = () => setRShow(true);
-  const handleLClose = () => setLShow(false);
-  const handleRClose = () => setRShow(false);
+  const handleShowLogin = () => setShowLogin(true);
+  const handleShowRegister = () => setShowRegister(true);
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleCloseRegister = () => setShowRegister(false);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +41,7 @@ export default function AccountScreen() {
                     marginTop: 15,
                     marginRight: 5,
                 }}
-                onClick={handleLShow}
+                onClick={handleShowLogin}
                 >Entrar</Button>
                 <Button variant="outline-danger"
                 style={{
@@ -49,7 +49,7 @@ export default function AccountScreen() {
                     marginTop: 15,
                     marginLeft: 5,
                 }}
-                onClick={handleRShow}
+                onClick={handleShowRegister}
                 >Cadastrar-se</Button>
             </View>
             <Text style={styles.subtitle}>Meu app, NextMeal</Text>
@@ -128,7 +128,7 @@ export default function AccountScreen() {
                 </ListGroup.Item>
             </ListGroup>
     </ScrollView>
-    <Modal show={Lshow} onHide={handleLClose}>
+    <Modal show={showLogin} onHide={handleCloseLogin}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
@@ -150,7 +150,7 @@ export default function AccountScreen() {
         </Form>
         </Modal.Body>
       </Modal>
-    <Modal show={Rshow} onHide={handleRClose}>
+    <Modal show={showRegister} onHide={handleCloseRegister}>
         <Modal.Header closeButton>
           <Modal.Title>Registrar</Modal.Title>
         </Modal.Header>
@@ -196,3 +196,4 @@ export default function AccountScreen() {
   );
 }
 
+export default AccountScreen
