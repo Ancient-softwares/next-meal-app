@@ -21,7 +21,7 @@ import AccountScreen from '../screens/AccountScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
 import BookScreen from '../screens/BookScreen';
-import OperationScreen from '../screens/OperationScreen';
+import OperationScreen from '../screens/OperationScreen.js';
 import RestaurantScreen from '../screens/RestaurantScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
