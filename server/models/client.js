@@ -2,7 +2,7 @@ import { Sequelize } from 'sequelize';
 
 import sequelize from '../utils/database';
 
-const User = sequelize.define('users', {
+const Client = sequelize.define('users', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -22,4 +22,4 @@ const User = sequelize.define('users', {
     }
 })
 
-export default User
+export default Client
