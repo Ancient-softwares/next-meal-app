@@ -56,7 +56,7 @@ const AccountScreen = () => {
           body: JSON.stringify(payload),
       })
       .then(async response => { 
-          try {e
+          try {
               const jsonResponse = await response.json()
               if (response.status !== 200) {
                   setIsError(true)

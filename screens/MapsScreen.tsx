@@ -1,4 +1,3 @@
-// import React from 'react';
 import React from 'react';
 import { Text, View } from '../components/Themed';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
