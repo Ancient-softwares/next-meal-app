@@ -1,25 +1,25 @@
 import { Sequelize } from 'sequelize';
-
 import sequelize from '../utils/database';
 
-const Client = sequelize.define('users', {
+const Rating = sequelize.define('tbAvalicao', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true,
-    }, 
-    email: {
+    },
+    rating: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+    },
+    description: {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    name: {
-        type: Sequelize.STRING,
-    },
-    password: {
-        type: Sequelize.STRING,
+    date: {
+        type: Sequelize.DATE,
         allowNull: false,
     }
-})
+}).sync();
 
-export default Client
+export default Rating;
