@@ -13,6 +13,8 @@ const AccountScreen = () => {
   const [email, setEmail] = useState('')
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
+  const [cpf, setCpf] = useState('')
+  const [cep, setCep] = useState('')
 
   const [isError, setIsError] = useState(false)
   const [message, setMessage] = useState('')

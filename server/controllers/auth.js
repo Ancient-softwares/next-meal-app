@@ -3,9 +3,10 @@ import { Jwt } from 'jsonwebtoken'
 import User from '../models/client.js'
 
 const signUp = (request, response, next) => {
-    // checks if email already exists
+    // checks if email or cpf already exists
     User.findOne({ where : {
         email: request.body.email, 
+        cpf: request.body.cpf
     }})
     .then(users => {
         if (users) {

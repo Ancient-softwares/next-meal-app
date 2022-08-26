@@ -138,13 +138,18 @@ render() {
 	return (
 	<SafeAreaView style={styles.container}>
 		<SearchBar
-		placeholder="Search Here..."
+		placeholder="Pesquisar restaurantes..."
 		lightTheme
 		platform='android'
 		round
 		value={this.state.searchValue}
 		onChangeText={(text) => this.searchFunction(text)}
 		autoCorrect={false}
+		blurOnSubmit={true}
+		autoFocus={true}
+		style={{
+			width: '72vw',
+		}}
 		/>
 		<FlatList
 		data={this.state.data}
