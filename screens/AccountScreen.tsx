@@ -20,68 +20,6 @@ const AccountScreen = () => {
   const [message, setMessage] = useState('')
   const [isLogin, setIsLogin] = useState(true)
 
-  const onChangeHandler = () => {
-      setIsLogin(!isLogin)
-      setMessage('')
-  }
-
-  const onLoggedIn = (token: string) => {
-      fetch(`${API_URL}/private`, {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-          }
-      }).then(async response => {
-          try {
-              const jsonResponse = await response.json()
-              if (response.status === 200) {
-                  setMessage(jsonResponse.message)
-              }
-          } catch (error) {
-              console.error(error)
-          }
-      })
-  }
-
-  const onSubmitHandler = () => {
-      const payload = {
-          email,
-          name,
-          password,
-      };
-      fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-      })
-      .then(async response => { 
-          try {
-              const jsonResponse = await response.json()
-              if (response.status !== 200) {
-                  setIsError(true)
-                  setMessage(jsonResponse.message)
-              } else {
-                  onLoggedIn(jsonResponse.token)
-                  setIsError(false)
-                  setMessage(jsonResponse.message)
-              }
-          } catch (error) {
-              console.error(error)
-          }
-      })
-      .catch(error => {
-          console.error(error)
-      })
-  }
-
-  const getMessage = () => {
-      const status = isError ? 'Error' : 'Success'
-      return status + message
-  }
-
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   

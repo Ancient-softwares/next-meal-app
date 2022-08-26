@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { Jwt } from 'jsonwebtoken'
-import User from '../models/client.js'
+import User from '../models/Client.js'
 
 const signUp = (request, response, next) => {
     // checks if email or cpf already exists
