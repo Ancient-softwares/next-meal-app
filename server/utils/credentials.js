@@ -1,5 +1,8 @@
-export const DATABASE_NAME = process.env['DATABASE_NAME'];
-export const DATABASE_LOGIN = process.env['DATABASE_LOGIN'];
-export const DATABASE_PASSWORD = process.env['DATABASE_PASSWORD'];
+export const DB_CONNECTION = process.env['DB_CONNECTION'];
+export const DB_HOST = process.env['DB_HOST'];
+export const DB_PORT = process.env['DB_PORT'];
+export const DB_DATABASE = process.env['DB_DATABASE'];
+export const DB_USERNAME = process.env['DB_USERNAME'];
+export const DB_PASSWORD = process.env['DB_PASSWORD'];
 
-export { DATABASE_NAME, DATABASE_LOGIN, DATABASE_PASSWORD }
+export { DB_CONNECTION, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD, DB_HOST };
