@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, Platform } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, Platform, TextInput } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
@@ -205,6 +205,7 @@ const onSubmitHandler = () => {
                 </ListGroup.Item>
             </ListGroup>
     </ScrollView>
+
     <Modal show={showLogin} onHide={handleCloseLogin}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
@@ -213,14 +214,16 @@ const onSubmitHandler = () => {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="outline-danger" type="submit">
             Entrar
           </Button>
           <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
@@ -235,27 +238,32 @@ const onSubmitHandler = () => {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Nome</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (name: string) => setName(name) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CPF</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CEP</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Password" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -263,7 +271,7 @@ const onSubmitHandler = () => {
             <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
-          <Button variant="primary" type="submit">
+          <Button variant="outline-danger" type="submit">
             Registrar-se
           </Button>
         </Form>

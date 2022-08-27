@@ -4,8 +4,10 @@ import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from '../styles/MapsScreen.style';
 
 const MapsScreen = () => {
-  const MAPS_ID: string = process.env[MAPS_ID]
-  const GOOGLE_MAPS_APIKEY: string = process.env[GOOGLE_MAPS_APIKEY]
+  const MAPS_ID: string = 'google-map-script'
+  const GOOGLE_MAPS_APIKEY: string = 'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
+
+  console.log(MAPS_ID)
   
   const center = {
     lat: -23.552990263455296,

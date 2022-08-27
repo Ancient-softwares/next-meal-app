@@ -85,7 +85,6 @@ return (
 		<Card style={{ 
           width: '22em', 
           border: 'none', 
-          flex: 1, 
           alignItems: 'center', 
           justifyContent: 'center',
           }}>
@@ -151,11 +150,14 @@ render() {
 			width: '72vw',
 		}}
 		/>
-		<FlatList
-		data={this.state.data}
-		renderItem={renderItem}
-		keyExtractor={(item) => item.id}
-		/>
+		<View>
+			<FlatList
+			data={this.state.data}
+			renderItem={renderItem}
+			keyExtractor={(item) => item.id}
+			scrollEnabled={true}
+			/>
+		</View>
 	</SafeAreaView>
 	);
 }
