@@ -3,7 +3,7 @@ import { SafeAreaView, ScrollView, View, Text, Platform } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
-import styles from '../styles/AccountList.style'
+import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 
 const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
@@ -27,6 +27,70 @@ const AccountScreen = () => {
   const handleShowRegister = () => setShowRegister(true);
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
+
+  const getMessage = () => {
+    const status = isError ? 'Error' : 'Success'
+    return status + message
+  }
+
+  const onChangeHandler = () => {
+    setIsLogin(!isLogin)
+    setMessage('')
+}
+
+const onLoggedIn = (token: any) => {
+    fetch(`${API_URL}/private`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    }).then(async response => {
+        try {
+            const jsonResponse = await response.json()
+            if (response.status === 200) {
+                setMessage(jsonResponse.message)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+}
+
+const onSubmitHandler = () => {
+    const payload = {
+        email,
+        name,
+        password,
+        cpf,
+        cep,
+    };
+    fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(async response => { 
+        try {
+            const jsonResponse = await response.json()
+            if (response.status !== 200) {
+                setIsError(true)
+                setMessage(jsonResponse.message)
+            } else {
+                onLoggedIn(jsonResponse.token)
+                setIsError(false)
+                setMessage(jsonResponse.message)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -156,10 +220,10 @@ const AccountScreen = () => {
             <Form.Label>Senha</Form.Label>
             <Form.Control type="password" placeholder="Password" />
           </Form.Group>
-
           <Button variant="primary" type="submit">
             Entrar
           </Button>
+          <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
         </Form>
         </Modal.Body>
       </Modal>

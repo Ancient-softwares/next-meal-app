@@ -31,4 +31,8 @@ export default StyleSheet.create({
       accountIcon: {
         paddingBottom: 10,
       },
+      message: {
+        fontSize: 16,
+        marginVertical: '5%',
+    },
 });

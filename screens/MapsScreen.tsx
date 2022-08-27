@@ -3,16 +3,18 @@ import { Text, View } from '../components/Themed';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from '../styles/MapsScreen.style';
 
-
 const MapsScreen = () => {
+  const MAPS_ID: string = process.env[MAPS_ID]
+  const GOOGLE_MAPS_APIKEY: string = process.env[GOOGLE_MAPS_APIKEY]
+  
   const center = {
     lat: -23.552990263455296,
     lng: -46.39968223122055
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw"
+    id: MAPS_ID,
+    googleMapsApiKey: GOOGLE_MAPS_APIKEY,
   })
 
   const [map, setMap] = React.useState(null)

@@ -18,9 +18,12 @@ const signUp = (request, response, next) => {
                     return response.status(500).json({message: "couldnt hash the password"}); 
                 } else if (passwordHash) {
                     return User.create(({
+                        username: request.body.username,
                         email: request.body.email,
                         name: request.body.name,
                         password: passwordHash,
+                        cpf: request.body.cpf,
+                        cep: request.body.cep
                     }))
                     .then(() => {
                         response.status(200).json({message: "user created"});
