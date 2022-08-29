@@ -1,19 +1,96 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, Platform, TextInput } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
-import styles from '../styles/AccountList.style'
+import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 
-export default function AccountScreen() {
-  const [Lshow, setLShow] = useState(false);
-  const [Rshow, setRShow] = useState(false);
+const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
+
+
+const AccountScreen = () => {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
+  const [cpf, setCpf] = useState('')
+  const [cep, setCep] = useState('')
+
+  const [isError, setIsError] = useState(false)
+  const [message, setMessage] = useState('')
+  const [isLogin, setIsLogin] = useState(true)
+
+  const [showLogin, setShowLogin] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   
-  const handleLShow = () => setLShow(true);
-  const handleRShow = () => setRShow(true);
-  const handleLClose = () => setLShow(false);
-  const handleRClose = () => setRShow(false);
+  const handleShowLogin = () => setShowLogin(true);
+  const handleShowRegister = () => setShowRegister(true);
+  const handleCloseLogin = () => setShowLogin(false);
+  const handleCloseRegister = () => setShowRegister(false);
+
+  const getMessage = () => {
+    const status = isError ? 'Error' : 'Success'
+    return status + message
+  }
+
+  const onChangeHandler = () => {
+    setIsLogin(!isLogin)
+    setMessage('')
+}
+
+const onLoggedIn = (token: any) => {
+    fetch(`${API_URL}/private`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    }).then(async response => {
+        try {
+            const jsonResponse = await response.json()
+            if (response.status === 200) {
+                setMessage(jsonResponse.message)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+}
+
+const onSubmitHandler = () => {
+    const payload = {
+        email,
+        name,
+        password,
+        cpf,
+        cep,
+    };
+    fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+    .then(async response => { 
+        try {
+            const jsonResponse = await response.json()
+            if (response.status !== 200) {
+                setIsError(true)
+                setMessage(jsonResponse.message)
+            } else {
+                onLoggedIn(jsonResponse.token)
+                setIsError(false)
+                setMessage(jsonResponse.message)
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    })
+    .catch(error => {
+        console.error(error)
+    })
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -41,7 +118,7 @@ export default function AccountScreen() {
                     marginTop: 15,
                     marginRight: 5,
                 }}
-                onClick={handleLShow}
+                onClick={handleShowLogin}
                 >Entrar</Button>
                 <Button variant="outline-danger"
                 style={{
@@ -49,7 +126,7 @@ export default function AccountScreen() {
                     marginTop: 15,
                     marginLeft: 5,
                 }}
-                onClick={handleRShow}
+                onClick={handleShowRegister}
                 >Cadastrar-se</Button>
             </View>
             <Text style={styles.subtitle}>Meu app, NextMeal</Text>
@@ -128,7 +205,8 @@ export default function AccountScreen() {
                 </ListGroup.Item>
             </ListGroup>
     </ScrollView>
-    <Modal show={Lshow} onHide={handleLClose}>
+
+    <Modal show={showLogin} onHide={handleCloseLogin}>
         <Modal.Header closeButton>
           <Modal.Title>Login</Modal.Title>
         </Modal.Header>
@@ -136,21 +214,23 @@ export default function AccountScreen() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-
-          <Button variant="primary" type="submit">
+          <Button variant="outline-danger" type="submit">
             Entrar
           </Button>
+          <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
         </Form>
         </Modal.Body>
       </Modal>
-    <Modal show={Rshow} onHide={handleRClose}>
+    <Modal show={showRegister} onHide={handleCloseRegister}>
         <Modal.Header closeButton>
           <Modal.Title>Registrar</Modal.Title>
         </Modal.Header>
@@ -158,27 +238,32 @@ export default function AccountScreen() {
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Nome</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (name: string) => setName(name) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CPF</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>CEP</Form.Label>
-            <Form.Control type="text" placeholder="Enter email" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="Enter email" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <br></br>
+            <TextInput style={ styles.modalInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Password" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -186,7 +271,7 @@ export default function AccountScreen() {
             <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
-          <Button variant="primary" type="submit">
+          <Button variant="outline-danger" type="submit">
             Registrar-se
           </Button>
         </Form>
@@ -196,3 +281,4 @@ export default function AccountScreen() {
   );
 }
 
+export default AccountScreen

@@ -1,19 +1,22 @@
-// import React from 'react';
 import React from 'react';
 import { Text, View } from '../components/Themed';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from '../styles/MapsScreen.style';
 
+const MapsScreen = () => {
+  const MAPS_ID: string = 'google-map-script'
+  const GOOGLE_MAPS_APIKEY: string = 'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
 
-export default function MapsScreen() {
+  console.log(MAPS_ID)
+  
   const center = {
     lat: -23.552990263455296,
     lng: -46.39968223122055
   };
 
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw"
+    id: MAPS_ID,
+    googleMapsApiKey: GOOGLE_MAPS_APIKEY,
   })
 
   const [map, setMap] = React.useState(null)
@@ -30,17 +33,6 @@ export default function MapsScreen() {
   
   return isLoaded ? (
     <View style={styles.container}>
-      {/* <MapView style={{ 
-        flex: 1,
-        width: '100%',
-        height: '100%',
-      }}
-      region={{
-        latitude: 42.882004, 
-        longitude: 74.582748, 
-        latitudeDelta: 0.0922, 
-        longitudeDelta: 0.0421
-      }}/> */}
       <GoogleMap
         mapContainerStyle={{
           width: '100%',
@@ -60,4 +52,4 @@ export default function MapsScreen() {
   </View>
 }
 
-
+export default MapsScreen

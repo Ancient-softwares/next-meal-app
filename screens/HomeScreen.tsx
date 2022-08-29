@@ -8,7 +8,7 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListGroup, Carousel } from 'react-bootstrap';
 
-export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
+const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex: React.SetStateAction<number>, e: any) => {
@@ -139,3 +139,5 @@ export default function HomeScreen({ navigation }: RootTabScreenProps<'Home'>) {
     </SafeAreaView>
   );
 }
+
+export default HomeScreen

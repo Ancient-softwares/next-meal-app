@@ -18,20 +18,19 @@ const styles = StyleSheet.create({
     },
     subtitle: {
       marginLeft: 20,
-      marginVertical: 30,
       marginBottom: 5,
       fontSize: 16,
       color: '#963333',
     },
     carousel: {
       flex: 1,
+      justifyContent: 'flex-start',
     },
     description: {
       fontSize: 14,
       fontStyle: 'italic',
       color: 'grey',
       marginLeft: 20,
-      marginBottom: 40,
     },
     image: {
       width: '10vw',
