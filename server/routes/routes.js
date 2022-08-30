@@ -1,5 +1,5 @@
-import express from "express";
-import { signUp, login, isAuth } from '../controllers/auth.js'
+const express = require('express')
+const { signUp, login, isAuth } = require('../controllers/auth')
 
 const router = express.Router()
 
@@ -17,4 +17,4 @@ router.use('/', (request, response, next) => {
     response.status(404).json({ error: '404 Not Found' })
 })
 
-export default router;
+module.exports = router

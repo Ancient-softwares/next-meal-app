@@ -1,7 +1,6 @@
-import express from 'express'
-import sequelize from './utils/database.js'
-import router from './routes/routes.js'
-
+const express = require('express')
+const sequelize = require('sequelize')
+const routes = require('./routes/routes')
 const app = express()
 
 app.use(express.urlencoded({ extended: true }))
@@ -16,7 +15,7 @@ app.use((_, response, next) => {
     next()
 })
 
-app.use(router)
+app.use(routes)
 
 sequelize.sync()
 

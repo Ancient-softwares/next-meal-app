@@ -1,14 +1,14 @@
-import { Sequelize } from "sequelize";
-import { DB_CONNECTION, DB_PASSWORD, DB_USERNAME, DB_DATABASE, DB_PORT, DB_HOST } from "./credentials";
+const Sequelize = require('sequelize')
+const { DB_CONNECTION, DB_PASSWORD, DB_USERNAME, DB_DATABASE, DB_PORT, DB_HOST } = require("./credentials")
 
-const sequelize = new Sequelize(DB_CONNECTION, DB_PASSWORD, DB_USERNAME, DB_DATABASE, DB_PORT, DB_HOST, {
-    dialect: DB_CONNECTION,
-    host: DB_HOST,
-    port: DB_PORT,
-    database: DB_DATABASE,
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
+const connection = new Sequelize(DB_CONNECTION, DB_PASSWORD, DB_USERNAME, DB_DATABASE, DB_PORT, DB_HOST, {
+    dialect: "mysql",
+    host: '127.0.0.1',
+    port: '3306',
+    database: 'nextMeal',
+    username: 'root',
+    password: '',
     autoReconnect: true
 })
 
-export default sequelize;
+module.exports = connection

@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs'
-import { Jwt } from 'jsonwebtoken'
-import User from '../models/Client.js'
+const bcrypt = require('bcryptjs')
+const { Jwt } = require('jsonwebtoken')
+const User = require('../models/Client.js')
 
 const signUp = (request, response, next) => {
     // checks if email or cpf already exists
@@ -85,7 +85,7 @@ const isAuth = (request, response, next) => {
     try {
         decodedToken = Jwt.verify(token, 'secret')
     } catch (error) {
-        return response.status(500).json({ message: error.message || 'coud not decode the token' })
+        return response.status(500).json({ message: error.message || 'could not decode the token' })
     }
 
     if (!decodedToken) {
@@ -95,4 +95,4 @@ const isAuth = (request, response, next) => {
     }
 }
 
-export { signUp, login, isAuth }
+module.exports = { signUp, login, isAuth }

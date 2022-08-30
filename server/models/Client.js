@@ -1,8 +1,8 @@
-import { Sequelize } from 'sequelize';
+const Sequelize = require('sequelize')
 
-import sequelize from '../utils/database';
+const connection = require('../utils/database');
 
-const Client = sequelize.define('tbCliente', {
+const Client = connection.define('tbCliente', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -59,4 +59,4 @@ const Client = sequelize.define('tbCliente', {
     },
 }).sync();
 
-export default Client
+module.exports = Client
