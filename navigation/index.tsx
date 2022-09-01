@@ -13,7 +13,6 @@ import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
@@ -21,8 +20,8 @@ import AccountScreen from '../screens/AccountScreen';
 import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
 import BookScreen from '../screens/BookScreen';
-import OperationScreen from '../screens/OperationScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
+import OperationScreen from '../screens/OperationScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -44,13 +43,13 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false, headerStyle: { backgroundColor: 'white' } }} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!', headerShown: false }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} />
-      </Stack.Group>
-      <Stack.Screen name="Operation" component={OperationScreen} options={{ title: 'Operation', headerStyle: { backgroundColor: 'white' } }} />
-      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ title: 'Restaurant', headerStyle: { backgroundColor: 'white' } }} />
+      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Maps" component={MapsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Operation" component={OperationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Books" component={OperationScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
