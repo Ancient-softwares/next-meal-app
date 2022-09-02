@@ -9,14 +9,23 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    protected $table = 'tbusuario';
+    protected $table = 'tbCliente';
 
     protected $fillable = [
-        'idUsuario',
-        'nomeUsuario',
-        'cpfUsuario',
-        'emailUsuario',
-        'senhaUsuario',
-        'celUsuario'
+        'idCliente',
+        'nomeCliente',
+        'cpfCliente',
+        'emailCliente',
+        'senhaCliente',
+        'telCliente',
+        'celCliente',
+        'cepCliente',
+        'fotoCliente',
+        'ruaCliente',
+        'numCliente',
+        'bairroCliente',
+        'cidadeCliente',
+        'estadoCliente',
+        'complementoCliente',
     ];
 }

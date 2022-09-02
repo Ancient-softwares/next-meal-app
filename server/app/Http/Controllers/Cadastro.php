@@ -3,82 +3,55 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Cliente;
 
 class Cadastro extends Controller
 {
+    private $cliente = Cliente(); 
+
+    public function __construct() 
+    {
+        $this->cliente = new Cliente(); 
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $senha = $request->senha;
+        $senha = password_hash($senha, PASSWORD_DEFAULT);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+        $telefone = $request->telefone;
+        $telefone = preg_replace('/[^A-Za-z0-9\-]/', '', $telefone);
+        $telefone = str_replace('-', '', $telefone);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $cpf = $request->cpf;
+        $cpf = preg_replace('/[^A-Za-z0-9\-]/', '', $cpf);
+        $cpf = str_replace(['.', '-'], '', $cpf);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        $cep = $request->cep;
+        $cep = str_replace('-', '', $cep);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $cadastro = $this->cliente->create([
+            'nomeCliente' => $request->nome,
+            'cpfCliente' => $cpf,
+            'cepCliente' => $cep,
+            'telCliente' => $telefone,
+            'celCliente' => $request->celular,
+            'fotoCliente' => $request->foto,
+            'ruaCliente' => $request->rua,    
+            'numCliente' => $request->numero,
+            'bairroCliente' => $request->bairro,
+            'cidadeCliente' => $request->cidade,
+            'estadoCliente' => $request->estado,
+            'complementoCliente' => $request->complemento,
+            'emailCliente' => $request->email,
+            'senhaCliente' => $senha,
+        ]);
     }
 }
