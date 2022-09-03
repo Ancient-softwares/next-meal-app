@@ -7,7 +7,7 @@ use App\Models\Cliente;
 
 class Cadastro extends Controller
 {
-    private $cliente = Cliente(); 
+    private $cliente;
 
     public function __construct() 
     {
@@ -16,7 +16,6 @@ class Cadastro extends Controller
 
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)

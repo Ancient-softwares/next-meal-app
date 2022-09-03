@@ -5,21 +5,12 @@ import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
+import axios from 'axios';
 
 const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
 
 
 const AccountScreen = () => {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [cpf, setCpf] = useState('')
-  const [cep, setCep] = useState('')
-
-  const [isError, setIsError] = useState(false)
-  const [message, setMessage] = useState('')
-  const [isLogin, setIsLogin] = useState(true)
-
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
@@ -27,70 +18,6 @@ const AccountScreen = () => {
   const handleShowRegister = () => setShowRegister(true);
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
-
-  const getMessage = () => {
-    const status = isError ? 'Error' : 'Success'
-    return status + message
-  }
-
-  const onChangeHandler = () => {
-    setIsLogin(!isLogin)
-    setMessage('')
-}
-
-const onLoggedIn = (token: any) => {
-    fetch(`${API_URL}/private`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    }).then(async response => {
-        try {
-            const jsonResponse = await response.json()
-            if (response.status === 200) {
-                setMessage(jsonResponse.message)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    })
-}
-
-const onSubmitHandler = () => {
-    const payload = {
-        email,
-        name,
-        password,
-        cpf,
-        cep,
-    };
-    fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-    })
-    .then(async response => { 
-        try {
-            const jsonResponse = await response.json()
-            if (response.status !== 200) {
-                setIsError(true)
-                setMessage(jsonResponse.message)
-            } else {
-                onLoggedIn(jsonResponse.token)
-                setIsError(false)
-                setMessage(jsonResponse.message)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    })
-    .catch(error => {
-        console.error(error)
-    })
-  }
 
   return (
     <SafeAreaView style={styles.container}>

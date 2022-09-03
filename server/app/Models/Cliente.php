@@ -10,7 +10,7 @@ class Cliente extends Model
     use HasFactory;
 
     protected $table = 'tbCliente';
-
+    
     protected $fillable = [
         'idCliente',
         'nomeCliente',
