@@ -7,8 +7,6 @@ import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 import axios from 'axios';
 
-const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
-
 
 const AccountScreen = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -18,6 +16,64 @@ const AccountScreen = () => {
   const handleShowRegister = () => setShowRegister(true);
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
+
+  const API_URL = ''
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [cel, setCel] = useState('');
+  const [password, setPassword] = useState('');
+  const [foto, setFoto] = useState('');
+  const [email, setEmail] = useState('');
+  const [cep, setCep] = useState('');
+  const [rua, setRua] = useState('');
+  const [numero, setNumero] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [estado, setEstado] = useState('');
+  const [complemento, setComplemento] = useState('');
+  const [dataCadastro, setDataCadastro] = useState('');
+  const [dataAtualizacao, setDataAtualizacao] = useState('');
+
+  const isset = (name: string, cpf: string, cel: string, password: string, foto: string, email: string, cep: string, rua: string, numero: string, bairro: string, cidade: string, estado: string, complemento: string, dataCadastro: string, dataAtualizacao: string) => {
+    if (name === '' || cpf === '' || cel === '' || password === '' || foto === '' || email === '' || cep === '' || rua === '' || numero === '' || bairro === '' || cidade === '' || estado === '' || complemento === '' || dataCadastro === '' || dataAtualizacao === '') {
+      return false;
+    }
+
+    return true;
+  }
+
+  // usar useEffect(() => {}, [() => register(parametros)]); se der merda
+  const register = async () => {
+    if (!isset(name, cpf, cel, password, foto, email, cep, rua, numero, bairro, cidade, estado, complemento, dataCadastro, dataAtualizacao)) {
+      setError('Preencha todos os campos!');
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/register`, {
+          name,
+          cpf,
+          cel,
+          password,
+          foto,
+          email,
+          cep,
+          rua,
+          numero,
+          bairro,
+          cidade,
+          estado,
+          complemento,
+          dataCadastro,
+          dataAtualizacao
+        });
+      } catch (err: any) {
+        setError(err.response.data.error);
+      }
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
