@@ -1,25 +1,14 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView, View, Text, Platform, TextInput } from 'react-native';
+import { SafeAreaView, ScrollView, View, Text, TextInput } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form, ListGroup } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
 import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
-
-const API_URL = Platform.OS === 'ios' ? 'http://127.0.0.1:5000' : 'http://10.0.2.2:5000'
+import axios from 'axios';
 
 
 const AccountScreen = () => {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [password, setPassword] = useState('')
-  const [cpf, setCpf] = useState('')
-  const [cep, setCep] = useState('')
-
-  const [isError, setIsError] = useState(false)
-  const [message, setMessage] = useState('')
-  const [isLogin, setIsLogin] = useState(true)
-
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
@@ -28,68 +17,92 @@ const AccountScreen = () => {
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
 
-  const getMessage = () => {
-    const status = isError ? 'Error' : 'Success'
-    return status + message
+  const API_URL = ''
+
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const [name, setName] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [cel, setCel] = useState('');
+  const [password, setPassword] = useState('');
+  const [foto, setFoto] = useState('');
+  const [email, setEmail] = useState('');
+  const [cep, setCep] = useState('');
+  const [rua, setRua] = useState('');
+  const [numero, setNumero] = useState('');
+  const [bairro, setBairro] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [estado, setEstado] = useState('');
+  const [complemento, setComplemento] = useState('');
+  const [dataCadastro, setDataCadastro] = useState('');
+  const [dataAtualizacao, setDataAtualizacao] = useState('');
+
+  const registerIsset = (name: string, cpf: string, cel: string, password: string, foto: string, email: string, cep: string, rua: string, numero: string, bairro: string, cidade: string, estado: string) => {
+    if (!name || !cpf || !cel || !password || !foto || !email || !cep || !rua || !numero || !bairro || !cidade || !estado) {
+      return false;
+    }
+
+    return true;
   }
 
-  const onChangeHandler = () => {
-    setIsLogin(!isLogin)
-    setMessage('')
-}
+  const loginIsset = (email: string, password: string) => {
+    if (!email || !password) {
+      return false;
+    } 
+  
+    return true;
+  }
 
-const onLoggedIn = (token: any) => {
-    fetch(`${API_URL}/private`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-        }
-    }).then(async response => {
-        try {
-            const jsonResponse = await response.json()
-            if (response.status === 200) {
-                setMessage(jsonResponse.message)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    })
-}
 
-const onSubmitHandler = () => {
-    const payload = {
-        email,
-        name,
-        password,
-        cpf,
-        cep,
-    };
-    fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-    })
-    .then(async response => { 
-        try {
-            const jsonResponse = await response.json()
-            if (response.status !== 200) {
-                setIsError(true)
-                setMessage(jsonResponse.message)
-            } else {
-                onLoggedIn(jsonResponse.token)
-                setIsError(false)
-                setMessage(jsonResponse.message)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    })
-    .catch(error => {
-        console.error(error)
-    })
+  // usar useEffect(() => {}, [() => register(parametros)]); se der merda
+  const register = async () => {
+    if (!registerIsset(name, cpf, cel, password, foto, email, cep, rua, numero, bairro, cidade, estado)) {
+      setError('Preencha todos os campos!');
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/register`, {
+          name,
+          cpf,
+          cel,
+          password,
+          foto,
+          email,
+          cep,
+          rua,
+          numero,
+          bairro,
+          cidade,
+          estado,
+          complemento,
+          dataCadastro,
+          dataAtualizacao
+        });
+
+        setSuccess('Cadastro realizado com sucesso!');
+      } catch (err: any) {
+        setError(err.response.data.error);
+      }
+    }
+  }
+
+  const login = async () => {
+    if (!loginIsset(email, password)) {
+      setError('Preencha todos os campos!');
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/login`, {
+          email,
+          password
+        });
+
+        setSuccess('Login realizado com sucesso!');
+      } catch (err: any) {
+        console.log(err)
+        setError(err.response.data.error);
+      }
+    }
+    
   }
 
   return (
@@ -226,7 +239,7 @@ const onSubmitHandler = () => {
           <Button variant="outline-danger" type="submit">
             Entrar
           </Button>
-          <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
+
         </Form>
         </Modal.Body>
       </Modal>
