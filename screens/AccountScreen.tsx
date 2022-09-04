@@ -17,7 +17,7 @@ const AccountScreen = () => {
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
 
-  const API_URL = ''
+  const API_URL = 'https://6620-168-232-160-5.sa.ngrok.io'
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -63,7 +63,7 @@ const AccountScreen = () => {
       try {
         let now = new Date().toLocaleDateString()
 
-        const response = await axios.post(`${API_URL}/register`, {
+        const response = await axios.post(`${API_URL}/mobile/registro`, {
           name,
           cpf,
           cel,
@@ -93,7 +93,7 @@ const AccountScreen = () => {
       setError('Preencha todos os campos!');
     } else {
       try {
-        const response = await axios.post(`${API_URL}/loginCliente`, {
+        const response = await axios.post(`${API_URL}/mobile/login`, {
           email,
           password
         });
@@ -104,8 +104,30 @@ const AccountScreen = () => {
         setError(err.response.data.error);
       }
     }
-    
   }
+
+  const teste = () => {
+    try {
+      const response = axios.get(`${API_URL}/mobile/teste`);
+      console.log(response)
+      
+      window.alert('Teste realizado com sucesso!');
+    } catch (err) {
+      console.log(err)
+      window.alert('Erro ao realizar teste!');
+    }
+  }
+
+  (async () => {
+    try {
+      const response = await axios.get(`${API_URL}/mobile/teste`);
+      console.log(response.data);
+
+      window.alert('Conectado com sucesso!');
+    } catch(err) {
+      console.log(err);
+    }
+  })()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -238,7 +260,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button variant="outline-danger" type="submit">
+          <Button variant="outline-danger" type="submit" onClick={() => teste()}>
             Entrar
           </Button>
 
