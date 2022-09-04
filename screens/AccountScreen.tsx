@@ -79,11 +79,20 @@ const AccountScreen = () => {
           complemento,
           dataCadastro: setDataCadastro(now),
           dataAtualizacao: setDataAtualizacao(now)
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
+          }
         });
 
         setSuccess('Cadastro realizado com sucesso!');
+        window.alert('Cadastro realizado com sucesso!');
       } catch (err: any) {
         setError(err.response.data.error);
+        window.alert(err.response.data.error);
       }
     }
   }
@@ -96,19 +105,34 @@ const AccountScreen = () => {
         const response = await axios.post(`${API_URL}/mobile/login`, {
           email,
           password
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',  
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+          }
         });
 
         setSuccess('Login realizado com sucesso!');
+        window.alert('Login realizado com sucesso!');
       } catch (err: any) {
         console.log(err)
         setError(err.response.data.error);
+        window.alert(err.response.data.error);
       }
     }
   }
 
   const teste = () => {
     try {
-      const response = axios.get(`${API_URL}/mobile/teste`);
+      const response = axios.get(`${API_URL}/mobile/teste`, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      }});
       console.log(response)
       
       window.alert('Teste realizado com sucesso!');
@@ -260,7 +284,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button variant="outline-danger" type="submit" onClick={() => teste()}>
+          <Button variant="outline-danger" type="submit" onClick={() => login()}>
             Entrar
           </Button>
 
@@ -356,7 +380,7 @@ const AccountScreen = () => {
             <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
-          <Button variant="outline-danger" type="submit">
+          <Button variant="outline-danger" type="submit" onClick={() => register()}>
             Registrar-se
           </Button>
         </Form>
