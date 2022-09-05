@@ -7,8 +7,11 @@ import styles from '../styles/AccountScreen.style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 import axios from 'axios';
 
-
 const AccountScreen = () => {
+ /*  const express = require('express')
+  const app = express()
+  const cors = require('cors')
+   */
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
@@ -17,7 +20,7 @@ const AccountScreen = () => {
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
 
-  const API_URL = 'https://6620-168-232-160-5.sa.ngrok.io'
+  const API_URL = 'http://127.0.0.1:8000'
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -57,6 +60,11 @@ const AccountScreen = () => {
 
   // usar useEffect(() => {}, [() => register(parametros)]); se der merda
   const register = async () => {
+    /* app.use(cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
+    }))
+     */
     if (!registerIsset(name, cpf, cel, password, foto, email, cep, rua, numero, bairro, cidade, estado)) {
       setError('Preencha todos os campos!');
     } else {
@@ -124,8 +132,10 @@ const AccountScreen = () => {
     }
   }
 
-  const teste = () => {
-    try {
+  const teste = async () => {
+    const fs = require('fs')
+
+    /* try {
       const response = axios.get(`${API_URL}/mobile/teste`, {
         headers: {
           "Access-Control-Allow-Origin": "*",
@@ -133,12 +143,30 @@ const AccountScreen = () => {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
       }});
+
       console.log(response)
       
-      window.alert('Teste realizado com sucesso!');
+      window.alert('Teste realizado com sucesso!' + response);
     } catch (err) {
       console.log(err)
       window.alert('Erro ao realizar teste!');
+    } */
+
+    try {
+      let response = await fetch(`${API_URL}/mobile/teste`)
+      let responseJsonData = await response.json()
+      
+      fs.writeFile('./test.txt', responseJsonData, (err: any) => {
+        if (err) {
+          console.error(err);
+        }
+        // file written successfully
+      });
+      
+      console.log(responseJsonData)
+      window.alert('bah')
+    } catch (err) {
+      console.error(err)
     }
   }
 
@@ -284,7 +312,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button variant="outline-danger" type="submit" onClick={() => login()}>
+          <Button formAction='#' variant="outline-danger" type="submit" onClick={() => teste()}>
             Entrar
           </Button>
 

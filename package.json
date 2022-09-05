@@ -29,6 +29,7 @@
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.0",
     "canary": "^0.1.5",
+    "cors": "^2.8.5",
     "expo": "~45.0.0",
     "expo-asset": "~8.5.0",
     "expo-constants": "~13.1.1",
@@ -58,7 +59,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@types/node": "^18.7.2",
+    "@types/node": "^18.7.15",
     "@types/react": "^17.0.21",
     "@types/react-native": "~0.66.13",
     "find-my-way": "^7.0.1",
