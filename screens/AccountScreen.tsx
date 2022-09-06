@@ -65,12 +65,10 @@ const AccountScreen = () => {
       methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
     }))
      */
-    if (!registerIsset(name, cpf, cel, password, foto, email, cep, rua, numero, bairro, cidade, estado)) {
+    if (!registerIsset(name, cpf, cel, password, '../assets/images/user.png', email, cep, rua, numero, bairro, cidade, estado)) {
       setError('Preencha todos os campos!');
     } else {
       try {
-        let now = new Date().toLocaleDateString()
-
         const response = await axios.post(`${API_URL}/mobile/registro`, {
           name,
           cpf,
@@ -85,8 +83,6 @@ const AccountScreen = () => {
           cidade,
           estado,
           complemento,
-          dataCadastro: setDataCadastro(now),
-          dataAtualizacao: setDataAtualizacao(now)
         }, {
           headers: {
             'Content-Type': 'application/json',
@@ -132,36 +128,12 @@ const AccountScreen = () => {
     }
   }
 
-  const teste = async () => {
-    const fs = require('fs')
-
-    /* try {
-      const response = axios.get(`${API_URL}/mobile/teste`, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      }});
-
-      console.log(response)
-      
-      window.alert('Teste realizado com sucesso!' + response);
-    } catch (err) {
-      console.log(err)
-      window.alert('Erro ao realizar teste!');
-    } */
+  const teste = async (event: Event) => {
+    event.preventDefault();
 
     try {
       let response = await fetch(`${API_URL}/mobile/teste`)
       let responseJsonData = await response.json()
-      
-      fs.writeFile('./test.txt', responseJsonData, (err: any) => {
-        if (err) {
-          console.error(err);
-        }
-        // file written successfully
-      });
       
       console.log(responseJsonData)
       window.alert('bah')
@@ -173,9 +145,10 @@ const AccountScreen = () => {
   (async () => {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
-      console.log(response.data);
+      const paidoglauber = await response.data
 
       window.alert('Conectado com sucesso!');
+      window.alert(paidoglauber)
     } catch(err) {
       console.log(err);
     }
