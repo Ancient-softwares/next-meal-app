@@ -41,7 +41,7 @@ const AccountScreen = () => {
   const [dataCadastro, setDataCadastro] = useState('');
   const [dataAtualizacao, setDataAtualizacao] = useState('');
 
-  const registerIsset = (name: string, cpf: string, cel: string, password: string, foto: string, email: string, cep: string, rua: string, numero: string, bairro: string, cidade: string, estado: string) => {
+  const registerIsset = (name: string, cpf: string, cel: string, password: string,  foto:string, email: string, cep: string, rua: string, numero: string, bairro: string, cidade: string, estado: string) => {
     if (!name || !cpf || !cel || !password || !foto || !email || !cep || !rua || !numero || !bairro || !cidade || !estado) {
       return false;
     }
@@ -60,11 +60,6 @@ const AccountScreen = () => {
 
   // usar useEffect(() => {}, [() => register(parametros)]); se der merda
   const register = async () => {
-    /* app.use(cors({
-      origin: '*',
-      methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
-    }))
-     */
     if (!registerIsset(name, cpf, cel, password, '../assets/images/user.png', email, cep, rua, numero, bairro, cidade, estado)) {
       setError('Preencha todos os campos!');
     } else {
@@ -83,13 +78,6 @@ const AccountScreen = () => {
           cidade,
           estado,
           complemento,
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS'
-          }
         });
 
         setSuccess('Cadastro realizado com sucesso!');
@@ -109,13 +97,6 @@ const AccountScreen = () => {
         const response = await axios.post(`${API_URL}/mobile/login`, {
           email,
           password
-        }, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',  
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-          }
         });
 
         setSuccess('Login realizado com sucesso!');
@@ -128,21 +109,24 @@ const AccountScreen = () => {
     }
   }
 
-  const teste = async (event: Event) => {
-    event.preventDefault();
-
+  const teste = async (e: Event) => {
+    e.preventDefault();
+    
     try {
-      let response = await fetch(`${API_URL}/mobile/teste`)
-      let responseJsonData = await response.json()
+      const response = await axios.get(`${API_URL}/mobile/teste`);
+
+      console.log(response.data)
       
-      console.log(responseJsonData)
-      window.alert('bah')
+      window.alert('Teste realizado com sucesso!' + response.data);
     } catch (err) {
-      console.error(err)
+      console.log(err)
+      window.alert('Erro ao realizar teste!');
     }
   }
 
-  (async () => {
+  const soma = async (event: Event) => {
+    event.preventDefault()
+    
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
       const paidoglauber = await response.data
@@ -152,7 +136,7 @@ const AccountScreen = () => {
     } catch(err) {
       console.log(err);
     }
-  })()
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -285,7 +269,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button formAction='#' variant="outline-danger" type="submit" onClick={() => teste()}>
+          <Button formAction='#' variant="outline-danger" type="submit" onSubmit={() => teste()}>
             Entrar
           </Button>
 
@@ -335,9 +319,9 @@ const AccountScreen = () => {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicStreet">
-            <Form.Label>Senha</Form.Label>
+            <Form.Label>Confirmar senha</Form.Label>
             <br></br>
-            <TextInput style={ styles.modalInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Rua" />
+            <TextInput style={ styles.modalInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Confirmar senha" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicState">
