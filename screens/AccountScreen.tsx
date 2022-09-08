@@ -8,7 +8,6 @@ import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, F
 import axios from 'axios';
 
 const AccountScreen = () => {
-  const Joi = require('joi')
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
   
@@ -35,39 +34,17 @@ const AccountScreen = () => {
   const [cidade, setCidade] = useState('');
   const [estado, setEstado] = useState('');
   const [complemento, setComplemento] = useState('');
+  const [dataCadastro, setDataCadastro] = useState('');
+  const [dataAtualizacao, setDataAtualizacao] = useState('');
 
-  const schema = {
-    name: Joi.string().min(3).max(30).required(),
-    cpf: Joi.string().min(11).max(11).required(),
-    cel: Joi.string().min(11).max(11).required(),
-    password: Joi.string().min(6).max(30).required(),
-    foto: Joi.string().min(3).max(30).required(),
-    email: Joi.string().min(3).max(30).required(),
-    cep: Joi.string().min(8).max(8).required(),
-    rua: Joi.string().min(3).max(30).required(),
-    numero: Joi.integer().min(1).max(9999).require(),
-    bairro: Joi.string().min(3).max(30).required(),
-    cidade: Joi.string().min(3).max(30).required(),
-    estado: Joi.string().min(2).max(2).required(),
-    complemento: Joi.string().min(3).max(30).required(),
+  const registerIsset = (name: string, cpf: string, cel: string, password: string,  foto:string, email: string, cep: string, rua: string, numero: string, bairro: string, cidade: string, estado: string) => {
+    if (!name || !cpf || !cel || !password || !foto || !email || !cep || !rua || !numero || !bairro || !cidade || !estado) {
+      return false;
+    }
+
+    return true;
   }
 
-  const credentials = {
-    "name": name,
-    "cpf": cpf,
-    "cel": cel,
-    "password": password,
-    "foto": foto,
-    "email": email,
-    "cep": cep,
-    "rua": rua,
-    "numero": numero,
-    "bairro": bairro,
-    "cidade": cidade,
-    "estado": estado,
-    "complemento": complemento
-  }
- 
   const loginIsset = (email: string, password: string) => {
     if (!email || !password) {
       return false;
@@ -76,11 +53,11 @@ const AccountScreen = () => {
     return true;
   }
 
+
+  // usar useEffect(() => {}, [() => register(parametros)]); se der merda
   const register = async () => {
-    const result = Joi.validate(credentials, schema)
-    
-    if (result.error) {
-      window.alert(result.error.details[0].message)
+    if (!registerIsset(name, cpf, cel, password, '../assets/images/user.png', email, cep, rua, numero, bairro, cidade, estado)) {
+      setError('Preencha todos os campos!');
     } else {
       try {
         const response = await axios.post(`${API_URL}/mobile/registro`, {
@@ -109,10 +86,8 @@ const AccountScreen = () => {
   }
 
   const login = async () => {
-    const result = Joi.validate(credentials, schema)
-    
-    if (result.error) {
-      window.alert(result.error.details[0].message);
+    if (!loginIsset(email, password)) {
+      setError('Preencha todos os campos!');
     } else {
       try {
         const response = await axios.post(`${API_URL}/mobile/login`, {
@@ -151,7 +126,7 @@ const AccountScreen = () => {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
       const paidoglauber = await response.data
-      // a
+      // a add .
 
       window.alert('Conectado com sucesso!');
       window.alert(paidoglauber)
@@ -159,11 +134,6 @@ const AccountScreen = () => {
       console.log(err);
     }
   }
-
-  const handleSubmit = (event: Event) => {
-    event.preventDefault();
-    alert("The browser will not reload when the alert box is closed.");
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -296,7 +266,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button formAction='#' variant="outline-danger" type="submit" onSubmit={handleSubmit}>
+          <Button formAction='#' variant="outline-danger" type="submit" onSubmit={() => teste()}>
             Entrar
           </Button>
 
