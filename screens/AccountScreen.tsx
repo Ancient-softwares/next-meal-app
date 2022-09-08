@@ -151,6 +151,7 @@ const AccountScreen = () => {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
       const paidoglauber = await response.data
+      // a
 
       window.alert('Conectado com sucesso!');
       window.alert(paidoglauber)
