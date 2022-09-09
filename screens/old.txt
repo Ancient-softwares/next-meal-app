@@ -1,0 +1,49 @@
+  const register = async () => {
+    if (!registerIsset(name, cpf, cel, password, '../assets/images/user.png', email, cep, rua, numero, bairro, cidade, estado)) {
+      setError('Preencha todos os campos!');
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/mobile/registro`, {
+          name,
+          cpf,
+          cel,
+          password,
+          foto: "../assets/images/user.png",
+          email,
+          cep,
+          rua,
+          numero,
+          bairro,
+          cidade,
+          estado,
+          complemento,
+        });
+
+        setSuccess('Cadastro realizado com sucesso!');
+        window.alert('Cadastro realizado com sucesso!');
+      } catch (err: any) {
+        setError(err.response.data.error);
+        window.alert(err.response.data.error);
+      }
+    }
+  }
+
+  const login = async () => {
+    if (!loginIsset(email, password)) {
+      setError('Preencha todos os campos!');
+    } else {
+      try {
+        const response = await axios.post(`${API_URL}/mobile/login`, {
+          email,
+          password
+        });
+
+        setSuccess('Login realizado com sucesso!');
+        window.alert('Login realizado com sucesso!');
+      } catch (err: any) {
+        console.log(err)
+        setError(err.response.data.error);
+        window.alert(err.response.data.error);
+      }
+    }
+  }

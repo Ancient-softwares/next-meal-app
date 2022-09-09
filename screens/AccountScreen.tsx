@@ -26,8 +26,8 @@ const AccountScreen = () => {
   const [cel, setCellphone] = useState('');
   const [password, setPassword] = useState('');
   const [foto, setFoto] = useState('');
-  const [email, setEmail] = useState('');
-  const [cep, setCep] = useState('');
+  const [email, setEmail] = useState('')
+  const [cep, setCep] = useState(''); 
   const [rua, setRua] = useState('');
   const [numero, setNumero] = useState('');
   const [bairro, setBairro] = useState('');
@@ -53,87 +53,41 @@ const AccountScreen = () => {
     return true;
   }
 
-
-  // usar useEffect(() => {}, [() => register(parametros)]); se der merda
-  const register = async () => {
-    if (!registerIsset(name, cpf, cel, password, '../assets/images/user.png', email, cep, rua, numero, bairro, cidade, estado)) {
-      setError('Preencha todos os campos!');
-    } else {
-      try {
-        const response = await axios.post(`${API_URL}/mobile/registro`, {
-          name,
-          cpf,
-          cel,
-          password,
-          foto: "../assets/images/user.png",
-          email,
-          cep,
-          rua,
-          numero,
-          bairro,
-          cidade,
-          estado,
-          complemento,
-        });
-
-        setSuccess('Cadastro realizado com sucesso!');
-        window.alert('Cadastro realizado com sucesso!');
-      } catch (err: any) {
-        setError(err.response.data.error);
-        window.alert(err.response.data.error);
-      }
-    }
-  }
-
-  const login = async () => {
-    if (!loginIsset(email, password)) {
-      setError('Preencha todos os campos!');
-    } else {
-      try {
-        const response = await axios.post(`${API_URL}/mobile/login`, {
-          email,
-          password
-        });
-
-        setSuccess('Login realizado com sucesso!');
-        window.alert('Login realizado com sucesso!');
-      } catch (err: any) {
-        console.log(err)
-        setError(err.response.data.error);
-        window.alert(err.response.data.error);
-      }
-    }
-  }
-
-  const teste = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/mobile/teste`);
-
-      console.log(response.data)
-      
-      window.alert('Teste realizado com sucesso!' + response.data);
-    } catch (err) {
-      console.log(err)
-      window.alert('Erro ao realizar teste!');
-    }
-  }
-
-  const soma = async (event: Event) => {
-    event.preventDefault()
+  const handleSubmit = () => {
     
-    try {
-      const response = await axios.get(`${API_URL}/mobile/teste`);
-      const paidoglauber = await response.data
-      // a add .
-
-      window.alert('Conectado com sucesso!');
-      window.alert(paidoglauber)
-    } catch(err) {
-      console.log(err);
-    }
+    const packets = {
+        nomeCliente:  name,
+        cpfCliente: cpf,
+        celCliente: cel,
+        senhaCliente: password,
+        fotoCliente: foto,
+        cepCliente: cep,
+        ruaCliente: rua,
+        numRuaCliente: numero,
+        bairroCliente: bairro,
+        cidadeCliente: cidade,
+        estadoCliente: estado
+    };
+    axios.post(`${API_URL}/mobile/cadastroCliente`, packets)
+        .then(
+            response => alert(JSON.stringify(response.data))
+            
+            )
+        .catch(error => {
+            console.log("ERROR:: ",error.response.data);
+            
+            });
   }
 
-  (async () => {
+  const soma = async () => {
+    await axios.post(`${API_URL}/mobile/teste`, {n1: 5, n2: 3})
+      .then(
+        response => alert(JSON.stringify(response.data))
+      )
+      .catch(error => console.log("ERROR:: " +error.response.data))
+  }
+
+/*   (async () => {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
       console.log(response.data);
@@ -142,7 +96,7 @@ const AccountScreen = () => {
     } catch(err) {
       console.log(err);
     }
-  })()
+  })() */
 
   return (
     <SafeAreaView style={styles.container}>
@@ -275,7 +229,7 @@ const AccountScreen = () => {
             <br></br>
             <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
           </Form.Group>
-          <Button formAction='#' variant="outline-danger" type="submit" onSubmit={() => teste()}>
+          <Button formAction='#' variant="outline-danger" type="submit" onSubmit={soma}>
             Entrar
           </Button>
 
@@ -371,7 +325,7 @@ const AccountScreen = () => {
             <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
-          <Button variant="outline-danger" type="submit" onClick={() => register()}>
+          <Button variant="outline-danger" type="submit" onClick={handleSubmit}>
             Registrar-se
           </Button>
         </Form>
