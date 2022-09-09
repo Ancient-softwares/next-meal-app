@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Dimensions, Pressable, SafeAreaView, ScrollView } from 'react-native';
 import styles from '../styles/HomeScreen.style';
 import { Text, View } from '../components/Themed';
-import { RootTabScreenProps } from '../types';
+import { RootStackParamList, RootTabScreenProps } from '../types';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { ListGroup, Carousel } from 'react-bootstrap';
 
-const HomeScreen = (navigation: RootTabScreenProps<'Home'>) => {
+const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
   const exampleImage = require('../assets/images/example.jpeg');
 
   return (
