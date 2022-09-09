@@ -21,6 +21,7 @@ const AccountScreen = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // cadastro
   const [name, setName] = useState('');
   const [cpf, setCpf] = useState('');
   const [cel, setCellphone] = useState('');
@@ -79,15 +80,40 @@ const AccountScreen = () => {
             });
   }
 
-  const soma = async () => {
-    await axios.post(`${API_URL}/mobile/teste`, {n1: 5, n2: 3})
+  
+  const soma = async (e: Event) => {
+    e.preventDefault()
+    
+    await axios({
+      method: 'post',
+      url: `${API_URL}/api/soma`,
+      headers: {
+        'Accept':   'application/json',
+        'Content-Type':   'application/json'
+      },
+      data: JSON.stringify({
+        n1: email,
+        n2: password
+      })
+    })
+    /* fetch(`${API_URL}/mobile/soma`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify({
+        n1: email,
+        n2: password
+      })
+    }) */
       .then(
-        response => alert(JSON.stringify(response.data))
+        response => alert('Correct' + JSON.stringify(response.data))
       )
-      .catch(error => console.log("ERROR:: " +error.response.data))
+      .catch(error => console.log("ERROR:: "))
   }
-
-/*   (async () => {
+/* 
+  (async () =>  {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
       console.log(response.data);
@@ -96,7 +122,8 @@ const AccountScreen = () => {
     } catch(err) {
       console.log(err);
     }
-  })() */
+
+  } soma())() */
 
   return (
     <SafeAreaView style={styles.container}>
@@ -227,7 +254,7 @@ const AccountScreen = () => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
             <br></br>
-            <TextInput style={ styles.modalInput } onChangeText={ (email: string) => setEmail(email) } placeholder="Password" />
+            <TextInput style={ styles.modalInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Password" />
           </Form.Group>
           <Button formAction='#' variant="outline-danger" type="submit" onSubmit={soma}>
             Entrar
