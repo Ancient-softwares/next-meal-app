@@ -21,7 +21,8 @@ import HomeScreen from '../screens/HomeScreen';
 import MapsScreen from '../screens/MapsScreen';
 import BookScreen from '../screens/BookScreen';
 import RestaurantScreen from '../screens/RestaurantScreen';
-import OperationScreen from '../screens/OperationScreen';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -47,9 +48,10 @@ function RootNavigator() {
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!', headerShown: false }} />
       <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Maps" component={MapsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Operation" component={OperationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Books" component={OperationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Books" component={LoginScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }

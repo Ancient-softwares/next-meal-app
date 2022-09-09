@@ -88,9 +88,7 @@ const HomeScreen = ({ navigation }: RootTabScreenProps<'Home'>) => {
         <ListGroup.Item 
         as="li"
         className="d-flex justify-content-between align-items-start"
-        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
-        onClick={() => navigation.navigate('Operation')}
-      >
+        style={{ border: 'none', marginTop: 10, marginBottom: 10 }}>
         <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
         <div className="ms-2 me-auto">
           <div className="fw-bold">Bar do Armando</div>
