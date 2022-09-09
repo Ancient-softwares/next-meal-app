@@ -1,3 +1,5 @@
+import * as dotenv from 'dotenv';
+dotenv.config()
 import React, { useState } from 'react';
 import { SafeAreaView, ScrollView, View, Text, TextInput } from 'react-native';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,7 +18,7 @@ const AccountScreen = () => {
   const handleCloseLogin = () => setShowLogin(false);
   const handleCloseRegister = () => setShowRegister(false);
 
-  const API_URL = 'http://127.0.0.1:8000'
+  const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');

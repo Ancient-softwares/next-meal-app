@@ -1,13 +1,16 @@
+import * as dotenv from 'dotenv';
+dotenv.config()
 import React from 'react';
 import { Text, View } from '../components/Themed';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 import styles from '../styles/MapsScreen.style';
 
 const MapsScreen = () => {
-  const MAPS_ID: string = 'google-map-script'
-  const GOOGLE_MAPS_APIKEY: string = 'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
+  const MAPS_ID: string = process.env.ID || 'google-map-script'
+  const GOOGLE_MAPS_APIKEY: string = process.env.TOKEN ||'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
 
-  console.log(MAPS_ID)
+  console.log(process.env.ID)
+  console.log(process.env.TOKEN)
   
   const center = {
     lat: -23.552990263455296,
