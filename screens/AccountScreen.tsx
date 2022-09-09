@@ -105,9 +105,7 @@ const AccountScreen = () => {
     }
   }
 
-  const teste = async (e: Event) => {
-    e.preventDefault();
-    
+  const teste = async () => {
     try {
       const response = await axios.get(`${API_URL}/mobile/teste`);
 
@@ -134,6 +132,17 @@ const AccountScreen = () => {
       console.log(err);
     }
   }
+
+  (async () => {
+    try {
+      const response = await axios.get(`${API_URL}/mobile/teste`);
+      console.log(response.data);
+
+      window.alert('Conectado com sucesso!');
+    } catch(err) {
+      console.log(err);
+    }
+  })()
 
   return (
     <SafeAreaView style={styles.container}>
