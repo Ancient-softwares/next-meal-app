@@ -8,12 +8,15 @@ import { Form, Button } from 'react-bootstrap';
 import { Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackScreenProps, RootTabScreenProps } from '../types';
+import validator from 'validator'
+import { cpf } from 'cpf-cnpj-validator';
+import Joi from 'joi';
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
-const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
+const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {  
    const [name, setName] = useState('');
-   const [cpf, setCpf] = useState('');
+   const [cpff, setCpf] = useState('');
    const [cel, setCellphone] = useState('');
    const [password, setPassword] = useState('');
    const [foto, setFoto] = useState('');
@@ -24,34 +27,30 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
    const [bairro, setBairro] = useState('');
    const [cidade, setCidade] = useState('');
    const [estado, setEstado] = useState('');
+   const [message, setMessage] = useState('');
+
+   const schema = Joi.object({
+      nomeCliente:  Joi.string().alphanum().min(3).max(30).required(),
+      cpfCliente: Joi.string().alphanum().min(11).max(11).required(),
+      celCliente: Joi.string().alphanum().min(10).max(10).required(),
+      senhaCliente: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required(),
+      fotoCliente: Joi.string().required().uri(),
+      cepCliente: Joi.string().alphanum().min(8).max(8).required(),
+      emailCliente: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+      ruaCliente: Joi.string().required().min(3).max(30),
+      numCasaCliente: Joi.number().required(),
+      bairroCliente: Joi.string().required().min(3).max(30),
+      cidadeCliente: Joi.string().required().min(3).max(30),
+      estadoCliente: Joi.string().required().min(2).max(2)
+   })
+
 
     const handleSubmit = async (e: Event) => {
       e.preventDefault()
   
         const packets = {
             nomeCliente:  name,
-            cpfCliente: cpf,
-            celCliente: cel,
-            senhaCliente: password,
-            fotoCliente: foto,
-            cepCliente: cep,
-            emailCliente: email,
-            ruaCliente: rua,
-            numRuaCliente: numero,
-            bairroCliente: bairro,
-            cidadeCliente: cidade,
-            estadoCliente: estado
-        };
-        await axios({
-          method: 'post',
-          url: `${API_URL}/api/cadastroCliente`,
-          headers: {
-            'Accept':   'application/json',
-            'Content-Type':   'application/json'
-          },
-          data: JSON.stringify({
-            nomeCliente:  name,
-            cpfCliente: cpf,
+            cpfCliente: cpff,
             celCliente: cel,
             senhaCliente: password,
             fotoCliente: foto,
@@ -62,11 +61,42 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             bairroCliente: bairro,
             cidadeCliente: cidade,
             estadoCliente: estado
+        };
+
+        if (schema.validate(packets) && cpf.isValid(cpff)) {
+            await axios({
+              method: 'post',
+              url: `${API_URL}/api/cadastroCliente`,
+              headers: {
+                'Accept':   'application/json',
+                'Content-Type':   'application/json'
+              },
+              data: JSON.stringify({
+                nomeCliente:  name,
+                cpfCliente: cpff,
+                celCliente: cel,
+                senhaCliente: password,
+                fotoCliente: foto,
+                cepCliente: cep,
+                emailCliente: email,
+                ruaCliente: rua,
+                numCasaCliente: numero,
+                bairroCliente: bairro,
+                cidadeCliente: cidade,
+                estadoCliente: estado
+              })
+            })
+          .then(response =>  {
+            setMessage(''); 
+
+            navigation.navigate('Account')
+            console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
           })
-      })
-      .then(response => window.alert('Cadastro realizado com sucesso!' + JSON.stringify(response.data)))
-        .catch(error => {
-        console.log("ERROR:: ", error.response.data)})
+            .catch(error => {
+            console.log("ERROR:: ", error.response.data)})
+        } else {
+          setMessage('Preencha todos os campos corretamente.')
+        }
   }
   
   return (
@@ -115,12 +145,6 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             <TextInput style={ styles.formInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Senha" />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicStreet">
-            <Form.Label>Confirmar senha</Form.Label>
-            <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Confirmar senha" />
-          </Form.Group>
-
           <Form.Group className='mb-3' controlId="formBasicState">
             <Form.Label>Estado</Form.Label>
             <br></br>
@@ -166,6 +190,20 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               color: '#000000'
           }} onPress={() => navigation.navigate('Login')}>Já  possui uma conta?<Text style={{color: '#963333'}}> Entrar.  </Text>
           </Text>
+          </Form.Group>
+          </View>
+
+          <View style={{ 
+            marginVertical: '5%',
+          }}>
+          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+            <Text style={{
+              color: '#963333',
+              fontSize: 16,
+              fontWeight: 'bold'
+            }}>
+              {message}
+            </Text>
           </Form.Group>
           </View>
 

@@ -6,32 +6,48 @@ import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { TextInput, Text, View } from 'react-native';
 import { RootStackScreenProps } from '../types';
+import Joi from 'joi'
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('')
+
+  const schema = Joi.object({
+    emailCliente: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
+    senhaCliente: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
+  })
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault()
-    
-    await axios({
-      method: 'post',
-      url: `${API_URL}/api/loginCliente`,
-      headers: {
-        'Accept':   'application/json',
-        'Content-Type':   'application/json'
-      },
-      data: JSON.stringify({
-        emailCliente: email,
-        senhaCliente: password
+
+    const packets = {
+      emailCliente: email,
+      senhaCliente: password 
+    }
+
+    if (schema.validate(packets)) {
+      await axios({
+        method: 'post',
+        url: `${API_URL}/api/loginCliente`,
+        headers: {
+          'Accept':   'application/json',
+          'Content-Type':   'application/json'
+        },
+        data: JSON.stringify({
+          emailCliente: email,
+          senhaCliente: password
+        })
       })
-    })
-      .then(
-        response => console.log('Response: ' + JSON.stringify(response.data))
-      )
-      .catch(error => console.log("ERROR:: " + error.response.data))
+        .then(
+          response => console.log('Response: ' + JSON.stringify(response.data))
+        )
+        .catch(error => console.log("ERROR:: " + error.response.data))
+    } else {
+      setMessage('Preencha todos os campos corretamente')
+    }
   }
   
   return (
