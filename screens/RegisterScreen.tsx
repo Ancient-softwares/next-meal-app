@@ -58,7 +58,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             cepCliente: cep,
             emailCliente: email,
             ruaCliente: rua,
-            numRuaCliente: numero,
+            numCasaCliente: numero,
             bairroCliente: bairro,
             cidadeCliente: cidade,
             estadoCliente: estado
