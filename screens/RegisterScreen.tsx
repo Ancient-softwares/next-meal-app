@@ -1,4 +1,5 @@
-// import React from 'react';
+import * as dotenv from 'dotenv'
+dotenv.config()
 import React, { useState } from 'react';
 import { View } from '../components/Themed';
 import styles from '../styles/RegisterScreen.style';
@@ -8,7 +9,7 @@ import { Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackScreenProps, RootTabScreenProps } from '../types';
 
-const API_URL = 'http://127.0.0.1:8000'
+const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
 const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
    const [name, setName] = useState('');
@@ -23,11 +24,9 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
    const [bairro, setBairro] = useState('');
    const [cidade, setCidade] = useState('');
    const [estado, setEstado] = useState('');
-   const [complemento, setComplemento] = useState('');
-   const [dataCadastro, setDataCadastro] = useState('');
-   const [dataAtualizacao, setDataAtualizacao] = useState('');
 
-    const handleSubmit = () => {
+    const handleSubmit = async (e: Event) => {
+      e.preventDefault()
   
         const packets = {
             nomeCliente:  name,
@@ -36,27 +35,44 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             senhaCliente: password,
             fotoCliente: foto,
             cepCliente: cep,
+            emailCliente: email,
             ruaCliente: rua,
             numRuaCliente: numero,
             bairroCliente: bairro,
             cidadeCliente: cidade,
             estadoCliente: estado
         };
-        axios.post(`${API_URL}/mobile/cadastroCliente`, packets)
-            .then(
-                response => alert(JSON.stringify(response.data))
-                
-                )
-            .catch(error => {
-                console.log("ERROR:: ",error.response.data);
-                
-                });
-    }
+        await axios({
+          method: 'post',
+          url: `${API_URL}/api/cadastroCliente`,
+          headers: {
+            'Accept':   'application/json',
+            'Content-Type':   'application/json'
+          },
+          data: JSON.stringify({
+            nomeCliente:  name,
+            cpfCliente: cpf,
+            celCliente: cel,
+            senhaCliente: password,
+            fotoCliente: foto,
+            cepCliente: cep,
+            emailCliente: email,
+            ruaCliente: rua,
+            numRuaCliente: numero,
+            bairroCliente: bairro,
+            cidadeCliente: cidade,
+            estadoCliente: estado
+          })
+      })
+      .then(response => window.alert('Cadastro realizado com sucesso!' + JSON.stringify(response.data)))
+        .catch(error => {
+        console.log("ERROR:: ", error.response.data)})
+  }
   
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
-     <Form>
+     <Form onSubmit={handleSubmit}>
      <Form.Label style={{
               fontSize: 32,
               fontWeight: 'bold',
@@ -135,18 +151,12 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             <TextInput style={ styles.formInput } onChangeText={ (numero: string) => setNumero(numero) } placeholder="Numero" />
           </Form.Group>
 
-          <Form.Group className='mb-3' controlId="formBasicComplement">
-            <Form.Label>Complemento</Form.Label>
-            <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (complemento: string) => setComplemento(complemento) } placeholder="Complemento" />
-          </Form.Group>
-
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Concordo com os termos de uso" />
             <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
-          <Button variant="outline-danger" type="submit" onClick={handleSubmit}>
+          <Button variant="outline-danger" type="submit">
             Registrar-se
           </Button>
 

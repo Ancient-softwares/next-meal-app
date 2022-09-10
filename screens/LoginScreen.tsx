@@ -1,4 +1,5 @@
-// import React from 'react';
+import * as dotenv from 'dotenv';
+dotenv.config();
 import React, { useState } from 'react';
 import styles from '../styles/LoginScreen.style';
 import axios from 'axios';
@@ -6,7 +7,7 @@ import { Form, Button } from 'react-bootstrap';
 import { TextInput, Text, View } from 'react-native';
 import { RootStackScreenProps } from '../types';
 
-const API_URL = 'http://127.0.0.1:8000'
+const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
 const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
   const [email, setEmail] = useState('');
@@ -40,7 +41,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
         fontSize: 32,
         fontWeight: 'bold',
         color: '#963333',
-        marginVertical: '5%',
+        marginVertical: '5%'
       }}>Login</Form.Label>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
