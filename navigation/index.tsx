@@ -44,14 +44,15 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Maps" component={MapsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Books" component={BookScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!', headerShown: false }} />
       <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Maps" component={MapsScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Account" component={AccountScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Books" component={LoginScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 }
@@ -74,8 +75,11 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }: RootTabScreenProps<'Home'>) => ({
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+        options={
+          ({ navigation }: RootTabScreenProps<'Home'>) => ({
+          header: () => null,
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} 
+          />,
         })}
       />
       <BottomTab.Screen
@@ -83,7 +87,9 @@ function BottomTabNavigator() {
         component={MapsScreen}
         options={{
           title: 'Mapa',
-          tabBarIcon: ({ color }) => <FontAwesome name="map-marker" size={24} color={color} />,
+          header: () => null,
+          tabBarIcon: ({ color }) => <FontAwesome name="map-marker" size={24} color={color} 
+          />,
         }}
       />
       <BottomTab.Screen
@@ -91,7 +97,9 @@ function BottomTabNavigator() {
         component={BookScreen}
         options={{
           title: 'Reservas',
-          tabBarIcon: ({ color }) => <Ionicons name="restaurant" size={24} color={color} />,
+          header: () => null,
+          tabBarIcon: ({ color }) => <Ionicons name="restaurant" size={24} color={color} 
+          />,
         }}
       />
       <BottomTab.Screen
@@ -99,7 +107,9 @@ function BottomTabNavigator() {
         component={AccountScreen}
         options={{
           title: 'Conta',
-          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} color={color} />,
+          header: () => null,
+          tabBarIcon: ({ color }) => <MaterialIcons name="account-circle" size={24} color={color}
+           />,
         }}
       />
     </BottomTab.Navigator>
