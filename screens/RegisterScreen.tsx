@@ -8,9 +8,9 @@ import { Form, Button } from 'react-bootstrap';
 import { Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackScreenProps, RootTabScreenProps } from '../types';
-import validator from 'validator'
 import { cpf } from 'cpf-cnpj-validator';
 import Joi from 'joi';
+import MaskInput from 'react-native-mask-input'
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
@@ -124,7 +124,17 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCelular">
             <Form.Label>Celular</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (celular: string) => setCellphone(celular) } placeholder="Celular" />
+            {/* <TextInput style={ styles.formInput } onChangeText={ (celular: string) => setCellphone(celular) } placeholder="Celular" /> */}
+            <MaskInput
+            style={ styles.formInput }
+              value={cel}
+              onChangeText={(masked, unmasked) => {
+                setCellphone(masked); // you can use the unmasked value as well
+
+                console.log(masked); // (99) 99999-9999
+              }}
+              mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCPF">
@@ -136,7 +146,17 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCEP">
             <Form.Label>CEP</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="CEP" />
+            {/* <TextInput style={ styles.formInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="CEP" /> */}
+            <MaskInput
+            style={ styles.formInput }
+              value={cep}
+              onChangeText={(masked, unmasked) => {
+                setCep(masked); // you can use the unmasked value as well
+
+                console.log(masked); // 00000-000
+              }}
+              mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
