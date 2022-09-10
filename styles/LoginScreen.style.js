@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       marginHorizontal: 20,
       marginVertical: 60,
-      backgroundColor: '#939596',
       borderRadius: 10,
     },
     title: {
@@ -19,7 +18,7 @@ const styles = StyleSheet.create({
       height: 1,
       width: '80%',
     },
-    modalInput: {
+    formInput: {
       fontSize: 16,
       marginVertical: '5%',
       width: Dimensions.get('window').width * 0.8,
