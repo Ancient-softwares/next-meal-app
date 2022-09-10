@@ -5,7 +5,7 @@ import { View } from '../components/Themed';
 import styles from '../styles/RegisterScreen.style';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
-import { Text, TextInput } from 'react-native';
+import { Dimensions, Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { RootStackScreenProps, RootTabScreenProps } from '../types';
 import { cpf } from 'cpf-cnpj-validator';
@@ -44,10 +44,34 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
       estadoCliente: Joi.string().required().min(2).max(2)
    })
 
+   const getAddress = async () => {
+      if (cep) {
+        await axios({
+          method: 'get',
+          url: `https://viacep.com.br/ws/${cep}/json/`,
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }, 
+          data: JSON.stringify({ cep }) 
+        }).then(response => {
+          console.log(`Reponse: ${JSON.stringify(response.data)}`)
+          
+          const address = JSON.parse(JSON.stringify(response.data))
+          console.log(address) 
+          console.log(address.bairro) 
+          
+          setBairro(JSON.stringify(address.bairro))
+        }).catch (error => console.log('ERROR::' + (error.response.data)))
+      } else {
+        return false;
+      }
+    } 
 
     const handleSubmit = async (e: Event) => {
       e.preventDefault()
-  
+      
         const packets = {
             nomeCliente:  name,
             cpfCliente: cpff,
@@ -85,15 +109,12 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
                 cidadeCliente: cidade,
                 estadoCliente: estado
               })
-            })
-          .then(response =>  {
-            setMessage(''); 
+            }).then(response =>  {
+              setMessage(''); 
 
-            navigation.navigate('Account')
-            console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
-          })
-            .catch(error => {
-            console.log("ERROR:: ", error.response.data)})
+              navigation.navigate('Account')
+              console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
+            }).catch(error => console.log("ERROR:: ", error.response.data))
         } else {
           setMessage('Preencha todos os campos corretamente.')
         }
@@ -140,7 +161,17 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCPF">
             <Form.Label>CPF</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="CPF" />
+           {/*  <TextInput style={ styles.formInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="CPF" /> */}
+           <MaskInput
+            style={ styles.formInput }
+              value={cel}
+              onChangeText={(masked, unmasked) => {
+                setCellphone(masked); // you can use the unmasked value as well
+
+                console.log(masked); // 000.000.000-00
+              }}
+              mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+            />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCEP">
@@ -148,7 +179,9 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             <br></br>
             {/* <TextInput style={ styles.formInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="CEP" /> */}
             <MaskInput
-            style={ styles.formInput }
+            style={ [styles.formInput, {
+              width: Dimensions.get('window').width * 0.3
+            }] }
               value={cep}
               onChangeText={(masked, unmasked) => {
                 setCep(masked); // you can use the unmasked value as well
@@ -157,6 +190,15 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               }}
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
             />
+            <Button style={{ 
+              marginLeft: 32
+              }} 
+              variant="outline-danger" 
+              type="submit"
+              onClick={getAddress}
+              >
+            Encontrar endereço
+          </Button>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
