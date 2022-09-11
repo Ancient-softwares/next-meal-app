@@ -58,19 +58,23 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
         }).then(response => {
           console.log(`Reponse: ${JSON.stringify(response.data)}`)
           
-          const address = JSON.parse(JSON.stringify(response.data))
+          const address: any = JSON.parse(JSON.stringify(response.data))
           console.log(address) 
-          console.log(address.bairro) 
+          console.log(address.bairro)
           
-          setBairro(JSON.stringify(address.bairro))
+          setBairro(JSON.stringify(address['bairro']).replace(/"/g, ''))
+          setCidade(JSON.stringify(address['localidade']).replace(/"/g, ''))
+          setEstado(JSON.stringify(address['uf']).replace(/"/g, ''))
+          setRua(JSON.stringify(address['logradouro']).replace(/"/g, ''))
+          
         }).catch (error => console.log('ERROR::' + (error.response.data)))
       } else {
         return false;
       }
     } 
 
-    const handleSubmit = async (e: Event) => {
-      e.preventDefault()
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault()
       
         const packets = {
             nomeCliente:  name,
@@ -127,8 +131,8 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
      <Form.Label style={{
               fontSize: 32,
               fontWeight: 'bold',
+              marginBottom: 20,
               color: '#963333',
-              marginVertical: '5%',
             }}>Cadastro</Form.Label>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>

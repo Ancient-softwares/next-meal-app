@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
     senhaCliente: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
   })
 
-  const handleSubmit = async (e: Event) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const packets = {
@@ -56,8 +56,8 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
       <Form.Label style={{
         fontSize: 32,
         fontWeight: 'bold',
+        marginBottom: 20,
         color: '#963333',
-        marginVertical: '5%'
       }}>Login</Form.Label>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
