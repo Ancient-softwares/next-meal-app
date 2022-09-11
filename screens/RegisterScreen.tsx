@@ -7,7 +7,7 @@ import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Dimensions, Text, TextInput } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { RootStackScreenProps, RootTabScreenProps } from '../types';
+import { RootStackScreenProps, RotTabScreenProps } from '../types';
 import { cpf } from 'cpf-cnpj-validator';
 import Joi from 'joi';
 import MaskInput from 'react-native-mask-input'

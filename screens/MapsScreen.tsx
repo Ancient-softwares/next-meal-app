@@ -8,9 +8,6 @@ import styles from '../styles/MapsScreen.style';
 const MapsScreen = () => {
   const MAPS_ID: string = process.env.ID || 'google-map-script'
   const GOOGLE_MAPS_APIKEY: string = process.env.TOKEN ||'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
-
-  console.log(process.env.ID)
-  console.log(process.env.TOKEN)
   
   const center = {
     lat: -23.552990263455296,

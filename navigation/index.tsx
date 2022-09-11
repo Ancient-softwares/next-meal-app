@@ -50,9 +50,9 @@ function RootNavigator() {
       <Stack.Screen name="Books" component={BookScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!', headerShown: false }} />
-      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Restaurant" component={RestaurantScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: true }} />
+      <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: true }} />
     </Stack.Navigator>
   );
 }
@@ -63,7 +63,7 @@ function RootNavigator() {
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
-function BottomTabNavigator() {
+export function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (

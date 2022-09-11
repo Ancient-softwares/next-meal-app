@@ -1,11 +1,53 @@
 import React from 'react';
-import { Carousel, Col, Container, ListGroup, Row, Stack } from 'react-bootstrap';
+import { Button, Carousel, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { View, Text, SafeAreaView, Image } from 'react-native';
 import styles from '../styles/RestaurantScreen.style';
-import { RootTabScreenProps } from '../types';
+import { RootStackScreenProps } from '../types';
+import Joi, { ObjectSchema } from 'joi';
+import axios from 'axios';
 
-const RestaurantScreen = ({ navigation }: RootTabScreenProps<'Operation'>) => {
-    const exampleImage = require('../assets/images/example.jpeg')
+const RestaurantScreen = ({ navigation }: RootStackScreenProps<'Restaurant'>) => {
+    const exampleImage: string = require('../assets/images/example.jpeg')
+    const API_URL = process.env.URL || 'http://127.0.0.1:8000'
+
+    const [date, setDate] = React.useState();
+    const [time, setTime] = React.useState();
+    const [people, setPeople] = React.useState();
+    const [message, setMessage]  = React.useState<string>();
+
+    const schema: ObjectSchema<any> = Joi.object({
+        date: Joi.date().required().min('now'),
+        time: Joi.date().required().min('now'),
+        people: Joi.number().required().min(1).max(10).integer(),
+    });
+
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const packets = {
+          dataReserva: date,
+          horaReserva: time,
+          numPessoas: people,
+        }
+
+        if (schema.validate(packets)) {
+          axios({
+            method: 'post',
+            url: `${API_URL}/api/reserva`,
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+            data: JSON.stringify({
+              dataReserva: date,
+              horaReserva: time,
+              numPessoas: people,
+            })
+          })
+          .then(response => setMessage('Reserva realizada com sucesso!'))
+          .catch(error => setMessage('Erro ao realizar reserva. O restaurante não está com disponibilidade para aceitar sua reserva ou você preencheu os dados incorretamente!'))
+        }
+    }
     
     return (
       <SafeAreaView style={styles.container}>
@@ -46,11 +88,11 @@ const RestaurantScreen = ({ navigation }: RootTabScreenProps<'Operation'>) => {
           </Carousel>
         </View>
 
-        <Container style={{
+        <View style={{
           flex: 1,
           alignItems: 'flex-start',
           justifyContent: 'flex-start',
-          marginBottom: '15%',
+          marginTop: '15%',
         }}>
           <Stack direction="horizontal" gap={2}>
             <div className="bg-light">
@@ -62,7 +104,36 @@ const RestaurantScreen = ({ navigation }: RootTabScreenProps<'Operation'>) => {
               <Text style={styles.description}>Rua Veiga Filho, 44, Higienópolis, São Paulo</Text>
             </div>
           </Stack>
-        </Container>
+        </View>
+
+        <View style={{
+          flex: 1,
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          marginBottom: '15%',
+        }}>
+          <Form onSubmit={handleSubmit}>
+                <Form.Group controlId="formBasicDate">
+                    <Form.Label>Data</Form.Label>
+                    <Form.Control type="date" placeholder="Data" onChange={(e: any) => setDate(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicHour">
+                    <Form.Label>Hora</Form.Label>
+                    <Form.Control type="time" placeholder="Hora"/>
+                </Form.Group>
+
+                <Form.Group controlId="formBasicPeople">
+                    <Form.Label>Pessoas</Form.Label>
+                    <Form.Control type="number" placeholder="Pessoas"/>
+                </Form.Group>
+                
+                <Form.Group controlId="formBasicSubmit">
+                    <Button style={{ marginTop: 20 }} variant="outline-danger" type="submit"><Text style={ [styles.subtitle, { marginRight: 20 }]  }>Reservar</Text></Button>
+                </Form.Group>
+            </Form>
+        </View>
+
       </SafeAreaView>
     );
 }
