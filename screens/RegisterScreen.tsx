@@ -81,11 +81,11 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             cpfCliente: cpff,
             celCliente: cel,
             senhaCliente: password,
-            fotoCliente: foto,
+            fotoCliente: '../assets/images/user.png',
             cepCliente: cep,
             emailCliente: email,
             ruaCliente: rua,
-            numCasaCliente: numero,
+            numCasa: numero,
             bairroCliente: bairro,
             cidadeCliente: cidade,
             estadoCliente: estado
@@ -108,7 +108,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
                 cepCliente: cep,
                 emailCliente: email,
                 ruaCliente: rua,
-                numCasaCliente: numero,
+                numCasa: numero,
                 bairroCliente: bairro,
                 cidadeCliente: cidade,
                 estadoCliente: estado
@@ -155,10 +155,8 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               value={cel}
               onChangeText={(masked, unmasked) => {
                 setCellphone(masked); // you can use the unmasked value as well
-
-                console.log(masked); // (99) 99999-9999
               }}
-              mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+              mask={['(', /\d/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
             />
           </Form.Group>
 
@@ -168,11 +166,9 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
            {/*  <TextInput style={ styles.formInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="CPF" /> */}
            <MaskInput
             style={ styles.formInput }
-              value={cel}
+              value={cpff}
               onChangeText={(masked, unmasked) => {
-                setCellphone(masked); // you can use the unmasked value as well
-
-                console.log(masked); // 000.000.000-00
+                setCpf(masked); // you can use the unmasked value as well
               }}
               mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
             />
@@ -189,8 +185,6 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               value={cep}
               onChangeText={(masked, unmasked) => {
                 setCep(masked); // you can use the unmasked value as well
-
-                console.log(masked); // 00000-000
               }}
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
             />
