@@ -3,6 +3,7 @@ import { SafeAreaView, FlatList, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Card, Button } from "react-bootstrap";
 import styles from "../styles/Books.style";
+import axios from "axios";
 
 const DATA = [
 {
@@ -78,6 +79,21 @@ const DATA = [
     kitchenType: 'Brasileira',
 },
 ];
+
+const RESTAURANTS = getData();
+
+const getData = async () => {
+	axios({
+		method: 'get',
+		url: 'http://localhost:3000/api/restaurantes',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
+		}
+	})
+	.then(response => {JSON.parse(response.data); console.log(response.data)})
+	.catch(err => console.log(err))
+}
 
 const Item = ({ title, rating, kitchenType }) => {
 return (
