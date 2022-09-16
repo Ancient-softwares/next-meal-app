@@ -5,13 +5,14 @@ import { View } from '../components/Themed';
 import styles from '../styles/RegisterScreen.style';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
-import { Dimensions, Text, TextInput } from 'react-native';
+import { Dimensions, Text, TextInput, Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { RootStackScreenProps, RotTabScreenProps } from '../types';
+import { RootStackScreenProps } from '../types';
 import { cpf } from 'cpf-cnpj-validator';
 import Joi from 'joi';
 import MaskInput from 'react-native-mask-input'
-import multer from 'multer'
+import { launchImageLibrary } from 'react-native-image-picker';
+
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
@@ -29,6 +30,30 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
    const [cidade, setCidade] = useState('');
    const [estado, setEstado] = useState('');
    const [message, setMessage] = useState('');
+
+   const createFormData = (photo: any, body: {}) => {
+      const data = new FormData()
+
+      data.append('photo', {
+        name: photo.fileName ,
+        type: photo.type,
+        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+      })
+
+      Object.keys(body).forEach(key => {
+        data.append(key, body[key])
+      })
+
+      return data
+   }
+
+   const handleChoosePhoto = () => {
+    launchImageLibrary({ noData: true }, (response: string) => {
+      if (response) {
+        setFoto(response.toString())
+      }
+    })
+   }
 
    const schema = Joi.object({
       nomeCliente:  Joi.string().alphanum().min(3).max(30).required(),
@@ -237,6 +262,14 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             <br></br>
             <TextInput style={ styles.formInput } value={numero} onChangeText={ (numero: string) => setNumero(numero) } placeholder="Numero" />
           </Form.Group>
+
+          <Form.Group className='mb-3' controlId="formBasicPhoto">
+            <Form.Label>Foto de perfil</Form.Label>
+            <br></br>
+            <Button variant='outline-info' onClick={handleChoosePhoto}>Escolher foto</Button>
+          </Form.Group>
+
+
 
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Concordo com os termos de uso" />
