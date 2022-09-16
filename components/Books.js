@@ -80,9 +80,7 @@ const DATA = [
 },
 ];
 
-const RESTAURANTS = getData();
-
-const getData = async () => {
+/* const getData = async () => {
 	axios({
 		method: 'get',
 		url: 'http://localhost:3000/api/restaurantes',
@@ -93,7 +91,7 @@ const getData = async () => {
 	})
 	.then(response => {JSON.parse(response.data); console.log(response.data)})
 	.catch(err => console.log(err))
-}
+} */
 
 const Item = ({ title, rating, kitchenType }) => {
 return (

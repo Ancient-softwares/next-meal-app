@@ -11,6 +11,7 @@ import { RootStackScreenProps, RotTabScreenProps } from '../types';
 import { cpf } from 'cpf-cnpj-validator';
 import Joi from 'joi';
 import MaskInput from 'react-native-mask-input'
+import multer from 'multer'
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
@@ -56,16 +57,14 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           }, 
           data: JSON.stringify({ cep }) 
         }).then(response => {
-          console.log(`Reponse: ${JSON.stringify(response.data)}`)
           
           const address: any = JSON.parse(JSON.stringify(response.data))
-          console.log(address) 
-          console.log(address.bairro)
-          
-          setBairro(JSON.stringify(address['bairro']).replace(/"/g, ''))
-          setCidade(JSON.stringify(address['localidade']).replace(/"/g, ''))
-          setEstado(JSON.stringify(address['uf']).replace(/"/g, ''))
-          setRua(JSON.stringify(address['logradouro']).replace(/"/g, ''))
+          console.table(JSON.parse(JSON.stringify(response.data)))
+
+          setBairro(JSON.stringify(address.bairro).replace(/"/g, ''))
+          setCidade(JSON.stringify(address.localidade).replace(/"/g, ''))
+          setEstado(JSON.stringify(address.estado).replace(/"/g, ''))
+          setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
           
         }).catch (error => console.log('ERROR::' + (error.response.data)))
       } else {
@@ -76,21 +75,21 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault()
       
-        const packets = {
-            nomeCliente:  name,
-            cpfCliente: cpff,
-            celCliente: cel,
-            senhaCliente: password,
-            fotoCliente: '../assets/images/user.png',
-            cepCliente: cep,
-            emailCliente: email,
-            ruaCliente: rua,
-            numCasa: numero,
-            bairroCliente: bairro,
-            cidadeCliente: cidade,
-            estadoCliente: estado
-        };
-
+      const packets = {
+        nomeCliente:  name,
+        cpfCliente: cpff,
+        celCliente: cel,
+        senhaCliente: password,
+        fotoCliente: '../assets/images/user.png',
+        cepCliente: cep,
+        emailCliente: email,
+        ruaCliente: rua,
+        numCasa: numero,
+        bairroCliente: bairro,
+        cidadeCliente: cidade,
+        estadoCliente: estado
+      };
+      
         if (schema.validate(packets) && cpf.isValid(cpff)) {
             await axios({
               method: 'post',
@@ -116,8 +115,12 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
             }).then(response =>  {
               setMessage(''); 
 
+              console.log('LADO DO CLIENTE')
+              console.table(packets)
+              // console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
+              console.log('LADO DO SERVIDOR')
+              console.table(JSON.parse(JSON.stringify(response.data)))
               navigation.navigate('Account')
-              console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
             }).catch(error => console.log("ERROR:: ", error.response.data))
         } else {
           setMessage('Preencha todos os campos corretamente.')
@@ -202,37 +205,37 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Senha" />
+            <TextInput secureTextEntry={true} style={ styles.formInput } onChangeText={ (password: string) => setPassword(password) } placeholder="Senha" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicState">
             <Form.Label>Estado</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (estado: string) => setEstado(estado) } placeholder="Estado" />
+            <TextInput style={ styles.formInput } value={estado} onChangeText={ (estado: string) => setEstado(estado) } placeholder="Estado" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicCity">
             <Form.Label>Cidade</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (cidade: string) => setCidade(cidade) } placeholder="Cidade" />
+            <TextInput style={ styles.formInput } value={cidade} onChangeText={ (cidade: string) => setCidade(cidade) } placeholder="Cidade" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicBairro">
             <Form.Label>Bairro</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (bairro: string) => setBairro(bairro) } placeholder="Bairro" />
+            <TextInput style={ styles.formInput } value={bairro} onChangeText={ (bairro: string) => setBairro(bairro) } placeholder="Bairro" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicRua">
             <Form.Label>Rua</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (rua: string) => setRua(rua) } placeholder="Rua" />
+            <TextInput style={ styles.formInput } value={rua} onChangeText={ (rua: string) => setRua(rua) } placeholder="Rua" />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicNumber">
             <Form.Label>Numero</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (numero: string) => setNumero(numero) } placeholder="Numero" />
+            <TextInput style={ styles.formInput } value={numero} onChangeText={ (numero: string) => setNumero(numero) } placeholder="Numero" />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
@@ -245,7 +248,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           </Button>
 
           <View style={{ marginVertical: '5%' }}>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="mb-3" controlId="formBasicLogin">
             <Text style={{
               color: '#000000'
           }} onPress={() => navigation.navigate('Login')}>Já  possui uma conta?<Text style={{color: '#963333'}}> Entrar.  </Text>
@@ -256,7 +259,7 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <View style={{ 
             marginVertical: '5%',
           }}>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Group className="mb-3" controlId="formBasicFeedback">
             <Text style={{
               color: '#963333',
               fontSize: 16,
