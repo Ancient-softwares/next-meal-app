@@ -31,29 +31,29 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
    const [estado, setEstado] = useState('');
    const [message, setMessage] = useState('');
 
-   const createFormData = (photo: any, body: {}) => {
-      const data = new FormData()
+   function createFormData(photo: any, body: {}) {
+    const data = new FormData();
 
-      data.append('photo', {
-        name: photo.fileName ,
-        type: photo.type,
-        uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
-      })
+    data.append('photo', {
+      name: photo.fileName,
+      type: photo.type,
+      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+    });
 
-      Object.keys(body).forEach(key => {
-        data.append(key, body[key])
-      })
+    Object.keys(body).forEach(key => {
+      data.append(key, body[key]);
+    });
 
-      return data
-   }
+    return data;
+  }
 
-   const handleChoosePhoto = () => {
+   function handleChoosePhoto() {
     launchImageLibrary({ noData: true }, (response: string) => {
       if (response) {
-        setFoto(response.toString())
+        setFoto(response.toString());
       }
-    })
-   }
+    });
+  }
 
    const schema = Joi.object({
       nomeCliente:  Joi.string().alphanum().min(3).max(30).required(),
@@ -70,87 +70,83 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
       estadoCliente: Joi.string().required().min(2).max(2)
    })
 
-   const getAddress = async () => {
-      if (cep) {
-        await axios({
-          method: 'get',
-          url: `https://viacep.com.br/ws/${cep}/json/`,
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*'
-          }, 
-          data: JSON.stringify({ cep }) 
-        }).then(response => {
-          
-          const address: any = JSON.parse(JSON.stringify(response.data))
+   async function getAddress() {
+    if (cep) {
+      await axios({
+        method: 'get',
+        url: `https://viacep.com.br/ws/${cep}/json/`,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+        },
+        data: JSON.stringify({ cep })
+      }).then(response => {
 
-          console.table(JSON.parse(JSON.stringify(response.data)))
+        const address: any = JSON.parse(JSON.stringify(response.data));
 
-          setBairro(JSON.stringify(address.bairro).replace(/"/g, ''))
-          setCidade(JSON.stringify(address.localidade).replace(/"/g, ''))
-          setEstado(JSON.stringify(address.uf).replace(/"/g, ''))
-          setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
+        console.table(JSON.parse(JSON.stringify(response.data)));
 
-        }).catch (error => console.error('ERROR::' + (error)))
-      } else {
-        return false;
-      }
-    } 
+        setBairro(JSON.stringify(address.bairro).replace(/"/g, ''));
+        setCidade(JSON.stringify(address.localidade).replace(/"/g, ''));
+        setEstado(JSON.stringify(address.uf).replace(/"/g, ''));
+        setRua(JSON.stringify(address.logradouro).replace(/"/g, ''));
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      
-      const packets = {
-        nomeCliente:  name,
-        cpfCliente: cpff,
-        celCliente: cel,
-        senhaCliente: password,
-        fotoCliente: '../assets/images/user.png',
-        cepCliente: cep,
-        emailCliente: email,
-        ruaCliente: rua,
-        numCasa: numero,
-        bairroCliente: bairro,
-        cidadeCliente: cidade,
-        estadoCliente: estado
-      };
-      
-        if (schema.validate(packets) && cpf.isValid(cpff)) {
-            await axios({
-              method: 'post',
-              url: `${API_URL}/api/cadastroCliente`,
-              headers: {
-                'Accept':   'application/json',
-                'Content-Type':   'application/json'
-              },
-              data: JSON.stringify({
-                nomeCliente:  name,
-                cpfCliente: cpff,
-                celCliente: cel,
-                senhaCliente: password,
-                fotoCliente: foto,
-                cepCliente: cep,
-                emailCliente: email,
-                ruaCliente: rua,
-                numCasa: numero,
-                bairroCliente: bairro,
-                cidadeCliente: cidade,
-                estadoCliente: estado
-              })
-            }).then(response =>  {
-              setMessage(''); 
+      }).catch(error => console.error('ERROR::' + (error)));
+    } else {
+      return false;
+    }
+  } 
 
-              console.log('LADO DO CLIENTE')
-              console.table(packets)
-              // console.log(`Cadastro feito com sucesso: ${JSON.stringify(response.data)}`)
-              console.log('LADO DO SERVIDOR')
-              console.table(JSON.parse(JSON.stringify(response.data)))
-              navigation.navigate('Account')
-            }).catch(error => console.log("ERROR:: ", error.response.data))
-        } else {
-          setMessage('Preencha todos os campos corretamente.')
-        }
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const packets = {
+      nomeCliente: name,
+      cpfCliente: cpff,
+      celCliente: cel,
+      senhaCliente: password,
+      fotoCliente: '../assets/images/user.png',
+      cepCliente: cep,
+      emailCliente: email,
+      ruaCliente: rua,
+      numCasa: numero,
+      bairroCliente: bairro,
+      cidadeCliente: cidade,
+      estadoCliente: estado
+    };
+
+    if (schema.validate(packets) && cpf.isValid(cpff)) {
+      await axios({
+        method: 'post',
+        url: `${API_URL}/api/cadastroCliente`,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        data: JSON.stringify({
+          nomeCliente: name,
+          cpfCliente: cpff,
+          celCliente: cel,
+          senhaCliente: password,
+          fotoCliente: foto,
+          cepCliente: cep,
+          emailCliente: email,
+          ruaCliente: rua,
+          numCasa: numero,
+          bairroCliente: bairro,
+          cidadeCliente: cidade,
+          estadoCliente: estado
+        })
+      }).then(response => {
+        setMessage('');
+
+        console.table(JSON.parse(JSON.stringify(response.data)));
+        navigation.navigate('Account');
+      }).catch(error => console.log("ERROR:: ", error.response.data));
+    } else {
+      setMessage('Preencha todos os campos corretamente.');
+    }
   }
   
   return (

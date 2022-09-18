@@ -6,83 +6,15 @@ import styles from "../styles/Books.style";
 import axios from "axios";
 
 const DATA = [
-{
-	id: "1",
-	title: "Data Structures",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "2",
-	title: "STL",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "3",
-	title: "C++",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "4",
-	title: "Java",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "5",
-	title: "Python",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "6",
-	title: "CP",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "7",
-	title: "ReactJs",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "8",
-	title: "NodeJs",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "9",
-	title: "MongoDb",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "10",
-	title: "ExpressJs",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "11",
-	title: "PHP",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
-{
-	id: "12",
-	title: "MySql",
-	rating: 4.5,
-    kitchenType: 'Brasileira',
-},
+	{
+		id: "1",
+		title: "Data Structures",
+		rating: 4.5,
+		type: 'Brasileira',
+	},
 ];
 
-const RESTAURANTS = getRestaurants()
-
-async function getRestaurants() {
+(async function getRestaurants() {
 	await axios({
 		method: 'get',
 		url: 'http://localhost:8000/api/restaurantes',
@@ -92,14 +24,24 @@ async function getRestaurants() {
 		}
 	})
 	.then(response => {
-		console.log(response.data)
+		console.table(response.data)
+		response.data.forEach(element => {
+			console.log(element)
 
-		return response.data
+			DATA.push({
+				id: element.idRestaurante,
+				title: element.nomeRestaurante,
+				rating: element.notaRestaurante || 'teste',
+				type: element.tipoCozinha || 'teste',
+			})
+		})
+
+		return JSON.parse(JSON.stringify(response.data))
 	})
-	.catch(err => console.log(err))
-}
+	.catch(err => console.error(err))
+})()
 
-const Item = ({ title, rating, kitchenType }) => {
+const Item = ({ title, rating, type }) => {
 return (
 	<View style={styles.item}>
 		<Card style={{ 
@@ -116,7 +58,7 @@ return (
            }}>
             <Card.Title>{ title }</Card.Title>
             <Card.Text>
-              Tipo de cozinha: { kitchenType }
+              Tipo de cozinha: { type }
             </Card.Text>
             <Card.Text>
               Nota: { rating } / 5.0
@@ -128,9 +70,9 @@ return (
 );
 };
 
-const renderItem = ({ item, rating, kitchenType }) => <Item title={ item.title }
+const renderItem = ({ item }) => <Item title={ item.title }
 rating={ item.rating }
-kitchenType={ item.kitchenType }
+kitchenType={ item.type }
 />;
 class Search extends Component {
 constructor(props) {
@@ -144,10 +86,10 @@ constructor(props) {
 	this.arrayholder = DATA;
 }
 
-searchFunction = (text) => {
+searchFunction(text) {
 	const updatedData = this.arrayholder.filter((item) => {
-	const item_data = `${item.title.toUpperCase()})`;
-	const text_data = text.toUpperCase();
+	const item_data = `${item.title})`;
+	const text_data = text;
 	return item_data.indexOf(text_data) > -1;
 	});
 	this.setState({ data: updatedData, searchValue: text });

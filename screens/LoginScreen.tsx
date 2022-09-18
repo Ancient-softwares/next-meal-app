@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
         .then(
           response => console.log('Response: ' + JSON.stringify(response.data))
         )
-        .catch(error => console.log("ERROR:: " + error.response.data))
+        .catch(error => console.log("ERROR:: " + JSON.stringify(error.response.data)))
     } else {
       setMessage('Preencha todos os campos corretamente')
     }
@@ -68,7 +68,7 @@ const LoginScreen = ({ navigation }: RootStackScreenProps<'Login'>) => {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
             <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (text: any) => setPassword(text) } placeholder="Password" />
+            <TextInput style={ styles.formInput } secureTextEntry={true} onChangeText={ (text: any) => setPassword(text) } placeholder="Password" />
           </Form.Group>
           <Button variant="outline-danger" type="submit">
             Entrar
