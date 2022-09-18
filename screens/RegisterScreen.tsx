@@ -84,14 +84,15 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
         }).then(response => {
           
           const address: any = JSON.parse(JSON.stringify(response.data))
+
           console.table(JSON.parse(JSON.stringify(response.data)))
 
           setBairro(JSON.stringify(address.bairro).replace(/"/g, ''))
           setCidade(JSON.stringify(address.localidade).replace(/"/g, ''))
-          setEstado(JSON.stringify(address.estado).replace(/"/g, ''))
+          setEstado(JSON.stringify(address.uf).replace(/"/g, ''))
           setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
-          
-        }).catch (error => console.log('ERROR::' + (error.response.data)))
+
+        }).catch (error => console.error('ERROR::' + (error)))
       } else {
         return false;
       }
@@ -177,12 +178,11 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCelular">
             <Form.Label>Celular</Form.Label>
             <br></br>
-            {/* <TextInput style={ styles.formInput } onChangeText={ (celular: string) => setCellphone(celular) } placeholder="Celular" /> */}
             <MaskInput
             style={ styles.formInput }
               value={cel}
               onChangeText={(masked, unmasked) => {
-                setCellphone(masked); // you can use the unmasked value as well
+                setCellphone(masked); 
               }}
               mask={['(', /\d/, /\d/, ')', ' ', /\d/, ' ', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
             />
@@ -191,12 +191,11 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCPF">
             <Form.Label>CPF</Form.Label>
             <br></br>
-           {/*  <TextInput style={ styles.formInput } onChangeText={ (cpf: string) => setCpf(cpf) } placeholder="CPF" /> */}
            <MaskInput
             style={ styles.formInput }
               value={cpff}
               onChangeText={(masked, unmasked) => {
-                setCpf(masked); // you can use the unmasked value as well
+                setCpf(masked); 
               }}
               mask={[/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
             />
@@ -205,14 +204,13 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
           <Form.Group className="mb-3" controlId="formBasicCEP">
             <Form.Label>CEP</Form.Label>
             <br></br>
-            {/* <TextInput style={ styles.formInput } onChangeText={ (cep: string) => setCep(cep) } placeholder="CEP" /> */}
             <MaskInput
             style={ [styles.formInput, {
               width: Dimensions.get('window').width * 0.3
             }] }
               value={cep}
               onChangeText={(masked, unmasked) => {
-                setCep(masked); // you can use the unmasked value as well
+                setCep(masked);
               }}
               mask={[/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
             />
@@ -220,7 +218,6 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
               marginLeft: 32
               }} 
               variant="outline-danger" 
-              type="submit"
               onClick={getAddress}
               >
             Encontrar endereço
@@ -272,8 +269,8 @@ const RegisterScreen = ({ navigation }: RootStackScreenProps<"Register">) => {
 
 
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Concordo com os termos de uso" />
-            <Form.Check type="checkbox" label="Concordo com a política de privacidade" />
+            <Form.Check id="termsCheckbox" type="checkbox" label="Concordo com os termos de uso" />
+            <Form.Check id="privacityCheckbox" type="checkbox" label="Concordo com a política de privacidade" />
           </Form.Group>
           
           <Button variant="outline-danger" type="submit">

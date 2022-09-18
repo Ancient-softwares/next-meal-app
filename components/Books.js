@@ -80,18 +80,24 @@ const DATA = [
 },
 ];
 
-/* const getData = async () => {
-	axios({
+const RESTAURANTS = getRestaurants()
+
+async function getRestaurants() {
+	await axios({
 		method: 'get',
-		url: 'http://localhost:3000/api/restaurantes',
+		url: 'http://localhost:8000/api/restaurantes',
 		headers: {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
 		}
 	})
-	.then(response => {JSON.parse(response.data); console.log(response.data)})
+	.then(response => {
+		console.log(response.data)
+
+		return response.data
+	})
 	.catch(err => console.log(err))
-} */
+}
 
 const Item = ({ title, rating, kitchenType }) => {
 return (
