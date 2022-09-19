@@ -76,9 +76,11 @@ function renderItem(item: any) {
     rating={item.rating}
     kitchenType={item.type} />;
 }
-class Search extends Component {
-arrayholder: { id: string; title: string; type: string; rating: number; }[];
+class BookScreen extends Component<{}, { searchValue: string, loading: boolean, data: {}, error: null }> {
+  
+  arrayholder: { id: string; title: string; type: string; rating: number; }[];
   data: { id: string; title: string; type: string; rating: number; }[] = [];
+  
 
 constructor({props}: any, {navigation}: RootStackScreenProps<'Books'>) {
 	super(props);
@@ -109,7 +111,7 @@ render() {
 		platform='android'
 		round
 		value={this.state.searchValue}
-		onChangeText={(text) => this.searchFunction(text)}
+		onChangeText={(text: string) => this.searchFunction(text)}
 		autoCorrect={false}
 		blurOnSubmit={true}
 		autoFocus={true}
@@ -130,4 +132,4 @@ render() {
 }
 }
 
-export default Search;
+export default BookScreen;
