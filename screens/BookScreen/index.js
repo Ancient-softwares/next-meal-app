@@ -7,11 +7,11 @@ import axios from "axios";
 
 const DATA = [
 	{
-		id: "1",
-		title: "Data Structures",
-		type: 'Brasileira',
+		id: 0,
+		title: "Teste",
+		type: 'Teste',
 		rating: 4.5,
-	},
+	},	
 ];
 
 (async function getRestaurants() {
@@ -24,24 +24,25 @@ const DATA = [
 		}
 	})
 	.then(response => {
-		console.table(response.data)
-		response.data.forEach((element) => {
-			console.log(element)
+		console.log(response.data)
+		console.table(response.data[0])
+		console.table(response.data[1])
+		console.table(response.data[2])
 
+		response.data[0].forEach(element => {
 			DATA.push({
 				id: element.idRestaurante,
 				title: element.nomeRestaurante,
-				type: element.tipoCozinha || 'teste',
-				rating: element.notaRestaurante || 0,
 			})
 		})
 
+		console.table(DATA)
 		return JSON.parse(JSON.stringify(response.data))
 	})
 	.catch(err => console.error(err))
 })()
 
-function Item({title}, {rating}) {
+function Item({title}, {rating}, {type}) {
   return (
     <View style={styles.item}>
       <Card style={{
@@ -58,10 +59,10 @@ function Item({title}, {rating}) {
         }}>
           <Card.Title>{title}</Card.Title>
           <Card.Text>
-            Tipo de cozinha: bah
+            Tipo de cozinha: {type || 'Tipo'}
           </Card.Text>
           <Card.Text>
-            Nota: {rating} / 5.0
+            Nota: {rating || 0} / 5.0
           </Card.Text>
           <Button variant="primary" style={{ marginRight: 5 }}>Reservar</Button>
         </Card.Body>
@@ -71,9 +72,11 @@ function Item({title}, {rating}) {
 }
 
 function renderItem(item) {
-  return <Item title={item.title}
-    rating={item.rating}
-    kitchenType={item.type} />;
+console.table(item.item)
+
+  return <Item title={item.item.title}
+    rating={item.item.rating}
+    kitchenType={item.item.type} />;
 }
 class BookScreen extends React.Component {
 	constructor({props}, {navigation}) {
