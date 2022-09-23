@@ -29,13 +29,32 @@ const DATA = [
 		console.table(response.data[1])
 		console.table(response.data[2])
 
-		response.data[0].forEach(element => {
+		for (let j = 0; j < response.data.length; j++) {
+			for (let i = 0; i < response.data[0].length; i++) {
+				console.log(response.data[0][i].nomeRestaurante)
+			}
+
+			for (let i = 0; i < response.data[1].length; i++) {
+				console.log(response.data[1][i].tipoRestaurante)
+			}
+			
+	
+			for (let i = 0; i < response.data[2].length; i++) {
+				console.log(response.data[2][i].notaAvaliacao)
+			}
+		}
+
+		response.data.forEach(element => {
+			
 			DATA.push({
-				id: element.idRestaurante,
-				title: element.nomeRestaurante,
+				id: element[0].idRestaurante,
+				title: element[0].nomeRestaurante,
+				type: element[1].tipoRestaurante || 'Tipo',
+				rating: element[2].notaAvaliacao || 'Nota'
 			})
 		})
 
+		console.log('ALL')
 		console.table(DATA)
 		return JSON.parse(JSON.stringify(response.data))
 	})
