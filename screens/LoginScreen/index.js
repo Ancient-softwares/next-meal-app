@@ -59,13 +59,13 @@ function LoginScreen({ navigation }) {
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <br></br>
-          <TextInput style={styles.formInput} onChangeText={(text) => setEmail(text)} placeholder="Enter email" />
+          <TextInput style={styles.formInput} onChangeText={(text) => setEmail(text)} placeholder="Enter email" placeholderTextColor="gray" />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Senha</Form.Label>
           <br></br>
-          <TextInput style={styles.formInput} secureTextEntry={true} onChangeText={(text) => setPassword(text)} placeholder="Password" />
+          <TextInput style={styles.formInput} secureTextEntry={true} onChangeText={(text) => setPassword(text)} placeholder="Password" placeholderTextColor="gray" />
         </Form.Group>
         <Button variant="outline-danger" type="submit">
           Entrar
@@ -76,7 +76,7 @@ function LoginScreen({ navigation }) {
             <Text style={{
               color: '#000000'
             }} onPress={() => navigation.navigate('Register')}>
-              Não possui uma conta?<Text style={{ color: '#963333' }}>Cadastre-se</Text>
+              Não possui uma conta?<Text style={{ color: '#963333' }}> Cadastre-se</Text>
             </Text>
           </Form.Group>
         </View>

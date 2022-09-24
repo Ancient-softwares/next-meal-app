@@ -159,19 +159,20 @@ function RegisterScreen({ navigation }) {
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} onChangeText={(email) => setEmail(email)} placeholder="Email" />
+            <TextInput style={styles.formInput} onChangeText={(email) => setEmail(email)} placeholder="Email" placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicName">
             <Form.Label>Nome</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} onChangeText={(name) => setName(name)} placeholder="Nome" />
+            <TextInput style={styles.formInput} onChangeText={(name) => setName(name)} placeholder="Nome"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicCelular">
             <Form.Label>Celular</Form.Label>
             <br></br>
             <MaskInput
+              placeholderTextColor={'gray'}
               style={styles.formInput}
               value={cel}
               onChangeText={(masked, unmasked) => {
@@ -184,6 +185,7 @@ function RegisterScreen({ navigation }) {
             <Form.Label>CPF</Form.Label>
             <br></br>
             <MaskInput
+              placeholderTextColor={'gray'}
               style={styles.formInput}
               value={cpff}
               onChangeText={(masked, unmasked) => {
@@ -196,6 +198,7 @@ function RegisterScreen({ navigation }) {
             <Form.Label>CEP</Form.Label>
             <br></br>
             <MaskInput
+              placeholderTextColor={'gray'}
               style={[styles.formInput, {
                 width: Dimensions.get('window').width * 0.3
               }]}
@@ -217,37 +220,37 @@ function RegisterScreen({ navigation }) {
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Senha</Form.Label>
             <br></br>
-            <TextInput secureTextEntry={true} style={styles.formInput} onChangeText={(password) => setPassword(password)} placeholder="Senha" />
+            <TextInput secureTextEntry={true} style={styles.formInput} onChangeText={(password) => setPassword(password)} placeholder="Senha"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicState">
             <Form.Label>Estado</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} value={estado} onChangeText={(estado) => setEstado(estado)} placeholder="Estado" />
+            <TextInput style={styles.formInput} value={estado} onChangeText={(estado) => setEstado(estado)} placeholder="Estado"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicCity">
             <Form.Label>Cidade</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} value={cidade} onChangeText={(cidade) => setCidade(cidade)} placeholder="Cidade" />
+            <TextInput style={styles.formInput} value={cidade} onChangeText={(cidade) => setCidade(cidade)} placeholder="Cidade"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicBairro">
             <Form.Label>Bairro</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} value={bairro} onChangeText={(bairro) => setBairro(bairro)} placeholder="Bairro" />
+            <TextInput style={styles.formInput} value={bairro} onChangeText={(bairro) => setBairro(bairro)} placeholder="Bairro"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicRua">
             <Form.Label>Rua</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} value={rua} onChangeText={(rua) => setRua(rua)} placeholder="Rua" />
+            <TextInput style={styles.formInput} value={rua} onChangeText={(rua) => setRua(rua)} placeholder="Rua"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicNumber">
             <Form.Label>Numero</Form.Label>
             <br></br>
-            <TextInput style={styles.formInput} value={numero} onChangeText={(numero) => setNumero(numero)} placeholder="Numero" />
+            <TextInput style={styles.formInput} value={numero} onChangeText={(numero) => setNumero(numero)} placeholder="Numero"  placeholderTextColor={'gray'} />
           </Form.Group>
 
           <Form.Group className='mb-3' controlId="formBasicPhoto">

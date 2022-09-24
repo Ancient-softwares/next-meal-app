@@ -22,14 +22,23 @@ const DATA = Array();
 		console.table(response.data[1])
 		console.table(response.data[2])
 
-		for (let i = 0; i < response.data[0].length; i++) {
+		/* for (let i = 0; i < response.data[0].length; i++) {
 			DATA.push({
 				id: i,
 				title: response.data[0][i].nomeRestaurante,
 				type: response.data[1][i].tipoRestaurante,
 				rating: response.data[2][i].notaAvaliacao,
 			})
-		}
+		} */
+
+		response.data.forEach(item => {
+			DATA.push({
+				id: item.idRestaurante,
+				title: item.nomeRestaurante,
+				type: item.tipoRestaurante,
+				rating: item.notaAvaliacao,
+			})
+		})
 
 		console.table(DATA)
 		return JSON.parse(JSON.stringify(response.data))
@@ -37,7 +46,7 @@ const DATA = Array();
 	.catch(err => console.error(err))
 })()
 
-function Item({title}, {rating}, {kitchenType}) {
+function Item({title, rating, type}) {
   return (
     <View style={styles.item}>
       <Card style={{
@@ -54,7 +63,7 @@ function Item({title}, {rating}, {kitchenType}) {
         }}>
           <Card.Title>{title}</Card.Title>
           <Card.Text>
-            Tipo de cozinha: {kitchenType || 'Não informado'}
+            Tipo de cozinha: {type || 'Não informado'}
           </Card.Text>
           <Card.Text>
             Nota: {rating || 0} / 5.0
@@ -72,57 +81,53 @@ function renderItem(item) {
 
   return <Item title={item.item.title}
     rating={item.item.rating}
-    kitchenType={item.item.type} />;
+    type={item.item.type} />;
 }
-class BookScreen extends React.Component {
-	constructor({props}, {navigation}) {
-		super(props);
-		this.state = {
-		loading: false,
-		data: DATA,
-		error: null,
-		searchValue: "",
-		};
-		this.arrayholder = DATA;
+
+export default function BookScreen({ navigation }) {
+	const [search, setSearch] = React.useState("");
+	const [data, setData] = React.useState(DATA);
+	const arrayholder = DATA;
+
+	function updateSearch(search) {
+		setSearch(search);
+		searchFunction(search);
 	}
 
-	searchFunction(text) {
-		const updatedData = this.arrayholder.filter((item) => {
-		const item_data = `${item.title.toString().toLowerCase()})`;
-		const text_data = text.toString().toLowerCase();
-		return item_data.indexOf(text_data) > -1;
+	function searchFunction(text) {
+		const updatedData = arrayholder.filter((item) => {
+			const itemData = `${item.title.toString().toLowerCase()})`;
+			const textData = text.toString().toLowerCase();
+			
+			return itemData.indexOf(textData) > -1;
 		});
-		this.setState({ data: updatedData, searchValue: text });
+
+		setData({ data: updatedData, searchValue: text });
 	};
 
-	render() {
-		return (
+	  return (
 		<SafeAreaView style={styles.container}>
-			<SearchBar
+		  <SearchBar
 			placeholder="Pesquisar restaurantes..."
 			lightTheme
 			platform='android'
 			round
-			value={this.state.searchValue}
-			onChangeText={(text) => this.searchFunction(text)}
+			value={search}
+			onChangeText={(text) => updateSearch(text)}
 			autoCorrect={false}
 			blurOnSubmit={true}
 			autoFocus={true}
 			style={{
 				width: '72vw',
 			}}
-			/>
-			<View>
-				<FlatList
-				data={this.state.data}
-				renderItem={renderItem}
-				keyExtractor={(item) => item.id}
-				scrollEnabled={true}
-				/>
-			</View>
+		  />
+		  <FlatList
+			data={DATA}
+			renderItem={renderItem}
+			keyExtractor={(item) => item.id}
+			scrollEnabled={true}
+			scrollIndicatorInsets={0,0,0,0}
+		  />
 		</SafeAreaView>
-		);
-	}
+	);
 }
-
-export default BookScreen;
