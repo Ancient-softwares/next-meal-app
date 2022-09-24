@@ -18,18 +18,14 @@ const DATA = Array();
 	})
 	.then(response => {
 		console.log(response.data)
-		console.table(response.data[0])
-		console.table(response.data[1])
-		console.table(response.data[2])
+		response.data.forEach((item) => {
+			console.table(item)
+		})
 
-		/* for (let i = 0; i < response.data[0].length; i++) {
-			DATA.push({
-				id: i,
-				title: response.data[0][i].nomeRestaurante,
-				type: response.data[1][i].tipoRestaurante,
-				rating: response.data[2][i].notaAvaliacao,
-			})
-		} */
+		/* console.table(response.data[0])
+		console.table(response.data[1])
+		console.table(response.data[2]) */
+
 
 		response.data.forEach(item => {
 			DATA.push({
@@ -86,27 +82,34 @@ function renderItem(item) {
 
 export default function BookScreen({ navigation }) {
 	const [search, setSearch] = React.useState("");
-	const [data, setData] = React.useState(DATA);
-	const arrayholder = DATA;
+	const [filteredDataSource, setFilteredDataSource] = React.useState([]);
+  	const [masterDataSource, setMasterDataSource] = React.useState(DATA);
 
-	function updateSearch(search) {
-		setSearch(search);
-		searchFunction(search);
-	}
+	const searchFilterFunction = (text) => {
+		// Check if searched text is not blank
+		if (text) {
+		  // Inserted text is not blank
+		  // Filter the masterDataSource and update FilteredDataSource
+		  const newData = masterDataSource.filter(item => {
+			// Applying filter for the inserted text in search bar
+			const itemData = item.title
+			  ? item.title.toUpperCase()
+			  : ''.toUpperCase();
 
-	function searchFunction(text) {
-		setSearch(text);
-		console.log(text)
-		
-		const updatedData = arrayholder.filter((item) => {
-			const itemData = `${item.title.toString().toLowerCase()})`;
-			const textData = text.toString().toLowerCase();
+			const textData = text.toUpperCase();
 			
 			return itemData.indexOf(textData) > -1;
-		});
-
-		setData({ data: updatedData, searchValue: text });
-	};
+		  });
+		  setFilteredDataSource(newData);
+		  setSearch(text);
+		} else {
+		  // Inserted text is blank
+		  // Update FilteredDataSource with masterDataSource
+		  setFilteredDataSource(masterDataSource);
+		  setSearch(text);
+		}
+	  };
+	
 
 	  return (
 		<SafeAreaView style={styles.container}>
@@ -116,7 +119,7 @@ export default function BookScreen({ navigation }) {
 			platform='android'
 			round
 			value={search}
-			onChangeText={(text) => searchFunction(text)}
+			onChangeText={(text) => searchFilterFunction(text)}
 			autoCorrect={false}
 			blurOnSubmit={true}
 			autoFocus={true}
@@ -125,7 +128,7 @@ export default function BookScreen({ navigation }) {
 			}}
 		  />
 		  <FlatList
-			data={DATA}
+			data={filteredDataSource}
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id}
 			scrollEnabled={true}
