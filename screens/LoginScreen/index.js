@@ -1,24 +1,21 @@
-import * as dotenv from 'dotenv';
-dotenv.config();
-import React, { useState } from 'react';
-import styles from '../styles/LoginScreen.style';
+import React from 'react';
+import styles from './style';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { TextInput, Text, View } from 'react-native';
-import { RootStackScreenProps } from '../types';
 import Joi from 'joi'
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
-const LoginScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('')
+function LoginScreen({ navigation }) {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [message, setMessage] = React.useState('');
 
   const schema = Joi.object({
     emailCliente: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     senhaCliente: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
-  })
+  });
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -49,42 +46,42 @@ const LoginScreen = ({ navigation }) => {
       setMessage('Preencha todos os campos corretamente');
     }
   }
-  
+
   return (
     <View style={styles.container}>
       <Form onSubmit={handleSubmit}>
-      <Form.Label style={{
-        fontSize: 32,
-        fontWeight: 'bold',
-        marginBottom: 20,
-        color: '#963333',
-      }}>Login</Form.Label>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email</Form.Label>
-            <br></br>
-            <TextInput style={ styles.formInput } onChangeText={ (text) => setEmail(text) } placeholder="Enter email" />
-          </Form.Group>
+        <Form.Label style={{
+          fontSize: 32,
+          fontWeight: 'bold',
+          marginBottom: 20,
+          color: '#963333',
+        }}>Login</Form.Label>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <br></br>
+          <TextInput style={styles.formInput} onChangeText={(text) => setEmail(text)} placeholder="Enter email" />
+        </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Senha</Form.Label>
-            <br></br>
-            <TextInput style={ styles.formInput } secureTextEntry={true} onChangeText={ (text) => setPassword(text) } placeholder="Password" />
-          </Form.Group>
-          <Button variant="outline-danger" type="submit">
-            Entrar
-          </Button>
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Senha</Form.Label>
+          <br></br>
+          <TextInput style={styles.formInput} secureTextEntry={true} onChangeText={(text) => setPassword(text)} placeholder="Password" />
+        </Form.Group>
+        <Button variant="outline-danger" type="submit">
+          Entrar
+        </Button>
 
-          <View style={{ marginVertical: '5%' }}>
+        <View style={{ marginVertical: '5%' }}>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Text style={{
               color: '#000000'
-          }} onPress={() => navigation.navigate('Register')}>
-              Não possui uma conta? <Text style={{color: '#963333'}}>Cadastre-se</Text>
-              </Text>
+            }} onPress={() => navigation.navigate('Register')}>
+              Não possui uma conta?<Text style={{ color: '#963333' }}>Cadastre-se</Text>
+            </Text>
           </Form.Group>
-          </View>
+        </View>
 
-        </Form>
+      </Form>
     </View>
   );
 }
