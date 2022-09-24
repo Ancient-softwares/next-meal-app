@@ -5,14 +5,7 @@ import { Card, Button } from "react-bootstrap";
 import styles from "./style";
 import axios from "axios";
 
-const DATA = [
-	{
-		id: 0,
-		title: "Teste",
-		type: 'Teste',
-		rating: 4.5,
-	},	
-];
+const DATA = Array();
 
 (async function getRestaurants() {
 	await axios({
@@ -29,39 +22,22 @@ const DATA = [
 		console.table(response.data[1])
 		console.table(response.data[2])
 
-		for (let j = 0; j < response.data.length; j++) {
-			for (let i = 0; i < response.data[0].length; i++) {
-				console.log(response.data[0][i].nomeRestaurante)
-			}
-
-			for (let i = 0; i < response.data[1].length; i++) {
-				console.log(response.data[1][i].tipoRestaurante)
-			}
-			
-	
-			for (let i = 0; i < response.data[2].length; i++) {
-				console.log(response.data[2][i].notaAvaliacao)
-			}
+		for (let i = 0; i < response.data[0].length; i++) {
+			DATA.push({
+				id: i,
+				title: response.data[0][i].nomeRestaurante,
+				type: response.data[1][i].tipoRestaurante,
+				rating: response.data[2][i].notaAvaliacao,
+			})
 		}
 
-		response.data.forEach(element => {
-			
-			DATA.push({
-				id: element[0].idRestaurante,
-				title: element[0].nomeRestaurante,
-				type: element[1].tipoRestaurante || 'Tipo',
-				rating: element[2].notaAvaliacao || 'Nota'
-			})
-		})
-
-		console.log('ALL')
 		console.table(DATA)
 		return JSON.parse(JSON.stringify(response.data))
 	})
 	.catch(err => console.error(err))
 })()
 
-function Item({title}, {rating}, {type}) {
+function Item({title}, {rating}, {kitchenType}) {
   return (
     <View style={styles.item}>
       <Card style={{
@@ -78,7 +54,7 @@ function Item({title}, {rating}, {type}) {
         }}>
           <Card.Title>{title}</Card.Title>
           <Card.Text>
-            Tipo de cozinha: {type || 'Tipo'}
+            Tipo de cozinha: {kitchenType || 'Não informado'}
           </Card.Text>
           <Card.Text>
             Nota: {rating || 0} / 5.0
@@ -91,7 +67,8 @@ function Item({title}, {rating}, {type}) {
 }
 
 function renderItem(item) {
-console.table(item.item)
+	console.table(item.item)
+	console.log(item.item.type)
 
   return <Item title={item.item.title}
     rating={item.item.rating}
