@@ -7,7 +7,7 @@ import 'react-native-gesture-handler';
 import { ListGroup, Carousel } from 'react-bootstrap';
 
 const HomeScreen = ({ navigation }) => {
-  const exampleImage = require('../../assets/favicon.png');
+  const exampleImage = require('../../assets/example.jpeg');
 
   return (
     <SafeAreaView style={styles.container}> 

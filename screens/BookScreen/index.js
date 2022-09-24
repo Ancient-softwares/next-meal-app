@@ -55,7 +55,7 @@ function Item({title, rating, type}) {
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-        <Card.Img variant="top" src={require('../../assets/favicon.png')} />
+        <Card.Img variant="top" src={require('../../assets/example.jpeg')} />
         <Card.Body style={{
           flex: 1,
           alignItems: 'flex-start',
@@ -95,6 +95,9 @@ export default function BookScreen({ navigation }) {
 	}
 
 	function searchFunction(text) {
+		setSearch(text);
+		console.log(text)
+		
 		const updatedData = arrayholder.filter((item) => {
 			const itemData = `${item.title.toString().toLowerCase()})`;
 			const textData = text.toString().toLowerCase();
@@ -113,7 +116,7 @@ export default function BookScreen({ navigation }) {
 			platform='android'
 			round
 			value={search}
-			onChangeText={(text) => updateSearch(text)}
+			onChangeText={(text) => searchFunction(text)}
 			autoCorrect={false}
 			blurOnSubmit={true}
 			autoFocus={true}
@@ -126,7 +129,6 @@ export default function BookScreen({ navigation }) {
 			renderItem={renderItem}
 			keyExtractor={(item) => item.id}
 			scrollEnabled={true}
-			scrollIndicatorInsets={0,0,0,0}
 		  />
 		</SafeAreaView>
 	);

@@ -17,13 +17,12 @@ const Tab = createBottomTabNavigator();
 export default function App() {
   return (
     <NavigationContainer>
-      
       <Tab.Navigator>
         <Tab.Screen
           name='Home'
           component={HomeScreen}
           options={{ 
-            tabBarIcon: ({ focused }) => <MaterialIcons name='account-circle' size={24} color={color} />,
+            tabBarIcon: ({ color }) => <TabBarIcon name="home" size={32} color={color} />,
             headerShown: false,
           }}
         />
@@ -31,15 +30,15 @@ export default function App() {
           name="Maps" 
           component={MapsScreen} 
           options={{ 
-            tabBarIcon: ({ focused }) => <MaterialIcons name='account-circle' size={24} color={color} />,
+            tabBarIcon: ({ color }) => <FontAwesome name="map-marker" size={32} color={color}/>,
             headerShown: false,
           }} 
           />
         <Tab.Screen 
-          name="Books" 
+          name="Reserves" 
           component={BookScreen} 
           options={{ 
-            tabBarIcon: ({ focused }) => <MaterialIcons name='account-circle' size={24} color={color} />,
+            tabBarIcon: ({ color }) => <Ionicons name="restaurant" size={32} color={color} />,
             headerShown: false,
           }} 
           />
@@ -48,7 +47,7 @@ export default function App() {
           name="Account" 
           component={AccountScreen} 
           options={{ 
-            tabBarIcon: ({ focused }) => <MaterialIcons name='account-circle' size={24} color={color} />,
+            tabBarIcon: ({ color }) => <MaterialIcons name='account-circle' size={32} color={color} />,
             headerShown: false,
           }} 
           />
@@ -56,18 +55,6 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-export function bottomTabs() {
-  <BottomTabBar.Navigator>
-    <BottomTabBar.Screen 
-      name="Home" 
-      component={HomeScreen} 
-      options={{
-        TabBarIcon: ({ color }) => <MaterialIcons name='account-circle' size={24} color={color} /> 
-      }}
-    />
-  </BottomTabBar.Navigator>
-} 
 
 function TabBarIcon(props) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
