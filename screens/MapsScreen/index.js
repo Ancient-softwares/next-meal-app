@@ -1,5 +1,3 @@
-import * as dotenv from 'dotenv';
-dotenv.config()
 import React from 'react';
 import { Text, View } from 'react-native';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
