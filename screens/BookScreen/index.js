@@ -17,15 +17,7 @@ const DATA = Array();
 		}
 	})
 	.then(response => {
-		console.log(response.data)
-		response.data.forEach((item) => {
-			console.table(item)
-		})
-
-		/* console.table(response.data[0])
-		console.table(response.data[1])
-		console.table(response.data[2]) */
-
+		console.table(response.data)
 
 		response.data.forEach(item => {
 			DATA.push({
@@ -72,9 +64,6 @@ function Item({title, rating, type}) {
 }
 
 function renderItem(item) {
-	console.table(item.item)
-	console.log(item.item.type)
-
   return <Item title={item.item.title}
     rating={item.item.rating}
     type={item.item.type} />;
