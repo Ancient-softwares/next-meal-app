@@ -1,5 +1,5 @@
 {
-  "name": "drawer-navigation",
+  "name": "next-meal",
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
@@ -16,6 +16,7 @@
     "@react-navigation/bottom-tabs": "^6.4.0",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/material-bottom-tabs": "^6.2.4",
+    "@react-navigation/native": "^6.0.13",
     "@react-navigation/stack": "^6.3.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
@@ -26,7 +27,7 @@
     "joi": "^17.6.1",
     "material-icons": "^1.11.11",
     "native-base": "^3.4.16",
-    "react": "18.0.0",
+    "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.5",

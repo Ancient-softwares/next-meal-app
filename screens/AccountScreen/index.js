@@ -5,16 +5,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RegisterScreen from '../RegisterScreen';
 import LoginScreen from '../LoginScreen';
 import Account from './Account';
-import Teste from '../RegisterScreen/test';
 
 function AccountScreen({navigation}) {
     const Stack = createStackNavigator();
     
     return (
         <Stack.Navigator>
-        <Stack.Screen name="Account" component={Account} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Account" component={Account} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }}/>
       </Stack.Navigator>
     );
 }

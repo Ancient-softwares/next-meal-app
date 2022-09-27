@@ -87,5 +87,3 @@ function LoginScreen({ navigation }) {
 }
 
 export default LoginScreen
-
-
