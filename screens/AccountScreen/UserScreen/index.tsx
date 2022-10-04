@@ -5,7 +5,15 @@ import { Button, ListGroup } from 'react-bootstrap';
 import styles from './style'
 import { MaterialIcons, Ionicons, FontAwesome, MaterialCommunityIcons, Entypo, Feather } from '@expo/vector-icons';
 
-export default function Account({ navigation }) {
+declare global {
+    namespace JSX {
+        interface IntrinisicElements {
+            'div': { div: string }
+        }
+    }
+}
+
+export default function Account({ navigation }: any) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView
