@@ -4,20 +4,23 @@ import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { TextInput, Text, View } from 'react-native';
 import Joi from 'joi'
+import { TOKEN } from '../../../constants/credentials';
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
-function LoginScreen({ navigation }) {
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [message, setMessage] = React.useState('');
+
+function LoginScreen({ navigation }: { navigation: any }) {
+  const [email, setEmail] = React.useState<string>('');
+  const [password, setPassword] = React.useState<string>('');
+  const [message, setMessage] = React.useState<string>('');
+  const [token, setToken] = React.useState<string>('')
 
   const schema = Joi.object({
     emailCliente: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     senhaCliente: Joi.string().pattern(new RegExp('^[a-zA-Z0-9]{3,30}$')).required()
   });
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: Event) {
     e.preventDefault();
 
     const packets = {
@@ -39,7 +42,14 @@ function LoginScreen({ navigation }) {
         })
       })
         .then(
-          response => console.log('Response: ' + JSON.stringify(response.data))
+          response => {
+            const json = JSON.parse(JSON.stringify(response.data))
+            console.table(json)
+            console.table('Response: ' + json.data)
+
+            setToken(response.data.token)
+            console.log(token)
+          }
         )
         .catch(error => console.log("ERROR:: " + JSON.stringify(error.response.data)));
     } else {

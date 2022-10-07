@@ -1,13 +1,12 @@
 import React from 'react';
 import { Button, Carousel, Col, Container, Form, ListGroup, Row, Stack } from 'react-bootstrap';
 import { View, Text, SafeAreaView, Image } from 'react-native';
-import styles from '../styles/RestaurantScreen.style';
-import { RootStackScreenProps } from '../types';
+import styles from './style';
 import Joi, { ObjectSchema } from 'joi';
 import axios from 'axios';
 
-const RestaurantScreen = ({ navigation }: RootStackScreenProps<'Restaurant'>) => {
-    const exampleImage: string = require('../assets/images/example.jpeg')
+const RestaurantScreen = ({ navigation }: any): JSX.Element => {
+    const exampleImage: string = require('../../../assets/example.jpeg')
     const API_URL = process.env.URL || 'http://127.0.0.1:8000'
 
     const [date, setDate] = React.useState();
