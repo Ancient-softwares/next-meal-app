@@ -35,36 +35,33 @@ export default class App extends React.Component {
 					Example: Upload ImagePicker result
 				</Text>
 
-				{this._maybeRenderControls()}
-				{this._maybeRenderUploadingIndicator()}
-				{this._maybeRenderImage()}
+				{this.maybeRenderControls()}
+				{this.maybeRenderUploadingIndicator()}
+				{this.maybeRenderImage()}
 
 				<StatusBar barStyle="default" />
 			</View>
 		);
 	}
 
-	_maybeRenderUploadingIndicator = () => {
+	private maybeRenderUploadingIndicator = () => {
 		if (this.state.uploading) {
 			return <ActivityIndicator animating size="large" color="#0000ee" />;
 		}
 	};
 
-	_maybeRenderControls = (): JSX.Element => {
+	private maybeRenderControls = (): JSX.Element => {
 		if (!this.state.uploading) {
 			return (
 				<View>
 					<View style={{ marginVertical: 8 }}>
 						<Button
-							onPress={this._pickImage}
+							onPress={this.pickImage}
 							title="Pick an image from camera roll"
 						/>
 					</View>
 					<View style={{ marginVertical: 8 }}>
-						<Button
-							onPress={this._takePhoto}
-							title="Take a photo"
-						/>
+						<Button onPress={this.takePhoto} title="Take a photo" />
 					</View>
 				</View>
 			);
@@ -73,7 +70,7 @@ export default class App extends React.Component {
 		}
 	};
 
-	_maybeRenderImage = (): JSX.Element => {
+	private maybeRenderImage = (): JSX.Element => {
 		if (this.state.image) {
 			return (
 				<View
@@ -112,7 +109,7 @@ export default class App extends React.Component {
 		}
 	};
 
-	_askPermission = async (failureMessage: string): Promise<void> => {
+	private askPermission = async (failureMessage: string): Promise<void> => {
 		const { status } =
 			await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -120,15 +117,17 @@ export default class App extends React.Component {
 			alert(failureMessage);
 		}
 	};
-	_askCameraPermission = async (failureMessage: string): Promise<void> => {
+	private askCameraPermission = async (
+		failureMessage: string
+	): Promise<void> => {
 		const { status } = await ImagePicker.requestCameraPermissionsAsync();
 		if (status === 'denied') {
 			alert(failureMessage);
 		}
 	};
 
-	_takePhoto = async (): Promise<void> => {
-		await this._askCameraPermission(
+	private takePhoto = async (): Promise<void> => {
+		await this.askCameraPermission(
 			'We need the camera permission to take a picture...'
 		);
 		let pickerResult: any = await ImagePicker.launchCameraAsync({
@@ -136,11 +135,11 @@ export default class App extends React.Component {
 			aspect: [4, 3],
 		});
 
-		this._handleImagePicked(pickerResult);
+		this.handleImagePicked(pickerResult);
 	};
 
-	_pickImage = async (): Promise<void> => {
-		await this._askPermission(
+	private pickImage = async (): Promise<void> => {
+		await this.askPermission(
 			'We need the camera-roll permission to read pictures from your phone...'
 		);
 
@@ -149,10 +148,10 @@ export default class App extends React.Component {
 			aspect: [4, 3],
 		});
 
-		this._handleImagePicked(pickerResult);
+		this.handleImagePicked(pickerResult);
 	};
 
-	_handleImagePicked = async (pickerResult: any): Promise<void> => {
+	private handleImagePicked = async (pickerResult: any): Promise<void> => {
 		let uploadResponse: any, uploadResult: any;
 
 		try {

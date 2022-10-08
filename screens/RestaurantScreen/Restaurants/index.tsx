@@ -3,46 +3,46 @@ import { SafeAreaView, FlatList, View } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Card, Button } from 'react-bootstrap';
 import styles from './style';
-import axios from 'axios';
-import About from '../About';
 
-const DATA = Array<Object>();
-
-(async function getRestaurants() {
-	await axios({
-		method: 'get',
-		url: 'http://localhost:8000/api/restaurantes',
-		headers: {
-			'Content-Type': 'application/json',
-			Accept: 'application/json',
-		},
-	})
-		.then((response) => {
-			console.table(response.data);
-
-			response.data.forEach((item: any) => {
-				DATA.push({
-					id: item.idRestaurante,
-					title: item.nomeRestaurante,
-					type: item.tipoRestaurante,
-					rating: item.notaAvaliacao,
-				});
-			});
-
-			console.table(DATA);
-			return JSON.parse(JSON.stringify(response.data));
-		})
-		.catch((err) => console.error(err));
-})();
-
-
-export default function BookScreen({navigation}: any): JSX.Element {
-	const [search, setSearch] = React.useState('');
-	const [filteredDataSource, setFilteredDataSource] = React.useState<never[]>(
-		[]
-	);
+const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
+	const DATA: Array<Object> = Array<Object>();
+	const [search, setSearch] = React.useState<string>('');
+	const [filteredDataSource, setFilteredDataSource] = React.useState<
+		Array<Object>
+	>([]);
 	const [masterDataSource, setMasterDataSource] =
-		React.useState<never[]>(DATA);
+		React.useState<Array<Object>>(DATA);
+
+	const getRestaurant = async () => {
+		await fetch('http://localhost:8000/api/restaurantes', {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				console.table(response);
+
+				response.forEach((item: any) => {
+					DATA.push({
+						id: item.idRestaurante,
+						title: item.nomeRestaurante,
+						type: item.tipoRestaurante,
+						rating: item.notaAvaliacao,
+					});
+				});
+
+				console.table(DATA);
+				return JSON.parse(JSON.stringify(response));
+			})
+			.catch((err) => console.error(err));
+	};
+
+	React.useEffect(() => {
+		getRestaurant();
+	}, []);
 
 	const Item = ({
 		id,
@@ -50,7 +50,7 @@ export default function BookScreen({navigation}: any): JSX.Element {
 		rating,
 		type,
 	}: {
-		id: number,
+		id: number;
 		title: string;
 		rating: number;
 		type: string;
@@ -81,32 +81,43 @@ export default function BookScreen({navigation}: any): JSX.Element {
 							Tipo de cozinha: {type || 'Não informado'}
 						</Card.Text>
 						<Card.Text>Nota: {rating || 0} / 5.0</Card.Text>
-						<Button variant="primary" style={{ marginRight: 5 }} onClick={() => navigation.navigate('About') }>
+						<Button
+							variant="primary"
+							style={{ marginRight: 5 }}
+							onClick={() =>
+								navigation.navigate('About', {
+									id: id,
+									title: title,
+									rating: rating,
+									type: type,
+								})
+							}
+						>
 							Reservar
 						</Button>
 					</Card.Body>
 				</Card>
 			</View>
 		);
-	}
-	
-	const renderItem = (item: JSX.Element): JSX.Element => {
+	};
+
+	const renderItem = (item: any): JSX.Element => {
 		return (
 			<Item
+				id={item.item.id}
 				title={item.item.title}
 				rating={item.item.rating}
 				type={item.item.type}
 			/>
 		);
-	}
-		
+	};
 
 	const searchFilterFunction = (text: string) => {
 		// Check if searched text is not blank
 		if (text) {
 			// Inserted text is not blank
 			// Filter the masterDataSource and update FilteredDataSource
-			const newData = masterDataSource.filter((item) => {
+			const newData = masterDataSource.filter((item: any) => {
 				// Applying filter for the inserted text in search bar
 				const itemData = item.title
 					? item.title.toUpperCase()
@@ -134,7 +145,7 @@ export default function BookScreen({navigation}: any): JSX.Element {
 				platform="android"
 				round
 				value={search}
-				onChangeText={(text) => searchFilterFunction(text)}
+				onChangeText={(text: string) => searchFilterFunction(text)}
 				autoCorrect={false}
 				blurOnSubmit={true}
 				autoFocus={true}
@@ -145,9 +156,12 @@ export default function BookScreen({navigation}: any): JSX.Element {
 			<FlatList
 				data={filteredDataSource}
 				renderItem={renderItem}
-				keyExtractor={(item) => item.id}
+				keyExtractor={(item: JSX.Element) => item.id}
 				scrollEnabled={true}
+				showsVerticalScrollIndicator={false}
 			/>
 		</SafeAreaView>
 	);
-}
+};
+
+export default RestaurantsScreen;

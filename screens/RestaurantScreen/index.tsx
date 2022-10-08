@@ -5,15 +5,23 @@ import { createStackNavigator } from '@react-navigation/stack';
 import About from './About';
 import Restaurants from './Restaurants';
 
-const AccountScreen = ({navigation}: any): JSX.Element => {
-    const Stack = createStackNavigator();
-    
-    return (
-        <Stack.Navigator initialRouteName='Restaurants'>
-        <Stack.Screen name="Restaurants" component={Restaurants} options={{ headerShown: false }} />
-        <Stack.Screen name="About" component={About} options={{ headerShown: false }}/>
-      </Stack.Navigator>
-    );
-}
+const Index = ({ navigation }: any): JSX.Element => {
+	const Stack: any = createStackNavigator();
 
-export default AccountScreen
+	return (
+		<Stack.Navigator initialRouteName="About">
+			<Stack.Screen
+				name="Restaurants"
+				component={Restaurants}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="About"
+				component={About}
+				options={{ headerShown: false }}
+			/>
+		</Stack.Navigator>
+	);
+};
+
+export default Index;

@@ -1,9 +1,15 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import React from 'react';
 import styles from './style';
 import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
-import { Dimensions, Text, TextInput, Platform } from 'react-native';
+import {
+	Dimensions,
+	Text,
+	TextInput,
+	Platform,
+	View,
+	SafeAreaView,
+} from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { cpf } from 'cpf-cnpj-validator';
 import Joi from 'joi';
@@ -12,23 +18,23 @@ import { launchImageLibrary } from 'react-native-image-picker';
 
 const API_URL = process.env.URL || 'http://127.0.0.1:8000';
 
-function RegisterScreen({ navigation }) {
-	const [name, setName] = useState('');
-	const [cpff, setCpf] = useState('');
-	const [cel, setCellphone] = useState('');
-	const [password, setPassword] = useState('');
-	const [foto, setFoto] = useState('');
-	const [email, setEmail] = useState('');
-	const [cep, setCep] = useState('');
-	const [rua, setRua] = useState('');
-	const [numero, setNumero] = useState('');
-	const [bairro, setBairro] = useState('');
-	const [cidade, setCidade] = useState('');
-	const [estado, setEstado] = useState('');
-	const [message, setMessage] = useState('');
+function RegisterScreen({ navigation }: any): JSX.Element {
+	const [name, setName] = React.useState<string>('');
+	const [cpff, setCpf] = React.useState<string>('');
+	const [cel, setCellphone] = React.useState<string>('');
+	const [password, setPassword] = React.useState<string>('');
+	const [foto, setFoto] = React.useState<string>('');
+	const [email, setEmail] = React.useState<string>('');
+	const [cep, setCep] = React.useState<string>('');
+	const [rua, setRua] = React.useState<string>('');
+	const [numero, setNumero] = React.useState<string>('');
+	const [bairro, setBairro] = React.useState<string>('');
+	const [cidade, setCidade] = React.useState<string>('');
+	const [estado, setEstado] = React.useState<string>('');
+	const [message, setMessage] = React.useState<string>('');
 
-	function createFormData(photo: any, body: Object) {
-		const data = new FormData();
+	function createFormData(photo: any, body: any) {
+		const data: FormData = new FormData();
 
 		data.append('photo', {
 			name: photo.fileName,
@@ -39,7 +45,7 @@ function RegisterScreen({ navigation }) {
 					: photo.uri,
 		});
 
-		Object.keys(body).forEach((key: string) => {
+		Object.keys(body).forEach((key: any) => {
 			data.append(key, body[key]);
 		});
 
@@ -75,8 +81,9 @@ function RegisterScreen({ navigation }) {
 			});
 	};
  */
-	function handleChoosePhoto() {
-		launchImageLibrary({ mediaType: 'photo' }, (response) => {
+
+	const handleChoosePhoto = async (): Promise<void> => {
+		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
 			if (response) {
 				setFoto(response.assets[0].uri.toString());
 
@@ -85,9 +92,9 @@ function RegisterScreen({ navigation }) {
 				console.log(foto);
 			}
 		});
-	}
+	};
 
-	const schema = Joi.object({
+	const schema: Joi.ObjectSchema<any> = Joi.object({
 		nomeCliente: Joi.string().alphanum().min(3).max(30).required(),
 		cpfCliente: Joi.string().alphanum().min(11).max(11).required(),
 		celCliente: Joi.string().alphanum().min(10).max(10).required(),
@@ -106,7 +113,7 @@ function RegisterScreen({ navigation }) {
 		estadoCliente: Joi.string().required().min(2).max(2),
 	});
 
-	async function getAddress() {
+	const getAddress = async (): Promise<true | false> => {
 		if (cep) {
 			await axios({
 				method: 'get',
@@ -133,12 +140,14 @@ function RegisterScreen({ navigation }) {
 					);
 				})
 				.catch((error) => console.error('ERROR::' + error));
+
+			return true;
 		} else {
 			return false;
 		}
-	}
+	};
 
-	async function handleSubmit(event: Event) {
+	const handleSubmit = async (event: Event): Promise<void> => {
 		event.preventDefault();
 
 		const packets = {
@@ -146,7 +155,7 @@ function RegisterScreen({ navigation }) {
 			cpfCliente: cpff,
 			celCliente: cel,
 			senhaCliente: password,
-			fotoCliente: '../assets/images/user.png',
+			fotoCliente: '../../../assets/logo.png',
 			cepCliente: cep,
 			emailCliente: email,
 			ruaCliente: rua,
@@ -157,9 +166,14 @@ function RegisterScreen({ navigation }) {
 		};
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
-			await fetch(`${API_URL}/api/cadastroCliente`, {
+			/* await fetch(`${API_URL}/api/cadastroCliente`, {
 				method: 'POST',
-				body: createFormData(foto, packets),
+				mode: 'no-cors',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.parse(JSON.stringify(packets)),
 			})
 				.then((response: Response) => response.json())
 				.then((response: Response) => {
@@ -177,23 +191,46 @@ function RegisterScreen({ navigation }) {
 				});
 		} else {
 			setMessage('Preencha todos os campos corretamente.');
+		} */
+
+			await axios({
+				method: 'post',
+				url: `${API_URL}/api/cadastroCliente`,
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+				},
+				data: JSON.stringify({
+					nomeCliente: name,
+					cpfCliente: cpff,
+					celCliente: cel,
+					senhaCliente: password,
+					fotoCliente: '../../../assets/logo.png',
+					cepCliente: cep,
+					emailCliente: email,
+					ruaCliente: rua,
+					numCasa: numero,
+					bairroCliente: bairro,
+					cidadeCliente: cidade,
+					estadoCliente: estado,
+				}),
+			})
+				.then((response) => {
+					setMessage('');
+
+					console.table(JSON.parse(JSON.stringify(response.data)));
+					navigation.navigate('Account');
+				})
+				.catch((error) => console.log('ERROR:: ', error.response.data));
+		} else {
+			setMessage('Preencha todos os campos corretamente.');
 		}
-	}
+	};
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={[styles.container, { marginTop: 35 }]}>
 			<ScrollView showsVerticalScrollIndicator={false}>
-				<Form onSubmit={handleSubmit}>
-					<Form.Label
-						style={{
-							fontSize: 32,
-							fontWeight: 'bold',
-							marginBottom: 20,
-							color: '#963333',
-						}}
-					>
-						Cadastro
-					</Form.Label>
+				<Form onSubmit={handleSubmit} style={styles.container}>
 					<Form.Group className="mb-3" controlId="formBasicEmail">
 						<Form.Label>Email</Form.Label>
 						<br></br>
@@ -453,7 +490,7 @@ function RegisterScreen({ navigation }) {
 					</View>
 				</Form>
 			</ScrollView>
-		</View>
+		</SafeAreaView>
 	);
 }
 
