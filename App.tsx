@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, TypedNavigator } from '@react-navigation/native';
 import {
 	BottomTabBar,
 	createBottomTabNavigator,
@@ -15,14 +15,14 @@ import {
 // telas
 import HomeScreen from './screens/HomeScreen';
 import MapsScreen from './screens/MapsScreen';
-import BookScreen from './screens/BookScreen';
-import AccountScreen from './screens/AccountScreen';
+import BookScreen from './screens/RestaurantScreen';
+import RestarauntScreen from './screens/RestarauntScreen';
 
-const color = '#963333';
+const color: string = '#963333';
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
+export default function App(): JSX.Element {
 	return (
 		<NavigationContainer>
 			<Tab.Navigator>
@@ -30,7 +30,7 @@ export default function App() {
 					name="Home"
 					component={HomeScreen}
 					options={{
-						tabBarIcon: ({ color }) => (
+						tabBarIcon: ({ color }): React.ReactNode => (
 							<TabBarIcon name="home" size={32} color={color} />
 						),
 						headerShown: false,
@@ -40,7 +40,7 @@ export default function App() {
 					name="Maps"
 					component={MapsScreen}
 					options={{
-						tabBarIcon: ({ color }) => (
+						tabBarIcon: ({ color }): React.ReactNode => (
 							<FontAwesome
 								name="map-marker"
 								size={32}
@@ -54,7 +54,7 @@ export default function App() {
 					name="Reserves"
 					component={BookScreen}
 					options={{
-						tabBarIcon: ({ color }) => (
+						tabBarIcon: ({ color }): React.ReactNode => (
 							<Ionicons
 								name="restaurant"
 								size={32}
@@ -67,9 +67,9 @@ export default function App() {
 
 				<Tab.Screen
 					name="Account"
-					component={AccountScreen}
+					component={RestarauntScreen}
 					options={{
-						tabBarIcon: ({ color }) => (
+						tabBarIcon: ({ color }): React.ReactNode => (
 							<MaterialIcons
 								name="account-circle"
 								size={32}
@@ -84,6 +84,6 @@ export default function App() {
 	);
 }
 
-function TabBarIcon(props: any) {
+function TabBarIcon(props: any): JSX.Element {
 	return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
