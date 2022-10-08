@@ -215,13 +215,15 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 					estadoCliente: estado,
 				}),
 			})
-				.then((response) => {
+				.then((response: any): void => {
 					setMessage('');
 
 					console.table(JSON.parse(JSON.stringify(response.data)));
-					navigation.navigate('Account');
+					navigation.navigate('Login');
 				})
-				.catch((error) => console.log('ERROR:: ', error.response.data));
+				.catch((error: any): void =>
+					console.log('ERROR:: ', error.response.data)
+				);
 		} else {
 			setMessage('Preencha todos os campos corretamente.');
 		}

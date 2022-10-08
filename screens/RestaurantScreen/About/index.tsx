@@ -3,9 +3,9 @@ import { Button, Carousel, Form, Stack } from 'react-bootstrap';
 import { View, Text, SafeAreaView } from 'react-native';
 import styles from './style';
 import Joi, { ObjectSchema } from 'joi';
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const AboutScreen = ({ navigation }: any): JSX.Element => {
+const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const exampleImage: string = require('../../../assets/example.jpeg');
 	const API_URL = process.env.URL || 'http://127.0.0.1:8000';
 
@@ -32,7 +32,7 @@ const AboutScreen = ({ navigation }: any): JSX.Element => {
 		};
 
 		if (schema.validate(packets)) {
-			axios({
+			await axios({
 				method: 'post',
 				url: `${API_URL}/api/reserva`,
 				headers: {
@@ -45,14 +45,16 @@ const AboutScreen = ({ navigation }: any): JSX.Element => {
 					numPessoas: people,
 				}),
 			})
-				.then((response) =>
-					setMessage('Reserva realizada com sucesso!')
-				)
-				.catch((error) =>
+				.then((response: AxiosResponse<JSON>): void => {
+					console.log('RES::' + JSON.stringify(response));
+
+					setMessage('Reserva realizada com sucesso!');
+				})
+				.catch((error: AxiosError<any>): void => {
 					setMessage(
 						'Erro ao realizar reserva. O restaurante não está com disponibilidade para aceitar sua reserva ou você preencheu os dados incorretamente!'
-					)
-				);
+					);
+				});
 		}
 	};
 

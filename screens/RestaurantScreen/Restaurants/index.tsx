@@ -21,8 +21,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				Accept: 'application/json',
 			},
 		})
-			.then((response) => response.json())
-			.then((response) => {
+			.then((response: any): Promise<JSON> => response.json())
+			.then((response: any): Promise<JSON> => {
 				console.table(response);
 
 				response.forEach((item: any) => {
@@ -37,7 +37,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				console.table(DATA);
 				return JSON.parse(JSON.stringify(response));
 			})
-			.catch((err) => console.error(err));
+			.catch((err: Error): void => console.error(err));
 	};
 
 	React.useEffect(() => {

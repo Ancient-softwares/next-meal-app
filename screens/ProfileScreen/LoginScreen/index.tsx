@@ -45,10 +45,11 @@ function LoginScreen({ navigation }: { navigation: any }) {
 				.then((response) => {
 					const json: any = JSON.parse(JSON.stringify(response));
 					console.table(json);
-					console.table('Response: ' + json);
 
 					setToken(response.token);
-					console.log(token);
+					console.log(token, response.token);
+
+					navigation.navigate('Main', { token: response.token });
 				})
 				.catch((error) =>
 					console.log('ERROR:: ' + JSON.stringify(error.response))

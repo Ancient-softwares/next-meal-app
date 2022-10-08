@@ -6,13 +6,13 @@ import RegisterScreen from './RegisterScreen';
 import LoginScreen from './LoginScreen';
 import UserScreen from './UserScreen';
 
-const Index = ({ navigation }: any): JSX.Element => {
+const Index = ({ navigation, route }: any): JSX.Element => {
 	const Stack: any = createStackNavigator();
 
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name="UserScreen"
+				name="Main"
 				component={UserScreen}
 				options={{
 					headerShown: false,

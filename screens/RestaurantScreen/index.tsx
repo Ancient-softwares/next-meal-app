@@ -2,14 +2,14 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 // telas
-import About from './About';
+import AboutScreen from './About';
 import Restaurants from './Restaurants';
 
 const Index = ({ navigation }: any): JSX.Element => {
 	const Stack: any = createStackNavigator();
 
 	return (
-		<Stack.Navigator initialRouteName="About">
+		<Stack.Navigator initialRouteName="Restaurants">
 			<Stack.Screen
 				name="Restaurants"
 				component={Restaurants}
@@ -17,7 +17,7 @@ const Index = ({ navigation }: any): JSX.Element => {
 			/>
 			<Stack.Screen
 				name="About"
-				component={About}
+				component={AboutScreen}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
