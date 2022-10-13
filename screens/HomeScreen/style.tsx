@@ -25,6 +25,8 @@ export default StyleSheet.create({
     },
     carousel: {
       flex: 1,
+      borderRadius:60,
+      padding:15,
     },
     description: {
       fontSize: 14,
@@ -33,5 +35,25 @@ export default StyleSheet.create({
       marginLeft: 20,
       marginBottom: 40,
     },
+    lineStyle: {
+      color: 'red',
+      opacity: .70,
+      marginLeft: 30,
+      marginRight: 30
+    },
+    navHome: {
+      background: '#963333',
+      height: 250,
+      alignItems: 'center',
+    },
+    nameCategory: {
+       marginLeft: 38, 
+    },
+    spaceCategory: {
+      width: 120
+    },
+    img:{
+      width:200
+    }
 });
   

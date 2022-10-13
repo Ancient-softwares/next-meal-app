@@ -8,48 +8,59 @@ import { ListGroup, Carousel } from 'react-bootstrap';
 
 const HomeScreen = ({ navigation }) => {
   const exampleImage = require('../../assets/example.jpeg');
-
+  const logo = require('../../assets/logo.png');
+  function OnPressButton(){
+    alert('Click made!')
+  }
   return (
     <SafeAreaView style={styles.container}> 
       <ScrollView
       showsVerticalScrollIndicator={false}
       >
+          <View style={styles.navHome}>
+      <img src={logo} className="" style={{ width: 300, height: 200, paddingTop:-10}}/>
+        <Text>Caçando coisa pra colocar. Sei que tá horrivel essa logo ai tb 9kakakak</Text>
+      </View>
       <View style={styles.carousel}>
-        <Carousel fade>
-      <Carousel.Item interval={3000}>
+        <Carousel span={false}>
+      <Carousel.Item interval={6000}>
         <img
           className="d-block w-100"
           src={exampleImage}
           alt="First slide"
+          style={styles.carousel}
         />
         <Carousel.Caption>
-          <h3>Destaques</h3>
+          <h3>Veja os restaurantes perto de você.</h3>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item interval={3000}>
+      <Carousel.Item interval={6000}>
         <img
           className="d-block w-100"
           src={exampleImage}
           alt="Second slide"
+          style={styles.carousel}
         />
 
         <Carousel.Caption>
-          <h3>Destaques</h3>
+          <h3>Economize tempo na hora de realizar sua reserva.</h3>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item interval={3000}>
+      <Carousel.Item interval={6000}>
         <img
           className="d-block w-100"
           src={exampleImage}
           alt="Third slide"
+          style={styles.carousel}
         />
 
         <Carousel.Caption>
-          <h3>Third slide label</h3>
+          <h3>Conosco você pode visualizar o pratos do restaurantes que selecionar.</h3>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
         </View>
+      
     <View>
       <Text style={styles.subtitle}>Categorias</Text>
       <Text style={styles.description}>Escolha entre as categorias de restaurantes</Text>
@@ -60,30 +71,54 @@ const HomeScreen = ({ navigation }) => {
       showsHorizontalScrollIndicator={false}
     >
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        <div style={styles.spaceCategory} >
+          <img src={exampleImage} onClick={OnPressButton}  className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
+          {/* <img src={exampleImage} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Japonesa</Text> */}
         </Pressable>
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+          {/* <img src={exampleImage} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Brasileira</Text> */}
+            <div style={styles.spaceCategory}>
+          <img src={exampleImage} onClick={OnPressButton} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
         </Pressable>
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        <div style={styles.spaceCategory}>
+          <img src={exampleImage} onClick={OnPressButton} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
         </Pressable>
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        <div style={styles.spaceCategory}>
+          <img src={exampleImage} onClick={OnPressButton} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
         </Pressable>
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+        <div style={styles.spaceCategory}>
+          <img src={exampleImage} onClick={OnPressButton} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
         </Pressable>
         <Pressable>
-          <img src={exampleImage} className="rounded-circle" style={{ width: 70, height: 70, marginLeft: 10, marginRight: 10 }}/>
+          <div style={styles.spaceCategory}>
+          <img src={exampleImage} onClick={OnPressButton} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
+          <Text style={styles.nameCategory}>Seilá</Text>
+          </div>
         </Pressable>
     </ScrollView>
+    <hr style={styles.lineStyle}/>
       </View>
     <View>
       <Text style={styles.subtitle}>Reservados recentemente</Text>
       <Text style={styles.description}>Estabelecimentos que você visitou recentemente</Text>
       <ListGroup as='ul'>
         <ListGroup.Item 
+        onClick={OnPressButton}
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}>
@@ -96,7 +131,7 @@ const HomeScreen = ({ navigation }) => {
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
-        onClick={() => navigation.navigate('Restaurant')}
+        onClick={() => navigation.navigate('Restaurant')} //?
       >
         <img src={exampleImage} className="rounded-circle" style={{ width: 40, height: 40, marginLeft: 10, marginRight: 10 }}/>
         <div className="ms-2 me-auto">
@@ -104,6 +139,7 @@ const HomeScreen = ({ navigation }) => {
         </div>
         </ListGroup.Item>
         <ListGroup.Item 
+        onClick={OnPressButton}
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
@@ -114,6 +150,7 @@ const HomeScreen = ({ navigation }) => {
         </div>
         </ListGroup.Item>
         <ListGroup.Item 
+        onClick={OnPressButton}
         as="li"
         className="d-flex justify-content-between align-items-start"
         style={{ border: 'none', marginTop: 10, marginBottom: 10 }}
