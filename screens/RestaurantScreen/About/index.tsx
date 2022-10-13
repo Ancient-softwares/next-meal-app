@@ -5,20 +5,42 @@ import styles from './style';
 import Joi, { ObjectSchema } from 'joi';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const AboutScreen = ({ navigation, route }: any): JSX.Element => {
+const AboutScreen = ({
+	navigation,
+	route,
+}: {
+	navigation: any;
+	route: any;
+}): JSX.Element => {
 	const exampleImage: string = require('../../../assets/example.jpeg');
-	const API_URL = process.env.URL || 'http://127.0.0.1:8000';
+	const API_URL: string = process.env.URL || 'http://127.0.0.1:8000';
 
 	const [date, setDate] = React.useState();
-	const [time, setTime] = React.useState();
 	const [people, setPeople] = React.useState();
 	const [message, setMessage] = React.useState<string>();
+	const [id, setId] = React.useState<number>();
+	const [title, setTitle] = React.useState<string>();
+	const [rating, setRating] = React.useState<number>();
+	const [type, setType] = React.useState<string>();
 
 	const schema: ObjectSchema<any> = Joi.object({
 		date: Joi.date().required().min('now'),
-		time: Joi.date().required().min('now'),
 		people: Joi.number().required().min(1).max(10).integer(),
 	});
+
+	const showInfo = async () => {
+		console.table(route.params);
+
+		// assign values
+		setId(route.params.id);
+		setTitle(route.params.title);
+		setRating(route.params.rating);
+		setType(route.params.type);
+	};
+
+	React.useEffect(() => {
+		showInfo();
+	}, []);
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -27,7 +49,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 
 		const packets = {
 			dataReserva: date,
-			horaReserva: time,
 			numPessoas: people,
 		};
 
@@ -40,8 +61,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					Accept: 'application/json',
 				},
 				data: JSON.stringify({
+					idCliente: 1,
+					idStatusReserva: 1,
+					idRestaraunte: id,
 					dataReserva: date,
-					horaReserva: time,
 					numPessoas: people,
 				}),
 			})
@@ -96,7 +119,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					</Carousel.Item>
 				</Carousel>
 			</View>
-
 			<View
 				style={{
 					flex: 1,

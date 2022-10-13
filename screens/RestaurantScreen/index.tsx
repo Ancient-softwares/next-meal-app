@@ -18,7 +18,7 @@ const Index = ({ navigation }: any): JSX.Element => {
 			<Stack.Screen
 				name="About"
 				component={AboutScreen}
-				options={{ headerShown: false }}
+				options={{ headerShown: true }}
 			/>
 		</Stack.Navigator>
 	);

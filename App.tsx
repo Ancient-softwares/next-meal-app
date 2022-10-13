@@ -8,6 +8,7 @@ import Home from './screens/HomeScreen';
 import Maps from './screens/MapsScreen';
 import Restaurants from './screens/RestaurantScreen/Restaurants';
 import Profile from './screens/ProfileScreen';
+import About from './screens/RestaurantScreen/About';
 
 const color: string = '#963333';
 
@@ -55,7 +56,15 @@ const App = (): JSX.Element => {
 						headerShown: false,
 					}}
 				/>
-
+				<Tab.Screen
+					name="About"
+					component={About}
+					options={{
+						headerShown: false,
+						tabBarButton: (): React.ReactNode => null,
+						TabBarVisible: false,
+					}}
+				/>
 				<Tab.Screen
 					name="Profile"
 					component={Profile}
