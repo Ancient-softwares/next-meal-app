@@ -1,21 +1,22 @@
-import React from 'react';
-import { SafeAreaView, ScrollView, View, Text } from 'react-native';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, ListGroup } from 'react-bootstrap';
-import styles from './style';
 import {
-	MaterialIcons,
-	Ionicons,
-	FontAwesome,
-	MaterialCommunityIcons,
 	Entypo,
 	Feather,
-} from '@expo/vector-icons';
+	FontAwesome,
+	Ionicons,
+	MaterialCommunityIcons,
+	MaterialIcons,
+} from '@expo/vector-icons'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react'
+import { Button, ListGroup } from 'react-bootstrap'
+import { SafeAreaView, ScrollView, Text, View } from 'react-native'
+import '../../../constants/globals'
+import styles from './style'
 
 declare global {
 	namespace JSX {
 		interface IntrinisicElements {
-			div: { div: string };
+			div: { div: string }
 		}
 	}
 }
@@ -31,12 +32,12 @@ const Account = ({ navigation }: any): JSX.Element => {
 					width: '100%',
 				}}
 			>
-				<ListGroup as="ul">
+				<ListGroup as='ul'>
 					<MaterialIcons
 						style={styles.accountIcon}
-						name="account-circle"
+						name='account-circle'
 						size={64}
-						color="#963333"
+						color='#963333'
 					/>
 					<Text style={styles.title}>Olá, visitante!</Text>
 					<Text style={styles.text}>Crie ou acesse sua conta</Text>
@@ -47,7 +48,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<Button
-							variant="outline-danger"
+							variant='outline-danger'
 							style={{
 								width: '8em',
 								marginTop: 15,
@@ -58,21 +59,24 @@ const Account = ({ navigation }: any): JSX.Element => {
 							Entrar
 						</Button>
 						<Button
-							variant="outline-danger"
+							variant='outline-danger'
 							style={{
 								width: '8em',
 								marginTop: 15,
 								marginLeft: 5,
 							}}
-							onClick={() => navigation.navigate('Register')}
+							onClick={() => {
+								navigation.navigate('Register')
+								console.log(global.getToken())
+							}}
 						>
 							Cadastrar-se
 						</Button>
 					</View>
 					<Text style={styles.subtitle}>Meu app, NextMeal</Text>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
@@ -80,17 +84,17 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<Ionicons
-							name="notifications-outline"
+							name='notifications-outline'
 							size={24}
-							color="black"
+							color='black'
 						/>
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Minhas notificações</div>
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Minhas notificações</div>
 						</div>
 					</ListGroup.Item>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
@@ -98,17 +102,17 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<FontAwesome
-							name="calendar-check-o"
+							name='calendar-check-o'
 							size={24}
-							color="black"
+							color='black'
 						/>
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Minhas reservas</div>
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Minhas reservas</div>
 						</div>
 					</ListGroup.Item>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
@@ -116,20 +120,20 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<MaterialCommunityIcons
-							name="human-queue"
+							name='human-queue'
 							size={24}
-							color="black"
+							color='black'
 						/>
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Meu lugar nas filas</div>
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Meu lugar nas filas</div>
 						</div>
 					</ListGroup.Item>
 				</ListGroup>
 				<Text style={styles.subtitle}>Configurações gerais</Text>
-				<ListGroup as="ul">
+				<ListGroup as='ul'>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
@@ -137,47 +141,47 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<Ionicons
-							name="notifications-off-outline"
+							name='notifications-off-outline'
 							size={24}
-							color="black"
+							color='black'
 						/>
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>
 								Política de privacidade
 							</div>
 						</div>
 					</ListGroup.Item>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
 							marginBottom: 10,
 						}}
 					>
-						<Entypo name="text-document" size={24} color="black" />
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Termos de uso</div>
+						<Entypo name='text-document' size={24} color='black' />
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Termos de uso</div>
 						</div>
 					</ListGroup.Item>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
 							marginBottom: 10,
 						}}
 					>
-						<Feather name="info" size={24} color="black" />
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Sobre nós</div>
+						<Feather name='info' size={24} color='black' />
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Sobre nós</div>
 						</div>
 					</ListGroup.Item>
 					<ListGroup.Item
-						as="li"
-						className="d-flex justify-content-between align-items-start"
+						as='li'
+						className='d-flex justify-content-between align-items-start'
 						style={{
 							border: 'none',
 							marginTop: 10,
@@ -185,18 +189,18 @@ const Account = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<MaterialCommunityIcons
-							name="file-document-edit-outline"
+							name='file-document-edit-outline'
 							size={24}
-							color="black"
+							color='black'
 						/>
-						<div className="ms-2 me-auto">
-							<div className="fw-bold">Ajuda e suporte</div>
+						<div className='ms-2 me-auto'>
+							<div className='fw-bold'>Ajuda e suporte</div>
 						</div>
 					</ListGroup.Item>
 				</ListGroup>
 			</ScrollView>
 		</SafeAreaView>
-	);
-};
+	)
+}
 
-export default Account;
+export default Account
