@@ -1,40 +1,39 @@
-import React from 'react';
-import styles from './style';
-import axios from 'axios';
-import { Form, Button } from 'react-bootstrap';
+import axios from 'axios'
+import { cpf } from 'cpf-cnpj-validator'
+import Joi from 'joi'
+import React from 'react'
+import { Button, Form } from 'react-bootstrap'
 import {
 	Dimensions,
+	Platform,
+	SafeAreaView,
 	Text,
 	TextInput,
-	Platform,
 	View,
-	SafeAreaView,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { cpf } from 'cpf-cnpj-validator';
-import Joi from 'joi';
-import MaskInput from 'react-native-mask-input';
-import { launchImageLibrary } from 'react-native-image-picker';
-
-const API_URL = process.env.URL || 'http://127.0.0.1:8000';
+} from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
+import { launchImageLibrary } from 'react-native-image-picker'
+import MaskInput from 'react-native-mask-input'
+import '../../../constants/globals'
+import styles from './style'
 
 function RegisterScreen({ navigation }: any): JSX.Element {
-	const [name, setName] = React.useState<string>('');
-	const [cpff, setCpf] = React.useState<string>('');
-	const [cel, setCellphone] = React.useState<string>('');
-	const [password, setPassword] = React.useState<string>('');
-	const [foto, setFoto] = React.useState<string>('');
-	const [email, setEmail] = React.useState<string>('');
-	const [cep, setCep] = React.useState<string>('');
-	const [rua, setRua] = React.useState<string>('');
-	const [numero, setNumero] = React.useState<string>('');
-	const [bairro, setBairro] = React.useState<string>('');
-	const [cidade, setCidade] = React.useState<string>('');
-	const [estado, setEstado] = React.useState<string>('');
-	const [message, setMessage] = React.useState<string>('');
+	const [name, setName] = React.useState<string>('')
+	const [cpff, setCpf] = React.useState<string>('')
+	const [cel, setCellphone] = React.useState<string>('')
+	const [password, setPassword] = React.useState<string>('')
+	const [foto, setFoto] = React.useState<Blob>(new Blob())
+	const [email, setEmail] = React.useState<string>('')
+	const [cep, setCep] = React.useState<string>('')
+	const [rua, setRua] = React.useState<string>('')
+	const [numero, setNumero] = React.useState<string>('')
+	const [bairro, setBairro] = React.useState<string>('')
+	const [cidade, setCidade] = React.useState<string>('')
+	const [estado, setEstado] = React.useState<string>('')
+	const [message, setMessage] = React.useState<string>('')
 
 	function createFormData(photo: any, body: any) {
-		const data: FormData = new FormData();
+		const data: FormData = new FormData()
 
 		data.append('photo', {
 			name: photo.fileName,
@@ -43,13 +42,13 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				Platform.OS === 'ios'
 					? photo.uri.replace('file://', '')
 					: photo.uri,
-		});
+		})
 
 		Object.keys(body).forEach((key: any) => {
-			data.append(key, body[key]);
-		});
+			data.append(key, body[key])
+		})
 
-		return data;
+		return data
 	}
 
 	/* const uploadImage = async () => {
@@ -85,14 +84,14 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	const handleChoosePhoto = async (): Promise<void> => {
 		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
 			if (response) {
-				setFoto(response.assets[0].uri.toString());
+				setFoto(response.assets[0].uri.toString())
 
-				console.log(response);
-				console.log(response.assets[0].uri);
-				console.log(foto);
+				console.log(response)
+				console.log(response.assets[0].uri)
+				console.log(foto)
 			}
-		});
-	};
+		})
+	}
 
 	const schema: Joi.ObjectSchema<any> = Joi.object({
 		nomeCliente: Joi.string().alphanum().min(3).max(30).required(),
@@ -111,7 +110,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		bairroCliente: Joi.string().required().min(3).max(30),
 		cidadeCliente: Joi.string().required().min(3).max(30),
 		estadoCliente: Joi.string().required().min(2).max(2),
-	});
+	})
 
 	const getAddress = async (): Promise<true | false> => {
 		if (cep) {
@@ -126,34 +125,32 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				data: JSON.stringify({ cep }),
 			})
 				.then((response) => {
-					const address = JSON.parse(JSON.stringify(response.data));
+					const address = JSON.parse(JSON.stringify(response.data))
 
-					console.table(JSON.parse(JSON.stringify(response.data)));
+					console.table(JSON.parse(JSON.stringify(response.data)))
 
-					setBairro(JSON.stringify(address.bairro).replace(/"/g, ''));
+					setBairro(JSON.stringify(address.bairro).replace(/"/g, ''))
 					setCidade(
 						JSON.stringify(address.localidade).replace(/"/g, '')
-					);
-					setEstado(JSON.stringify(address.uf).replace(/"/g, ''));
-					setRua(
-						JSON.stringify(address.logradouro).replace(/"/g, '')
-					);
+					)
+					setEstado(JSON.stringify(address.uf).replace(/"/g, ''))
+					setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
 				})
-				.catch((error) => console.error('ERROR::' + error));
+				.catch((error) => console.error('ERROR::' + error))
 
-			return true;
+			return true
 		} else {
-			return false;
+			return false
 		}
-	};
+	}
 
 	const handleSubmit = async (event: Event): Promise<void> => {
-		event.preventDefault();
+		event.preventDefault()
 
 		const packets = {
 			nomeCliente: name,
 			cpfCliente: cpff,
-			celCliente: cel,
+			telefoneCliente: cel,
 			senhaCliente: password,
 			fotoCliente: '../../../assets/logo.png',
 			cepCliente: cep,
@@ -163,7 +160,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 			bairroCliente: bairro,
 			cidadeCliente: cidade,
 			estadoCliente: estado,
-		};
+		}
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
 			/* await fetch(`${API_URL}/api/cadastroCliente`, {
@@ -195,7 +192,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 
 			await axios({
 				method: 'post',
-				url: `${API_URL}/api/cadastroCliente`,
+				url: `${global.API_URL}/api/cadastroCliente`,
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
@@ -203,7 +200,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				data: JSON.stringify({
 					nomeCliente: name,
 					cpfCliente: cpff,
-					celCliente: cel,
+					telefoneCliente: cel,
 					senhaCliente: password,
 					fotoCliente: '../../../assets/logo.png',
 					cepCliente: cep,
@@ -216,46 +213,46 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				}),
 			})
 				.then((response: any): void => {
-					setMessage('');
+					setMessage('')
 
-					console.table(JSON.parse(JSON.stringify(response.data)));
-					navigation.navigate('Login');
+					console.table(JSON.parse(JSON.stringify(response.data)))
+					navigation.navigate('Login')
 				})
 				.catch((error: any): void =>
 					console.log('ERROR:: ', error.response.data)
-				);
+				)
 		} else {
-			setMessage('Preencha todos os campos corretamente.');
+			setMessage('Preencha todos os campos corretamente.')
 		}
-	};
+	}
 
 	return (
 		<SafeAreaView style={[styles.container, { marginTop: 35 }]}>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<Form onSubmit={handleSubmit} style={styles.container}>
-					<Form.Group className="mb-3" controlId="formBasicEmail">
+					<Form.Group className='mb-3' controlId='formBasicEmail'>
 						<Form.Label>Email</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							onChangeText={(email) => setEmail(email)}
-							placeholder="Email"
+							placeholder='Email'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicName">
+					<Form.Group className='mb-3' controlId='formBasicName'>
 						<Form.Label>Nome</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							onChangeText={(name) => setName(name)}
-							placeholder="Nome"
+							placeholder='Nome'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicCelular">
+					<Form.Group className='mb-3' controlId='formBasicCelular'>
 						<Form.Label>Celular</Form.Label>
 						<br></br>
 						<MaskInput
@@ -263,7 +260,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 							style={styles.formInput}
 							value={cel}
 							onChangeText={(masked, unmasked) => {
-								setCellphone(masked);
+								setCellphone(masked)
 							}}
 							mask={[
 								'(',
@@ -286,7 +283,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicCPF">
+					<Form.Group className='mb-3' controlId='formBasicCPF'>
 						<Form.Label>CPF</Form.Label>
 						<br></br>
 						<MaskInput
@@ -294,7 +291,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 							style={styles.formInput}
 							value={cpff}
 							onChangeText={(masked, unmasked) => {
-								setCpf(masked);
+								setCpf(masked)
 							}}
 							mask={[
 								/\d/,
@@ -315,7 +312,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicCEP">
+					<Form.Group className='mb-3' controlId='formBasicCEP'>
 						<Form.Label>CEP</Form.Label>
 						<br></br>
 						<MaskInput
@@ -328,7 +325,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 							]}
 							value={cep}
 							onChangeText={(masked, unmasked) => {
-								setCep(masked);
+								setCep(masked)
 							}}
 							mask={[
 								/\d/,
@@ -345,116 +342,121 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 						<Button
 							style={{
 								marginLeft: 32,
+								fontSize: 14,
 							}}
-							variant="outline-danger"
+							variant='outline-danger'
 							onClick={getAddress}
 						>
-							Encontrar endereço
+							Buscar endereço
 						</Button>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicPassword">
+					<Form.Group className='mb-3' controlId='formBasicPassword'>
 						<Form.Label>Senha</Form.Label>
 						<br></br>
 						<TextInput
 							secureTextEntry={true}
 							style={styles.formInput}
 							onChangeText={(password) => setPassword(password)}
-							placeholder="Senha"
+							placeholder='Senha'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicState">
+					<Form.Group className='mb-3' controlId='formBasicState'>
 						<Form.Label>Estado</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							value={estado}
 							onChangeText={(estado) => setEstado(estado)}
-							placeholder="Estado"
+							placeholder='Estado'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicCity">
+					<Form.Group className='mb-3' controlId='formBasicCity'>
 						<Form.Label>Cidade</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							value={cidade}
 							onChangeText={(cidade) => setCidade(cidade)}
-							placeholder="Cidade"
+							placeholder='Cidade'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicBairro">
+					<Form.Group className='mb-3' controlId='formBasicBairro'>
 						<Form.Label>Bairro</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							value={bairro}
 							onChangeText={(bairro) => setBairro(bairro)}
-							placeholder="Bairro"
+							placeholder='Bairro'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicRua">
+					<Form.Group className='mb-3' controlId='formBasicRua'>
 						<Form.Label>Rua</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							value={rua}
 							onChangeText={(rua) => setRua(rua)}
-							placeholder="Rua"
+							placeholder='Rua'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicNumber">
+					<Form.Group className='mb-3' controlId='formBasicNumber'>
 						<Form.Label>Numero</Form.Label>
 						<br></br>
 						<TextInput
 							style={styles.formInput}
 							value={numero}
 							onChangeText={(numero) => setNumero(numero)}
-							placeholder="Numero"
+							placeholder='Numero'
 							placeholderTextColor={'gray'}
 						/>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicPhoto">
+					<Form.Group className='mb-3' controlId='formBasicPhoto'>
 						<Form.Label>Foto de perfil</Form.Label>
 						<br></br>
 						<Button
-							variant="outline-info"
+							variant='outline-info'
 							onClick={handleChoosePhoto}
 						>
 							Escolher foto
 						</Button>
 					</Form.Group>
 
-					<Form.Group className="mb-3" controlId="formBasicCheckbox">
+					<Form.Group className='mb-3' controlId='formBasicCheckbox'>
 						<Form.Check
-							id="termsCheckbox"
-							type="checkbox"
-							label="Concordo com os termos de uso"
+							id='termsCheckbox'
+							type='checkbox'
+							label='Concordo com os termos de uso'
 						/>
 						<Form.Check
-							id="privacityCheckbox"
-							type="checkbox"
-							label="Concordo com a política de privacidade"
+							id='privacityCheckbox'
+							type='checkbox'
+							label='Concordo com a política de privacidade'
 						/>
 					</Form.Group>
-					
-					<Button variant="outline-danger" type="submit" onClick={() => navigation.navigate('Login')}>
+
+					<Button
+						variant='outline-danger'
+						type='submit'
+						onClick={() => navigation.navigate('Login')}
+					>
 						Registrar-se
 					</Button>
 
 					<View style={{ marginVertical: '5%' }}>
-						<Form.Group className="mb-3" controlId="formBasicLogin">
+						<Form.Group className='mb-3' controlId='formBasicLogin'>
 							<Text
 								style={{
 									color: '#000000',
@@ -476,8 +478,8 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 						}}
 					>
 						<Form.Group
-							className="mb-3"
-							controlId="formBasicFeedback"
+							className='mb-3'
+							controlId='formBasicFeedback'
 						>
 							<Text
 								style={{
@@ -493,7 +495,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				</Form>
 			</ScrollView>
 		</SafeAreaView>
-	);
+	)
 }
 
-export default RegisterScreen;
+export default RegisterScreen

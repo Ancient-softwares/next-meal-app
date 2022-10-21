@@ -1,17 +1,17 @@
-import React from 'react';
-import { SafeAreaView, FlatList, View } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import { Card, Button } from 'react-bootstrap';
-import styles from './style';
+import React from 'react'
+import { Button, Card } from 'react-bootstrap'
+import { FlatList, SafeAreaView, View } from 'react-native'
+import { SearchBar } from 'react-native-elements'
+import styles from './style'
 
 const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
-	const DATA: Array<Object> = Array<Object>();
-	const [search, setSearch] = React.useState<string>('');
+	const DATA: Array<Object> = Array<any>()
+	const [search, setSearch] = React.useState<string>('')
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
-	>([]);
+	>([])
 	const [masterDataSource, setMasterDataSource] =
-		React.useState<Array<Object>>(DATA);
+		React.useState<Array<Object>>(DATA)
 
 	const getRestaurant = async () => {
 		await fetch('http://localhost:8000/api/restaurantes', {
@@ -22,27 +22,24 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			},
 		})
 			.then((response: any): Promise<JSON> => response.json())
-			.then((response: any): Promise<JSON> => {
-				console.table(response);
-
+			.then((response: any): void => {
 				response.forEach((item: any) => {
 					DATA.push({
 						id: item.idRestaurante,
 						title: item.nomeRestaurante,
 						type: item.tipoRestaurante,
 						rating: item.notaAvaliacao,
-					});
-				});
+					})
+				})
 
-				console.table(DATA);
-				return JSON.parse(JSON.stringify(response));
+				console.table(DATA)
 			})
-			.catch((err: Error): void => console.error(err));
-	};
+			.catch((err: Error): void => console.error(err))
+	}
 
 	React.useEffect(() => {
-		getRestaurant();
-	}, []);
+		getRestaurant()
+	}, [])
 
 	const Item = ({
 		id,
@@ -50,10 +47,10 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		rating,
 		type,
 	}: {
-		id: number;
-		title: string;
-		rating: number;
-		type: string;
+		id: number
+		title: string
+		rating: number
+		type: string
 	}): JSX.Element => {
 		return (
 			<View>
@@ -66,7 +63,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 					}}
 				>
 					<Card.Img
-						variant="top"
+						variant='top'
 						src={require('../../../assets/example.jpeg')}
 					/>
 					<Card.Body
@@ -82,7 +79,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						</Card.Text>
 						<Card.Text>Nota: {rating || 0} / 5.0</Card.Text>
 						<Button
-							variant="primary"
+							variant='primary'
 							style={{ marginRight: 5 }}
 							onClick={() =>
 								navigation.navigate('About', {
@@ -98,8 +95,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 					</Card.Body>
 				</Card>
 			</View>
-		);
-	};
+		)
+	}
 
 	const renderItem = (item: any): JSX.Element => {
 		return (
@@ -109,8 +106,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				rating={item.item.rating}
 				type={item.item.type}
 			/>
-		);
-	};
+		)
+	}
 
 	const searchFilterFunction = (text: string) => {
 		// Check if searched text is not blank
@@ -121,28 +118,28 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				// Applying filter for the inserted text in search bar
 				const itemData = item.title
 					? item.title.toUpperCase()
-					: ''.toUpperCase();
+					: ''.toUpperCase()
 
-				const textData = text.toUpperCase();
+				const textData = text.toUpperCase()
 
-				return itemData.indexOf(textData) > -1;
-			});
-			setFilteredDataSource(newData);
-			setSearch(text);
+				return itemData.indexOf(textData) > -1
+			})
+			setFilteredDataSource(newData)
+			setSearch(text)
 		} else {
 			// Inserted text is blank
 			// Update FilteredDataSource with masterDataSource
-			setFilteredDataSource(masterDataSource);
-			setSearch(text);
+			setFilteredDataSource(masterDataSource)
+			setSearch(text)
 		}
-	};
+	}
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<SearchBar
-				placeholder="Pesquisar restaurantes..."
+				placeholder='Pesquisar restaurantes...'
 				lightTheme
-				platform="android"
+				platform='android'
 				round
 				value={search}
 				onChangeText={(text: string) => searchFilterFunction(text)}
@@ -161,7 +158,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				showsVerticalScrollIndicator={false}
 			/>
 		</SafeAreaView>
-	);
-};
+	)
+}
 
-export default RestaurantsScreen;
+export default RestaurantsScreen

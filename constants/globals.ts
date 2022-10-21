@@ -50,11 +50,10 @@ declare global {
 }
 
 // atributos
-global.API_URL = process.env.URL || 'http://127.0.0.1:8000'
-global.MAPS_ID = process.env.MAPS_ID || 'google-map-script'
-global.GOOGLE_MAPS_APIKEY =
-	process.env.GOOGLE_MAPS_TOKEN || 'AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw'
-global.TOKEN = 'token123'
+global.API_URL = process.env.URL || ''
+global.MAPS_ID = process.env.MAPS_ID || ''
+global.GOOGLE_MAPS_APIKEY = process.env.GOOGLE_MAPS_TOKEN || ''
+global.TOKEN = ''
 
 // getters
 global.getToken = () => global.TOKEN
@@ -104,6 +103,6 @@ global.init = () => {
 
 // set global variables
 global.setToken('token123')
-global.setApiUrl('http://http://127.0.0.1:8000')
+global.setApiUrl('http://127.0.0.1:8000')
 global.setMapsId('google-map-script')
 global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
