@@ -28,17 +28,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView showsVerticalScrollIndicator={false}>
-				<View style={styles.navHome}>
-					<img
-						src={logo}
-						className=''
-						style={{ width: 300, height: 200, paddingTop: -10 }}
-					/>
-					<Text>
-						Caçando coisa pra colocar. Sei que tá horrivel essa logo
-						ai tb 9kakakak
-					</Text>
-				</View>
+				{/* <View style={styles.navHome}>
+					
+				</View> */}
 				<View style={styles.carousel}>
 					<Carousel span={false}>
 						<Carousel.Item interval={6000}>
@@ -102,8 +94,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						showsHorizontalScrollIndicator={false}
 					>
 						<Pressable>
-							<div style={styles.spaceCategory}>
-								<img
+						<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -114,16 +106,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
-							{/* <img src={exampleImage} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
-          <Text style={styles.nameCategory}>Japonesa</Text> */}
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 						<Pressable>
-							{/* <img src={exampleImage} className="rounded-circle" style={{ width: 90, height: 90, marginLeft: 10, marginRight: 10 }}/>
-          <Text style={styles.nameCategory}>Brasileira</Text> */}
-							<div style={styles.spaceCategory}>
-								<img
+						<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -134,12 +122,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 						<Pressable>
-							<div style={styles.spaceCategory}>
-								<img
+							<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -150,12 +138,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 						<Pressable>
-							<div style={styles.spaceCategory}>
-								<img
+						<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -166,12 +154,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 						<Pressable>
-							<div style={styles.spaceCategory}>
-								<img
+						<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -182,12 +170,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 						<Pressable>
-							<div style={styles.spaceCategory}>
-								<img
+						<View style={styles.spaceCategory}>
+							<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -198,8 +186,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10,
 									}}
 								/>
-								<Text style={styles.nameCategory}>Seilá</Text>
-							</div>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
 						</Pressable>
 					</ScrollView>
 					<hr style={styles.lineStyle} />

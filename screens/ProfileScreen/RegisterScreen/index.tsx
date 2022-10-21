@@ -448,8 +448,8 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 							label="Concordo com a política de privacidade"
 						/>
 					</Form.Group>
-
-					<Button variant="outline-danger" type="submit">
+					
+					<Button variant="outline-danger" type="submit" onClick={() => navigation.navigate('Login')}>
 						Registrar-se
 					</Button>
 

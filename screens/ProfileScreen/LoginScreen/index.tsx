@@ -89,7 +89,7 @@ function LoginScreen({ navigation }: { navigation: any }) {
 						placeholderTextColor="gray"
 					/>
 				</Form.Group>
-				<Button variant="outline-danger" type="submit">
+				<Button variant="outline-danger" type="submit" onClick={() => navigation.navigate('Home')}>
 					Entrar
 				</Button>
 
