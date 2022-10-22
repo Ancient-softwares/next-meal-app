@@ -21,8 +21,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 	}
 
 	React.useEffect(() => {
-		global.setToken('123456mtfoda')
-		global.getToken()
+		console.log([
+			global.getToken(),
+			global.getApiUrl(),
+			global.getMapsId(),
+			global.getMapsToken(),
+		])
 	}, [])
 
 	return (
@@ -94,24 +98,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						showsHorizontalScrollIndicator={false}
 					>
 						<Pressable>
-						<View style={styles.spaceCategory}>
-							<img
-									src={exampleImage}
-									onClick={OnPressButton}
-									className='rounded-circle'
-									style={{
-										width: 90,
-										height: 90,
-										marginLeft: 10,
-										marginRight: 10,
-									}}
-								/>
-								<Text style={styles.nameCategory}>aa</Text>
-							</View>
-						</Pressable>
-						<Pressable>
-						<View style={styles.spaceCategory}>
-							<img
+							<View style={styles.spaceCategory}>
+								<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -127,7 +115,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						</Pressable>
 						<Pressable>
 							<View style={styles.spaceCategory}>
-							<img
+								<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -142,8 +130,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 							</View>
 						</Pressable>
 						<Pressable>
-						<View style={styles.spaceCategory}>
-							<img
+							<View style={styles.spaceCategory}>
+								<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -158,8 +146,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 							</View>
 						</Pressable>
 						<Pressable>
-						<View style={styles.spaceCategory}>
-							<img
+							<View style={styles.spaceCategory}>
+								<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
@@ -174,8 +162,24 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 							</View>
 						</Pressable>
 						<Pressable>
-						<View style={styles.spaceCategory}>
-							<img
+							<View style={styles.spaceCategory}>
+								<img
+									src={exampleImage}
+									onClick={OnPressButton}
+									className='rounded-circle'
+									style={{
+										width: 90,
+										height: 90,
+										marginLeft: 10,
+										marginRight: 10,
+									}}
+								/>
+								<Text style={styles.nameCategory}>aa</Text>
+							</View>
+						</Pressable>
+						<Pressable>
+							<View style={styles.spaceCategory}>
+								<img
 									src={exampleImage}
 									onClick={OnPressButton}
 									className='rounded-circle'
