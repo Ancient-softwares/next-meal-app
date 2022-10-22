@@ -55,15 +55,11 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View>
 				<Card
-					style={{
-						width: '22em',
-						border: 'none',
-						alignItems: 'center',
-						justifyContent: 'center',
-					}}
+					style={styles.card}
 				>
 					<Card.Img
 						variant='top'
+						style={styles.cardImg}
 						src={require('../../../assets/example.jpeg')}
 					/>
 					<Card.Body
@@ -73,14 +69,18 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 							justifyContent: 'flex-start',
 						}}
 					>
+							<hr style={styles.LineCard}/>
+						<View style={styles.textCardPosition}>
 						<Card.Title>{title}</Card.Title>
 						<Card.Text>
 							Tipo de cozinha: {type || 'Não informado'}
 						</Card.Text>
 						<Card.Text>Nota: {rating || 0} / 5.0</Card.Text>
+						</View>
+						<View>
 						<Button
+						style={styles.buttonReserv}
 							variant='primary'
-							style={{ marginRight: 5 }}
 							onClick={() =>
 								navigation.navigate('About', {
 									id: id,
@@ -92,8 +92,10 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						>
 							Reservar
 						</Button>
+						</View>
 					</Card.Body>
 				</Card>
+			
 			</View>
 		)
 	}

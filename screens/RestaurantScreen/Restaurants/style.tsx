@@ -16,15 +16,17 @@ export default StyleSheet.create({
       height: 1,
       width: '80%',
     },
-    cardImg: {
+    cardImg: { 
       flex: 1,
+      borderRadius:49
     },
     card: {
       width: '22em', 
         border: 'none', 
-        flex: 1, 
         alignItems: 'center', 
-        justifyContent: 'center', 
+        justifyContent: 'center',
+        padding:19,
+        fontFamily:'ionicons'
     },
     searchBar: {
       backgroundColor: 'none',
@@ -34,4 +36,20 @@ export default StyleSheet.create({
       color: 'black',
       fontSize: 20,
     },
+    LineCard:{
+      color:"red",
+      marginLeft:-100,
+      marginRight:-100,
+      opacity:1
+    },
+    buttonReserv:{
+      backgroundColor:"red",
+      border:'none',
+      marginTop:16,
+      marginLeft:-91,
+      marginRight:105
+    },
+    textCardPosition:{
+      marginLeft: -94
+    }
   });
