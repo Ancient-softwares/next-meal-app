@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { cpf } from 'cpf-cnpj-validator'
 import Joi from 'joi'
 import React from 'react'
@@ -51,44 +51,20 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		return data
 	}
 
-	/* const uploadImage = async () => {
-		await fetch(`${API_URL}/api/upload`, {
-			method: 'POST',
-			body: createFormData(foto, {
-				name,
-				cpff,
-				cel,
-				password,
-				email,
-				cep,
-				rua,
-				numero,
-				bairro,
-				cidade,
-				estado,
-			}),
-		})
-			.then((response: Response) => response.json())
-			.then((response) => {
-				console.log('upload succes', response);
-				alert('Upload success!');
-				navigation.navigate('Login');
-			})
-			.catch((error) => {
-				console.log('upload error', error);
-				alert('Upload failed!');
-			});
-	};
- */
-
 	const handleChoosePhoto = async (): Promise<void> => {
 		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
-			if (response) {
-				setFoto(response.assets[0].uri.toString())
+			try {
+				if (response) {
+					setFoto(response.assets[0].uri.toString())
 
-				console.log(response)
-				console.log(response.assets[0].uri)
-				console.log(foto)
+					console.log(response)
+					console.log(response.assets[0].uri)
+					console.log(foto)
+				} else {
+					console.log('error')
+				}
+			} catch (err) {
+				console.log(err)
 			}
 		})
 	}
@@ -115,8 +91,8 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	const getAddress = async (): Promise<true | false> => {
 		if (cep) {
 			await axios({
-				method: 'get',
 				url: `https://viacep.com.br/ws/${cep}/json/`,
+				method: 'get',
 				headers: {
 					Accept: 'application/json',
 					'Content-Type': 'application/json',
@@ -124,7 +100,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				},
 				data: JSON.stringify({ cep }),
 			})
-				.then((response) => {
+				.then((response: AxiosResponse): void => {
 					const address = JSON.parse(JSON.stringify(response.data))
 
 					console.table(JSON.parse(JSON.stringify(response.data)))
@@ -136,7 +112,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 					setEstado(JSON.stringify(address.uf).replace(/"/g, ''))
 					setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
 				})
-				.catch((error) => console.error('ERROR::' + error))
+				.catch((error: Error): void => console.error('ERROR::' + error))
 
 			return true
 		} else {
@@ -163,7 +139,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		}
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
-			/* await fetch(`${API_URL}/api/cadastroCliente`, {
+			await fetch(`${API_URL}/api/cadastroCliente`, {
 				method: 'POST',
 				mode: 'no-cors',
 				headers: {
@@ -172,55 +148,20 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				},
 				body: JSON.parse(JSON.stringify(packets)),
 			})
-				.then((response: Response) => response.json())
-				.then((response: Response) => {
-					console.info('Upload success!', response);
-					navigation.navigate('Login');
-				})
-				.catch((error: Error) => {
-					console.log(
-						`Upload failed! ${error}\n${foto}\n${error.message}\n${
-							error.stack
-						}\n${error.name}\n${error.toString()}`
-					);
-
-					console.table(packets);
-				});
-		} else {
-			setMessage('Preencha todos os campos corretamente.');
-		} */
-
-			await axios({
-				method: 'post',
-				url: `${global.API_URL}/api/cadastroCliente`,
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-				},
-				data: JSON.stringify({
-					nomeCliente: name,
-					cpfCliente: cpff,
-					telefoneCliente: cel,
-					senhaCliente: password,
-					fotoCliente: '../../../assets/logo.png',
-					cepCliente: cep,
-					emailCliente: email,
-					ruaCliente: rua,
-					numCasa: numero,
-					bairroCliente: bairro,
-					cidadeCliente: cidade,
-					estadoCliente: estado,
-				}),
-			})
-				.then((response: any): void => {
-					setMessage('')
-
-					console.table(JSON.parse(JSON.stringify(response.data)))
+				.then((response: Response): Promise<JSON> => response.json())
+				.then((response: JSON): void => {
+					console.info('Upload success!', response)
 					navigation.navigate('Login')
 				})
-				.catch((error: any): void =>
-					console.log('ERROR:: ', error.response.data)
-				)
+				.catch((error: Error): void => {
+					console.log(
+						`Upload failed! ${error}\n${foto}\n${error}\n${
+							error.stack
+						}\n${error.name}\n${error.toString()}`
+					)
+
+					console.table(packets)
+				})
 		} else {
 			setMessage('Preencha todos os campos corretamente.')
 		}

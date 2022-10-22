@@ -67,10 +67,6 @@ const Account = ({ navigation }: any): JSX.Element => {
 							}}
 							onClick={() => {
 								navigation.navigate('Register')
-								console.log([
-									global.getToken(),
-									global.getApiUrl(),
-								])
 							}}
 						>
 							Cadastrar-se

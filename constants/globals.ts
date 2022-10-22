@@ -67,40 +67,6 @@ global.setMapsId = (id: string) => (global.MAPS_ID = id)
 global.setMapsToken = (token: string) => (global.GOOGLE_MAPS_APIKEY = token)
 global.setApiUrl = (url: string) => (global.API_URL = url)
 
-/* let creds: ICredentials = {
-	token: global.TOKEN,
-	api_url: global.API_URL,
-	maps: {
-		id: global.MAPS_ID,
-		token: global.GOOGLE_MAPS_APIKEY,
-	},
-}
-
-let map: IMaps = {
-	id: global.MAPS_ID,
-	token: global.GOOGLE_MAPS_APIKEY,
-}
-
-let consts: IConstants = {
-	credentials,
-}
-
-global.constants = consts
-global.credentials = creds
-global.maps = map
-
-// functions
-global.init = () => {
-	global.credentials = {
-		token: global.getToken(),
-		api_url: global.getApiUrl(),
-		maps: {
-			id: global.getMapsId(),
-			token: global.getMapsToken(),
-		},
-	}
-} */
-
 // set global variables
 global.setToken('token123')
 global.setApiUrl('http://127.0.0.1:8000')
