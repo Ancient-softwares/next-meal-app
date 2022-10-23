@@ -10,6 +10,7 @@ declare global {
 	var constants: any
 	var maps: any
 	var credentials: any
+	var user: any
 
 	// getters
 	function getToken(): string
@@ -28,6 +29,9 @@ declare global {
 	function isLogged(): boolean
 	function getCredentials(): any
 	function setCredentials(credentials: any): void
+	function getUser(): any
+	function setUser(user: any): void
+	function logout(): void
 
 	// interfaces
 	interface IMaps {
@@ -52,11 +56,16 @@ declare global {
 	}
 }
 
-// atributos
+// attributes
 global.API_URL = process.env.URL || ''
 global.MAPS_ID = process.env.MAPS_ID || ''
 global.GOOGLE_MAPS_APIKEY = process.env.GOOGLE_MAPS_TOKEN || ''
 global.TOKEN = ''
+global.user = {
+	name: 'Arnaldinho do pneu',
+	email: '',
+	avatar: '',
+}
 
 // getters
 global.getToken = () => global.TOKEN
@@ -76,4 +85,14 @@ global.setMapsId('google-map-script')
 global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
 
 // functions
+global.setUser = (user: any) => (global.user = user)
+global.getUser = () => global.user
 global.isLogged = () => global.TOKEN !== ''
+global.logout = () => {
+	global.setToken('')
+	global.setUser({
+		name: 'Marcelão do pneu',
+		email: '',
+		avatar: '',
+	})
+}

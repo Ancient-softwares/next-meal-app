@@ -10,7 +10,13 @@ import {
 import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
-import { SafeAreaView, ScrollView, Text, View } from 'react-native'
+import {
+	SafeAreaView,
+	ScrollView,
+	Text,
+	TouchableOpacity,
+	View,
+} from 'react-native'
 import '../../../constants/globals'
 import styles from './style'
 
@@ -23,6 +29,16 @@ declare global {
 }
 
 const Account = ({ navigation }: any): JSX.Element => {
+	React.useEffect(() => {
+		navigation.setOptions({
+			headerShown: false,
+		})
+
+		global.getUser()
+
+		console.log(global.getUser())
+	}, [])
+
 	return (
 		<>
 			<SafeAreaView style={styles.container}>
@@ -35,7 +51,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					}}
 				>
 					<ListGroup as='ul'>
-						{!global.isLogged() ? (
+						{global.isLogged() ? (
 							<>
 								<MaterialIcons
 									style={styles.accountIcon}
@@ -91,6 +107,10 @@ const Account = ({ navigation }: any): JSX.Element => {
 									size={64}
 									color='#963333'
 								/>
+
+								<Text style={styles.title}>
+									Olá, {global.user.name}!
+								</Text>
 							</>
 						)}
 
@@ -156,7 +176,9 @@ const Account = ({ navigation }: any): JSX.Element => {
 					</ListGroup>
 					<Text style={styles.subtitle}>Configurações gerais</Text>
 					<ListGroup as='ul'>
-						{!global.isLogged() ? (
+						{global.isLogged() ? (
+							<></>
+						) : (
 							<ListGroup.Item
 								as='li'
 								className='d-flex justify-content-between align-items-start'
@@ -175,8 +197,6 @@ const Account = ({ navigation }: any): JSX.Element => {
 									<div className='fw-bold'>Histórico</div>
 								</div>
 							</ListGroup.Item>
-						) : (
-							<></>
 						)}
 						<ListGroup.Item
 							as='li'
@@ -249,6 +269,46 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</div>
 						</ListGroup.Item>
 					</ListGroup>
+
+					{global.isLogged() ? (
+						<>
+							<Text style={[styles.text, { marginTop: 35 }]}>
+								Copyrights @2022 - Ancient Softwares
+							</Text>
+						</>
+					) : (
+						<>
+							<Text style={styles.subtitle}>Sair</Text>
+							<ListGroup as='ul'>
+								<ListGroup.Item
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10,
+									}}
+								>
+									<TouchableOpacity
+										onPress={() => global.logout()}
+									>
+										<MaterialCommunityIcons
+											name='logout'
+											size={24}
+											color='black'
+										/>
+										<div className='ms-2 me-auto'>
+											<div className='fw-bold'>Sair</div>
+										</div>
+									</TouchableOpacity>
+								</ListGroup.Item>
+							</ListGroup>
+
+							<Text style={[styles.text, { marginTop: 15 }]}>
+								Copyrights @2022 - Ancient Softwares
+							</Text>
+						</>
+					)}
 				</ScrollView>
 			</SafeAreaView>
 		</>
