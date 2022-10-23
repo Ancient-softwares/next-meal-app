@@ -25,6 +25,9 @@ declare global {
 
 	// functions
 	function init(): void
+	function isLogged(): boolean
+	function getCredentials(): any
+	function setCredentials(credentials: any): void
 
 	// interfaces
 	interface IMaps {
@@ -68,7 +71,9 @@ global.setMapsToken = (token: string) => (global.GOOGLE_MAPS_APIKEY = token)
 global.setApiUrl = (url: string) => (global.API_URL = url)
 
 // set global variables
-global.setToken('token123') //http://127.0.0.1:8000/api/getToken 
 global.setApiUrl('http://127.0.0.1:8000')
 global.setMapsId('google-map-script')
 global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
+
+// functions
+global.isLogged = () => global.TOKEN !== ''
