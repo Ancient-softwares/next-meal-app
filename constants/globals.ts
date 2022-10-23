@@ -11,6 +11,7 @@ declare global {
 	var maps: any
 	var credentials: any
 	var user: any
+	var defaultImage: string
 
 	// getters
 	function getToken(): string
@@ -62,10 +63,12 @@ global.MAPS_ID = process.env.MAPS_ID || ''
 global.GOOGLE_MAPS_APIKEY = process.env.GOOGLE_MAPS_TOKEN || ''
 global.TOKEN = ''
 global.user = {
+	id: 1,
 	name: 'Arnaldinho do pneu',
 	email: '',
 	avatar: '',
 }
+global.defaultImage = '../assets/example.jpeg'
 
 // getters
 global.getToken = () => global.TOKEN
