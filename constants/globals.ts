@@ -1,5 +1,4 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
+import 'react-native-gesture-handler'
 
 declare global {
 	// attributes
@@ -12,22 +11,24 @@ declare global {
 	var credentials: any
 	var user: any
 	var defaultImage: string
+	var isLogged: boolean
 
 	// getters
 	function getToken(): string
 	function getMapsId(): string
 	function getMapsToken(): string
 	function getApiUrl(): string
+	function getIsLogged(): boolean
 
 	// setters
 	function setToken(token: string): void
 	function setMapsId(id: string): void
 	function setMapsToken(token: string): void
 	function setApiUrl(url: string): void
+	function setIsLogged(isLogged: boolean): void
 
 	// functions
 	function init(): void
-	function isLogged(): boolean
 	function getCredentials(): any
 	function setCredentials(credentials: any): void
 	function getUser(): any
@@ -58,16 +59,21 @@ declare global {
 }
 
 // attributes
-global.API_URL = process.env.URL || ''
-global.MAPS_ID = process.env.MAPS_ID || ''
-global.GOOGLE_MAPS_APIKEY = process.env.GOOGLE_MAPS_TOKEN || ''
-global.TOKEN = ''
 global.user = {
-	id: 1,
-	name: 'Arnaldinho do pneu',
+	id: 0,
+	name: '',
 	email: '',
 	avatar: '',
+	phone: '',
+	cpf: '',
+	cep: '',
+	address: '',
+	number: '',
+	neighborhood: '',
+	city: '',
+	state: '',
 }
+
 global.defaultImage = '../assets/example.jpeg'
 
 // getters
@@ -90,12 +96,21 @@ global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
 // functions
 global.setUser = (user: any) => (global.user = user)
 global.getUser = () => global.user
-global.isLogged = () => global.TOKEN !== ''
+global.setToken('token')
 global.logout = () => {
 	global.setToken('')
 	global.setUser({
+		id: 0,
 		name: 'Marcelão do pneu',
 		email: '',
 		avatar: '',
+		phone: '',
+		cpf: '',
+		cep: '',
+		address: '',
+		number: '',
+		neighborhood: '',
+		city: '',
+		state: '',
 	})
 }

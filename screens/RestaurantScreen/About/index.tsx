@@ -167,6 +167,41 @@ const AboutScreen = ({
 								style={{ marginTop: 20 }}
 								variant='outline-danger'
 								type='submit'
+								onClick={async () => {
+									await fetch(
+										`${global.API_URL}/api/reserva`,
+										{
+											method: 'post',
+											mode: 'no-cors',
+											headers: {
+												'Content-Type':
+													'application/json',
+												Accept: 'application/json',
+												Autorization: `Bearer ${global.TOKEN}`,
+											},
+											body: JSON.stringify({
+												idCliente: global.user.id,
+												idStatusReserva: 1,
+												idRestaraunte: id,
+												dataReserva: date,
+												numPessoas: people,
+											}),
+										}
+									)
+										.then(
+											(
+												response: Response
+											): Promise<JSON> => response.json()
+										)
+										.then((response: JSON): void => {
+											console.log(response)
+											setMessage(`${response.message}`)
+										})
+										.catch((error: Error): void => {
+											console.log(error)
+											setMessage(`${error.message}`)
+										})
+								}}
 							>
 								<Text
 									style={[

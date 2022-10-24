@@ -29,6 +29,19 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						title: item.nomeRestaurante,
 						type: item.tipoRestaurante,
 						rating: item.notaAvaliacao,
+						image: item.imagemRestaurante,
+						street: item.ruaRestaurante,
+						neighborhood: item.bairroRestaurante,
+						city: item.cidadeRestaurante,
+						state: item.estadoRestaurante,
+						cep: item.cepRestaurante,
+						phone: item.telRestaurante,
+						email: item.emailRestaurante,
+						description: item.descricaoRestaurante,
+						opening: item.horarioAberturaRestaurante,
+						closing: item.horarioFechamentoRestaurante,
+						capacity: item.capacidadeRestaurante,
+						occupation: item.ocupacaoRestaurante,
 					})
 				})
 
@@ -46,17 +59,41 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		title,
 		rating,
 		type,
+		image,
+		street,
+		neighborhood,
+		city,
+		state,
+		cep,
+		phone,
+		email,
+		description,
+		opening,
+		closing,
+		capacity,
+		occupation,
 	}: {
 		id: number
 		title: string
 		rating: number
 		type: string
+		image: string
+		street: string
+		neighborhood: string
+		city: string
+		state: string
+		cep: string
+		phone: string
+		email: string
+		description: string
+		opening: string
+		closing: string
+		capacity: number
+		occupation: number
 	}): JSX.Element => {
 		return (
 			<View>
-				<Card
-					style={styles.card}
-				>
+				<Card style={styles.card}>
 					<Card.Img
 						variant='top'
 						style={styles.cardImg}
@@ -69,33 +106,44 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 							justifyContent: 'flex-start',
 						}}
 					>
-							<hr style={styles.LineCard}/>
+						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
-						<Card.Title>{title}</Card.Title>
-						<Card.Text>
-							Tipo de cozinha: {type || 'Não informado'}
-						</Card.Text>
-						<Card.Text>Nota: {rating || 0} / 5.0</Card.Text>
+							<Card.Title>{title}</Card.Title>
+							<Card.Text>
+								Tipo de cozinha: {type || 'Não informado'}
+							</Card.Text>
+							<Card.Text>Nota: {rating || 0} / 5.0</Card.Text>
 						</View>
 						<View>
-						<Button
-						style={styles.buttonReserv}
-							variant='primary'
-							onClick={() =>
-								navigation.navigate('About', {
-									id: id,
-									title: title,
-									rating: rating,
-									type: type,
-								})
-							}
-						>
-							Reservar
-						</Button>
+							<Button
+								style={styles.buttonReserv}
+								variant='primary'
+								onClick={() =>
+									navigation.navigate('About', {
+										id: id,
+										title: title,
+										rating: rating,
+										type: type,
+										street: street,
+										neighborhood: neighborhood,
+										city: city,
+										state: state,
+										cep: cep,
+										phone: phone,
+										email: email,
+										description: description,
+										opening: opening,
+										closing: closing,
+										capacity: capacity,
+										occupation: occupation,
+									})
+								}
+							>
+								Reservar
+							</Button>
 						</View>
 					</Card.Body>
 				</Card>
-			
 			</View>
 		)
 	}

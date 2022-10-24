@@ -34,9 +34,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 			headerShown: false,
 		})
 
-		global.getUser()
-
-		console.log(global.getUser())
+		console.log('User: ', global.getUser())
 	}, [])
 
 	return (
@@ -51,7 +49,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					}}
 				>
 					<ListGroup as='ul'>
-						{global.isLogged() ? (
+						{!global.isLogged ? (
 							<>
 								<MaterialIcons
 									style={styles.accountIcon}
@@ -176,7 +174,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					</ListGroup>
 					<Text style={styles.subtitle}>Configurações gerais</Text>
 					<ListGroup as='ul'>
-						{global.isLogged() ? (
+						{!global.isLogged ? (
 							<></>
 						) : (
 							<ListGroup.Item
@@ -270,7 +268,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 						</ListGroup.Item>
 					</ListGroup>
 
-					{global.isLogged() ? (
+					{!global.isLogged ? (
 						<>
 							<Text style={[styles.text, { marginTop: 35 }]}>
 								Copyrights @2022 - Ancient Softwares
