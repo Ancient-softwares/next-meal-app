@@ -39,7 +39,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		setFilteredDataSource(DATA)
 		setMasterDataSource(DATA)
 
-		console.table(
+		DATA.push(
 			new Restaurante(
 				{
 					nomeRestaurante: 'teste',
@@ -87,7 +87,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
 							<Card.Title>
-								{restaurante.getNomeRestaurante}
+								{restaurante.getNomeRestaurante ||
+									'Nome do restaurante'}
 							</Card.Title>
 							<Card.Text>
 								Tipo de cozinha:{' '}
@@ -166,7 +167,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			<FlatList
 				data={filteredDataSource}
 				renderItem={renderItem}
-				keyExtractor={(item: JSX.Element) => item.idRestaurante}
+				keyExtractor={(item: Restaurante) => item.idRestaurante}
 				scrollEnabled={true}
 				showsVerticalScrollIndicator={false}
 			/>
