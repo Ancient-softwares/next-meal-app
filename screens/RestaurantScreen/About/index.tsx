@@ -83,14 +83,17 @@ const AboutScreen = ({
 
 	return (
 		<SafeAreaView style={styles.container}>
+				<View style={styles.tecoVermeio
+				}><Text>aaaa</Text></View>
 			<ScrollView>
 				<View style={styles.carousel}>
 					<img
 						src={exampleImage}
 						style={{
-							width: Dimensions.get('window').width * 0.95,
+							width: Dimensions.get('window').width * 0.85,
 							height: Dimensions.get('window').height * 0.3,
-							marginLeft: 10,
+							marginTop:54,
+							marginLeft: 57,
 							marginRight: 10,
 							borderRadius: 10,
 						}}
@@ -104,7 +107,7 @@ const AboutScreen = ({
 						marginTop: '25%',
 					}}
 				>
-					<Stack direction='horizontal' gap={2}>
+					<Stack direction='horizontal' gap={2} style={{marginLeft:96}}>
 						<div className='bg-light'>
 							<img
 								src={exampleImage}
@@ -133,15 +136,18 @@ const AboutScreen = ({
 						alignItems: 'center',
 						justifyContent: 'center',
 						marginBottom: '15%',
+						backgroundColor: '#ffeeee',
+						padding:55,
 					}}
 				>
-					<Form onSubmit={handleSubmit}>
+					<Form onSubmit={handleSubmit} style={styles.formsStyle}>
 						<Form.Group controlId='formBasicDate'>
 							<Form.Label>Data</Form.Label>
 							<Form.Control
 								type='date'
 								placeholder='Data'
 								onChange={(e: any) => setDate(e.target.value)}
+								style={{width: Dimensions.get('window').width * 0.75, }}
 							/>
 						</Form.Group>
 
@@ -164,7 +170,7 @@ const AboutScreen = ({
 							controlId='formBasicSubmit'
 						>
 							<Button
-								style={{ marginTop: 20 }}
+								style={{ marginTop: 20, backgroundColor:'red' }}
 								variant='outline-danger'
 								type='submit'
 								onClick={async () => {
@@ -206,7 +212,7 @@ const AboutScreen = ({
 								<Text
 									style={[
 										styles.subtitle,
-										{ marginRight: 20 },
+										{ marginRight: 20, color:"white" },
 									]}
 								>
 									Reservar
