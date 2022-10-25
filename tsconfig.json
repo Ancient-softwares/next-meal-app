@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "jsx": "react",
-    "target": "es2016",
+    "target": "es2017",
     "module": "commonjs",
+    "allowJs": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "skipLibCheck": true
   },
   "extends": "expo/tsconfig.base"
