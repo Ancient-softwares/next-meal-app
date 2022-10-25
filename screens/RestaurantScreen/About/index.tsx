@@ -3,6 +3,7 @@ import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { Restaurante } from '../../../entities/Restaurante'
 import styles from './style'
 
 const AboutScreen = ({
@@ -17,10 +18,7 @@ const AboutScreen = ({
 	const [date, setDate] = React.useState()
 	const [people, setPeople] = React.useState()
 	const [message, setMessage] = React.useState<string>()
-	const [id, setId] = React.useState<number>()
-	const [title, setTitle] = React.useState<string>()
-	const [rating, setRating] = React.useState<number>()
-	const [type, setType] = React.useState<string>()
+	let restaurante: Restaurante = route.params
 
 	const schema: ObjectSchema<any> = Joi.object({
 		date: Joi.date().required().min('now'),
@@ -30,11 +28,7 @@ const AboutScreen = ({
 	const showInfo = async () => {
 		console.table(route.params)
 
-		// assign values
-		setId(route.params.id)
-		setTitle(route.params.title)
-		setRating(route.params.rating)
-		setType(route.params.type)
+		console.table(restaurante)
 	}
 
 	React.useEffect(() => {
@@ -62,7 +56,7 @@ const AboutScreen = ({
 				body: JSON.stringify({
 					idCliente: global.user.id,
 					idStatusReserva: 1,
-					idRestaraunte: id,
+					idRestaraunte: restaurante.getIdRestaurante,
 					dataReserva: date,
 					numPessoas: people,
 				}),
@@ -83,8 +77,9 @@ const AboutScreen = ({
 
 	return (
 		<SafeAreaView style={styles.container}>
-				<View style={styles.tecoVermeio
-				}><Text>aaaa</Text></View>
+			<View style={styles.tecoVermeio}>
+				<Text>aaaa</Text>
+			</View>
 			<ScrollView>
 				<View style={styles.carousel}>
 					<img
@@ -92,7 +87,7 @@ const AboutScreen = ({
 						style={{
 							width: Dimensions.get('window').width * 0.85,
 							height: Dimensions.get('window').height * 0.3,
-							marginTop:54,
+							marginTop: 54,
 							marginLeft: 57,
 							marginRight: 10,
 							borderRadius: 10,
@@ -107,7 +102,11 @@ const AboutScreen = ({
 						marginTop: '25%',
 					}}
 				>
-					<Stack direction='horizontal' gap={2} style={{marginLeft:96}}>
+					<Stack
+						direction='horizontal'
+						gap={2}
+						style={{ marginLeft: 96 }}
+					>
 						<div className='bg-light'>
 							<img
 								src={exampleImage}
@@ -121,10 +120,13 @@ const AboutScreen = ({
 							/>
 						</div>
 						<div className='bg-light'>
-							<Text style={styles.subtitle}>{title}</Text>
+							<Text style={styles.subtitle}>
+								{restaurante.getNomeRestaurante}
+							</Text>
 							<br />
 							<Text style={styles.description}>
-								{rating} estrelas - {type}
+								{restaurante.getAvaliacaoRestaurante} estrelas -{' '}
+								{restaurante.getTipoRestaurante}
 							</Text>
 						</div>
 					</Stack>
@@ -137,7 +139,7 @@ const AboutScreen = ({
 						justifyContent: 'center',
 						marginBottom: '15%',
 						backgroundColor: '#ffeeee',
-						padding:55,
+						padding: 55,
 					}}
 				>
 					<Form onSubmit={handleSubmit} style={styles.formsStyle}>
@@ -147,7 +149,10 @@ const AboutScreen = ({
 								type='date'
 								placeholder='Data'
 								onChange={(e: any) => setDate(e.target.value)}
-								style={{width: Dimensions.get('window').width * 0.75, }}
+								style={{
+									width:
+										Dimensions.get('window').width * 0.75,
+								}}
 							/>
 						</Form.Group>
 
@@ -170,7 +175,10 @@ const AboutScreen = ({
 							controlId='formBasicSubmit'
 						>
 							<Button
-								style={{ marginTop: 20, backgroundColor:'red' }}
+								style={{
+									marginTop: 20,
+									backgroundColor: 'red',
+								}}
 								variant='outline-danger'
 								type='submit'
 								onClick={async () => {
@@ -188,7 +196,8 @@ const AboutScreen = ({
 											body: JSON.stringify({
 												idCliente: global.user.id,
 												idStatusReserva: 1,
-												idRestaraunte: id,
+												idRestaraunte:
+													restaurante.getIdRestaurante,
 												dataReserva: date,
 												numPessoas: people,
 											}),
@@ -212,7 +221,7 @@ const AboutScreen = ({
 								<Text
 									style={[
 										styles.subtitle,
-										{ marginRight: 20, color:"white" },
+										{ marginRight: 20, color: 'white' },
 									]}
 								>
 									Reservar

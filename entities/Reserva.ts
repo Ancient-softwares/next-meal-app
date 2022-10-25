@@ -1,3 +1,3 @@
-export interface IReserva {
-    
-}
+interface IReserva {}
+
+export class Reserva {}
