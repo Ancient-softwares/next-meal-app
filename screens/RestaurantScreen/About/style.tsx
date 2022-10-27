@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
     title: {
       fontSize: 20,
       fontWeight: 'bold',
+      fontFamily: 'ionicons'
     },
     separator: {
       marginVertical: 30,
@@ -21,8 +22,9 @@ const styles = StyleSheet.create({
     subtitle: {
       marginLeft: 20,
       marginBottom: 5,
-      fontSize: 16,
+      fontSize: 22,
       color: '#963333',
+      fontFamily:'ionicons'
     },
     carousel: {
       flex: 1,
@@ -31,6 +33,7 @@ const styles = StyleSheet.create({
     description: {
       fontSize: 14,
       fontStyle: 'italic',
+      fontFamily:'ionicons',
       color: 'grey',
       marginLeft: 20,
     },
@@ -40,12 +43,15 @@ const styles = StyleSheet.create({
       borderRadius: 30
     },
     formsStyle: {
-      padding:20,
+      padding:20, /*rgb(239 239 239);*/ 
     },
     tecoVermeio: {
       backgroundColor: 'Red',
       width: '100%',
       height: '1vh'
+    },
+    PositionImgRestaurant: {
+      marginLeft: -64
     }
 });
   

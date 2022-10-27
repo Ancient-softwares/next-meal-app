@@ -78,10 +78,9 @@ const AboutScreen = ({
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.tecoVermeio}>
-				<Text>aaaa</Text>
 			</View>
 			<ScrollView>
-				<View style={styles.carousel}>
+				{/* <View style={styles.carousel}>
 					<img
 						src={exampleImage}
 						style={{
@@ -93,13 +92,13 @@ const AboutScreen = ({
 							borderRadius: 10,
 						}}
 					/>
-				</View>
+				</View> */}
 				<View
 					style={{
 						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginTop: '25%',
+						marginTop: '5%',
 					}}
 				>
 					<Stack
@@ -107,26 +106,29 @@ const AboutScreen = ({
 						gap={2}
 						style={{ marginLeft: 96 }}
 					>
-						<div className='bg-light'>
+						<div style={styles.PositionImgRestaurant}>
 							<img
 								src={exampleImage}
 								className='rounded-circle'
 								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
+									width: 100,
+									height: 100,
+									marginLeft: 5,
 									marginRight: 10,
 								}}
 							/>
 						</div>
-						<div className='bg-light'>
+						<div >
 							<Text style={styles.subtitle}>
+								Titulo Restaurante
 								{restaurante.getNomeRestaurante}
 							</Text>
 							<br />
 							<Text style={styles.description}>
-								{restaurante.getAvaliacaoRestaurante} estrelas -{' '}
-								{restaurante.getTipoRestaurante}
+								{restaurante.getAvaliacaoRestaurante} Classificação: {''}★★★★★<br/>
+							</Text>
+							<Text style={styles.description}>
+								Tipo De Culinaria:{restaurante.getTipoRestaurante}
 							</Text>
 						</div>
 					</Stack>
