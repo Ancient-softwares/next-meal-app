@@ -1,16 +1,13 @@
 interface IRestaurante {
 	idRestaurante: number
 	nomeRestaurante: string
-	cnpjRestaurante: string
 	telRestaurante: string
-	loginRestaurante: string
-	senhaRestaurante: string
-	fotoRestaurante: string
 	emailRestaurante: string
 	cepRestaurante: string
 	ruaRestaurante: string
 	numRestaurante: string
 	bairroRestaurante: string
+	fotoRestaurante: string
 	cidadeRestaurante: string
 	estadoRestaurante: string
 	horarioAberturaRestaurante: Date
@@ -25,16 +22,13 @@ interface IRestaurante {
 export class Restaurante {
 	private readonly _idRestaurante: number
 	private readonly _nomeRestaurante: string
-	private readonly _cnpjRestaurante: string
 	private readonly _telRestaurante: string
-	private readonly _loginRestaurante: string
-	private readonly _senhaRestaurante: string
-	private readonly _fotoRestaurante: Blob
 	private readonly _emailRestaurante: string
 	private readonly _cepRestaurante: string
 	private readonly _ruaRestaurante: string
 	private readonly _numRestaurante: string
 	private readonly _bairroRestaurante: string
+	private readonly _fotoRestaurante: string
 	private readonly _cidadeRestaurante: string
 	private readonly _estadoRestaurante: string
 	private readonly _horarioAberturaRestaurante: Date
@@ -50,10 +44,6 @@ export class Restaurante {
 		idRestaurante?: number
 	) {
 		Object.assign(this, props)
-
-		if (!idRestaurante) {
-			this._idRestaurante = Math.random()
-		}
 	}
 
 	public get getIdRestaurante(): number {
@@ -64,23 +54,11 @@ export class Restaurante {
 		return this._nomeRestaurante
 	}
 
-	public get getCnpjRestaurante(): string {
-		return this._cnpjRestaurante
-	}
-
 	public get getTelRestaurante(): string {
 		return this._telRestaurante
 	}
 
-	public get getLoginRestaurante(): string {
-		return this._loginRestaurante
-	}
-
-	public get getSenhaRestaurante(): string {
-		return this._senhaRestaurante
-	}
-
-	public get getFotoRestaurante(): Blob {
+	public get getFotoRestaurante(): string {
 		return this._fotoRestaurante
 	}
 

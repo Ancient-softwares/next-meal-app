@@ -20,12 +20,10 @@
 		"@react-navigation/stack": "^6.3.1",
 		"@types/jest": "^29.1.1",
 		"@types/node": "^18.8.1",
-		"@types/react": "^18.0.21",
-		"@types/react-dom": "^18.0.6",
 		"axios": "^0.27.2",
 		"bootstrap": "^5.2.1",
 		"cpf-cnpj-validator": "^1.0.3",
-		"dotenv": "^16.0.3",
+		"dotenv": "^16.0.2",
 		"expo": "~46.0.9",
 		"expo-status-bar": "~1.4.0",
 		"joi": "^17.6.1",
@@ -45,7 +43,16 @@
 		"typescript": "^4.6.3"
 	},
 	"devDependencies": {
-		"@babel/core": "^7.12.9"
+		"@babel/core": "^7.12.9",
+		"@types/react": "^18.0.24",
+		"@types/react-dom": "^18.0.8",
+		"@types/react-native": "^0.70.6"
+	},
+	"resolutions": {
+		"react-native": "0.69.5",
+		"@types/react": "^18.0.24",
+		"@types/react-dom": "^18.0.8",
+		"@types/react-native": "^0.70.6"
 	},
 	"private": true
 }

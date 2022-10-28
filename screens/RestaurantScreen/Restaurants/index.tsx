@@ -40,32 +40,31 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		setMasterDataSource(DATA)
 
 		DATA.push(
-			new Restaurante(
-				{
-					nomeRestaurante: 'teste',
-					cnpjRestaurante: 'teste',
-					telRestaurante: 'teste',
-					emailRestaurante: 'teste',
-					cepRestaurante: 'teste',
-					cidadeRestaurante: 'teste',
-					estadoRestaurante: 'teste',
-					bairroRestaurante: 'teste',
-					ruaRestaurante: 'teste',
-					numRestaurante: 'teste',
-					loginRestaurante: 'teste',
-					senhaRestaurante: 'teste',
-					horarioAberturaRestaurante: new Date(),
-					horarioFechamentoRestaurante: new Date(),
-					fotoRestaurante: 'teste',
-					descricaoRestaurante: 'teste',
-					avaliacaoRestaurante: 1,
-					capacidadeRestaurante: 1,
-					ocupacaoRestaurante: 1,
-					tipoRestaurante: 'teste',
-				},
-				19
-			)
+			new Restaurante({
+				idRestaurante: 19,
+				nomeRestaurante: 'teste',
+				telRestaurante: 'teste',
+				emailRestaurante: 'teste',
+				cepRestaurante: 'teste',
+				cidadeRestaurante: 'teste',
+				estadoRestaurante: 'teste',
+				bairroRestaurante: 'teste',
+				ruaRestaurante: 'teste',
+				numRestaurante: 'teste',
+				horarioAberturaRestaurante: new Date(),
+				horarioFechamentoRestaurante: new Date(),
+				fotoRestaurante: 'teste',
+				descricaoRestaurante: 'teste',
+				avaliacaoRestaurante: 1,
+				capacidadeRestaurante: 1,
+				ocupacaoRestaurante: 1,
+				tipoRestaurante: 'teste',
+			})
 		)
+
+		DATA.map((item: Restaurante) => {
+			console.log(item)
+		})
 	}, [])
 
 	const Item = (restaurante: Restaurante): JSX.Element => {
