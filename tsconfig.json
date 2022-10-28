@@ -6,6 +6,6 @@
       "es2016",
       "DOM",
     ],
-    "strict": false
+    "strict": false,
   }
 }

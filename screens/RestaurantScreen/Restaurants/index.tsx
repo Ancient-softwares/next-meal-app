@@ -29,45 +29,53 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				})
 
 				console.table(DATA)
+				setFilteredDataSource(DATA)
+				setMasterDataSource(DATA)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
 
 	React.useEffect(() => {
 		getRestaurant()
-
-		setFilteredDataSource(DATA)
-		setMasterDataSource(DATA)
-
-		DATA.push(
-			new Restaurante({
-				idRestaurante: 19,
-				nomeRestaurante: 'teste',
-				telRestaurante: 'teste',
-				emailRestaurante: 'teste',
-				cepRestaurante: 'teste',
-				cidadeRestaurante: 'teste',
-				estadoRestaurante: 'teste',
-				bairroRestaurante: 'teste',
-				ruaRestaurante: 'teste',
-				numRestaurante: 'teste',
-				horarioAberturaRestaurante: new Date(),
-				horarioFechamentoRestaurante: new Date(),
-				fotoRestaurante: 'teste',
-				descricaoRestaurante: 'teste',
-				avaliacaoRestaurante: 1,
-				capacidadeRestaurante: 1,
-				ocupacaoRestaurante: 1,
-				tipoRestaurante: 'teste',
-			})
-		)
-
-		DATA.map((item: Restaurante) => {
-			console.log(item)
-		})
 	}, [])
 
-	const Item = (restaurante: Restaurante): JSX.Element => {
+	const Item = ({
+		nomeRestaurante,
+		descricaoRestaurante,
+		telRestaurante,
+		emailRestaurante,
+		cepRestaurante,
+		ruaRestaurante,
+		numRestaurante,
+		bairroRestaurante,
+		cidadeRestaurante,
+		estadoRestaurante,
+		fotoRestaurante,
+		horarioAberturaRestaurante,
+		horarioFechamentoRestaurante,
+		capacidadeRestaurante,
+		ocupacaoRestaurante,
+		tipoRestaurante,
+		avaliacaoRestaurante,
+	}: {
+		nomeRestaurante: string
+		descricaoRestaurante: string
+		telRestaurante: string
+		emailRestaurante: string
+		cepRestaurante: string
+		ruaRestaurante: string
+		numRestaurante: string
+		bairroRestaurante: string
+		cidadeRestaurante: string
+		estadoRestaurante: string
+		fotoRestaurante: string
+		horarioAberturaRestaurante: string
+		horarioFechamentoRestaurante: string
+		capacidadeRestaurante: string
+		ocupacaoRestaurante: string
+		tipoRestaurante: string
+		avaliacaoRestaurante: number
+	}): JSX.Element => {
 		return (
 			<View>
 				<Card style={styles.card}>
@@ -86,17 +94,14 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
 							<Card.Title>
-								{restaurante.getNomeRestaurante ||
-									'Nome do restaurante'}
+								{nomeRestaurante || 'Nome do restaurante'}
 							</Card.Title>
 							<Card.Text>
 								Tipo de cozinha:{' '}
-								{restaurante.getTipoRestaurante ||
-									'Não informado'}
+								{tipoRestaurante || 'Não informado'}
 							</Card.Text>
 							<Card.Text>
-								Nota: {restaurante.getAvaliacaoRestaurante || 0}{' '}
-								/ 5.0
+								Nota: {avaliacaoRestaurante || 0} / 5.0
 							</Card.Text>
 						</View>
 						<View>
@@ -104,9 +109,25 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 								style={styles.buttonReserv}
 								variant='primary'
 								onClick={() => {
-									console.table(restaurante)
-
-									navigation.navigate('About', restaurante)
+									navigation.navigate('About', {
+										nomeRestaurante,
+										descricaoRestaurante,
+										telRestaurante,
+										emailRestaurante,
+										cepRestaurante,
+										ruaRestaurante,
+										numRestaurante,
+										bairroRestaurante,
+										cidadeRestaurante,
+										estadoRestaurante,
+										fotoRestaurante,
+										horarioAberturaRestaurante,
+										horarioFechamentoRestaurante,
+										capacidadeRestaurante,
+										ocupacaoRestaurante,
+										tipoRestaurante,
+										avaliacaoRestaurante,
+									})
 								}}
 							>
 								Reservar
@@ -118,8 +139,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		)
 	}
 
-	const renderItem = (item: Restaurante): JSX.Element => {
-		return <Item restaurante={item} />
+	const renderItem = (item: any): JSX.Element => {
+		return <Item {...item} />
 	}
 
 	const searchFilterFunction = (text: string) => {
@@ -166,7 +187,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			<FlatList
 				data={filteredDataSource}
 				renderItem={renderItem}
-				keyExtractor={(item: Restaurante) => item.idRestaurante}
+				keyExtractor={(item: any) => item.idRestaurante}
 				scrollEnabled={true}
 				showsVerticalScrollIndicator={false}
 			/>

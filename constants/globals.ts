@@ -10,6 +10,7 @@ declare global {
 	var maps: any
 	var credentials: any
 	var user: any
+	var restaurant: any
 	var defaultImage: string
 	var isLogged: boolean
 
@@ -33,6 +34,8 @@ declare global {
 	function setCredentials(credentials: any): void
 	function getUser(): any
 	function setUser(user: any): void
+	function getRestaurant(): any
+	function setRestaurant(restaurant: any): void
 	function logout(): void
 
 	// interfaces
@@ -74,6 +77,27 @@ global.user = {
 	state: '',
 }
 
+global.restaurant = {
+	id: 0,
+	name: '',
+	email: '',
+	avatar: '',
+	phone: '',
+	city: '',
+	state: '',
+	cep: '',
+	number: '',
+	street: '',
+	neightborhood: '',
+	occupation: '',
+	capacity: '',
+	rating: 0,
+	opening: '',
+	closing: '',
+	description: '',
+	type: '',
+}
+
 global.defaultImage = '../assets/example.jpeg'
 
 // getters
@@ -101,7 +125,7 @@ global.logout = () => {
 	global.setToken('')
 	global.setUser({
 		id: 0,
-		name: 'Marcelão do pneu',
+		name: '',
 		email: '',
 		avatar: '',
 		phone: '',
