@@ -1,40 +1,40 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialIcons, FontAwesome, Ionicons } from '@expo/vector-icons';
+import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { NavigationContainer } from '@react-navigation/native'
+import * as React from 'react'
 
 // telas
-import Home from './screens/HomeScreen';
-import Maps from './screens/MapsScreen';
-import Restaurants from './screens/RestaurantScreen/Restaurants';
-import Profile from './screens/ProfileScreen';
-import About from './screens/RestaurantScreen/About';
+import Home from './screens/HomeScreen'
+import Maps from './screens/MapsScreen'
+import Profile from './screens/ProfileScreen'
+import About from './screens/RestaurantScreen/About'
+import Restaurants from './screens/RestaurantScreen/Restaurants'
 
-const color: string = '#963333';
+const color: string = '#963333'
 
-const Tab: any = createBottomTabNavigator();
+const Tab: any = createBottomTabNavigator()
 
 const App = (): JSX.Element => {
 	return (
 		<NavigationContainer>
 			<Tab.Navigator>
 				<Tab.Screen
-					name="Home"
+					name='Home'
 					component={Home}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
-							<TabBarIcon name="home" size={32} color={color} />
+							<TabBarIcon name='home' size={32} color={color} />
 						),
 						headerShown: false,
 					}}
 				/>
 				<Tab.Screen
-					name="Maps"
+					name='Maps'
 					component={Maps}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<FontAwesome
-								name="map-marker"
+								name='map-marker'
 								size={32}
 								color={color}
 							/>
@@ -43,12 +43,12 @@ const App = (): JSX.Element => {
 					}}
 				/>
 				<Tab.Screen
-					name="Restaurants"
+					name='Restaurants'
 					component={Restaurants}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<Ionicons
-								name="restaurant"
+								name='restaurant'
 								size={32}
 								color={color}
 							/>
@@ -57,7 +57,7 @@ const App = (): JSX.Element => {
 					}}
 				/>
 				<Tab.Screen
-					name="About"
+					name='About'
 					component={About}
 					options={{
 						headerShown: false,
@@ -66,12 +66,12 @@ const App = (): JSX.Element => {
 					}}
 				/>
 				<Tab.Screen
-					name="Profile"
+					name='Profile'
 					component={Profile}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<MaterialIcons
-								name="account-circle"
+								name='account-circle'
 								size={32}
 								color={color}
 							/>
@@ -81,11 +81,11 @@ const App = (): JSX.Element => {
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>
-	);
-};
+	)
+}
 
 const TabBarIcon = (props: React.PropsWithChildren): JSX.Element => {
-	return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
-};
+	return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
+}
 
-export default App;
+export default App

@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios'
 import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
@@ -46,6 +45,30 @@ const AboutScreen = ({
 		return month + '/' + day + '/' + year
 	}
 
+	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
+		event: React.FormEvent<HTMLFormElement>
+	): Promise<void> => {
+		event.preventDefault()
+
+		try {
+			await fetch(`${global.API_URL}/api/bearerTokenTest`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${global.getToken()}`,
+				},
+			})
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json)
+				})
+				.catch((error) => {
+					console.error(error)
+				})
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
 	) => {
@@ -69,8 +92,8 @@ const AboutScreen = ({
 					idCliente: global.user.id,
 					idStatusReserva: 1,
 					idRestaraunte: restaurante.idRestaurante,
-					dataReserva: date,
-					horaReserva: hour + ':00',
+					dataReserva: date.toString(),
+					horaReserva: hour.toString() + ':00',
 					numPessoas: people,
 				}),
 			})
@@ -80,13 +103,13 @@ const AboutScreen = ({
 
 					setMessage('Reserva realizada com sucesso!')
 				})
-				.catch((error: AxiosError<any>): void => {
+				.catch((error: Error): void => {
 					console.log([
 						global.user.id,
 						restaurante.idRestaurante,
 						date,
 						hour + ':00',
-						people,
+						Number.parseInt(people),
 						global.getToken(),
 					])
 
@@ -169,7 +192,7 @@ const AboutScreen = ({
 							<Form.Label>Data</Form.Label>
 							<Form.Control
 								type='date'
-								placeholder='Data'
+								placeholder='Data da reserva'
 								onChange={(e: any) => setDate(e.target.value)}
 								style={{
 									width:
@@ -182,7 +205,7 @@ const AboutScreen = ({
 							<Form.Label>Hora</Form.Label>
 							<Form.Control
 								type='time'
-								placeholder='Hora'
+								placeholder='Hora da reserva'
 								onChange={(e: any) => setHour(e.target.value)}
 							/>
 						</Form.Group>
@@ -191,8 +214,10 @@ const AboutScreen = ({
 							<Form.Label>Pessoas</Form.Label>
 							<Form.Control
 								type='number'
-								placeholder='Pessoas'
-								onChange={(e: any) => setPeople(e.target.value)}
+								placeholder='Número de pessoas'
+								onChange={(e: any) =>
+									setPeople(Number.parseInt(e.target.value))
+								}
 							/>
 						</Form.Group>
 
@@ -205,17 +230,14 @@ const AboutScreen = ({
 							controlId='formBasicSubmit'
 						>
 							<Button
-								style={{
-									marginTop: 20,
-									backgroundColor: 'red',
-								}}
-								variant='outline-danger'
+								variant='primary'
 								type='submit'
-								onClick={(
-									event: React.FormEvent<HTMLFormElement>
-								) => handleSubmit(event)}
+								style={{
+									width:
+										Dimensions.get('window').width * 0.75,
+								}}
 							>
-								Reservar
+								<Text style={styles.subtitle}>Reservar</Text>
 							</Button>
 						</Form.Group>
 					</Form>

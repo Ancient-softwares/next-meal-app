@@ -181,24 +181,34 @@ const Account = ({ navigation }: any): JSX.Element => {
 						{!global.isLogged ? (
 							<></>
 						) : (
-							<ListGroup.Item
-								as='li'
-								className='d-flex justify-content-between align-items-start'
+							<TouchableOpacity
 								style={{
-									border: 'none',
 									marginTop: 10,
 									marginBottom: 10,
 								}}
+								onPress={() => {
+									navigation.navigate('History')
+								}}
 							>
-								<FontAwesome5
-									color='black'
-									name='history'
-									size={24}
-								/>
-								<div className='ms-2 me-auto'>
-									<div className='fw-bold'>Histórico</div>
-								</div>
-							</ListGroup.Item>
+								<ListGroup.Item
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10,
+									}}
+								>
+									<FontAwesome5
+										color='black'
+										name='history'
+										size={24}
+									/>
+									<div className='ms-2 me-auto'>
+										<div className='fw-bold'>Histórico</div>
+									</div>
+								</ListGroup.Item>
+							</TouchableOpacity>
 						)}
 						<ListGroup.Item
 							as='li'

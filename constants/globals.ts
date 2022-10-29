@@ -64,7 +64,7 @@ declare global {
 // attributes
 global.user = {
 	id: 0,
-	name: '',
+	name: 'Visitante',
 	email: '',
 	avatar: '',
 	phone: '',

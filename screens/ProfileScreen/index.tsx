@@ -1,25 +1,26 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack'
+import React from 'react'
 
 // telas
-import RegisterScreen from './RegisterScreen';
-import LoginScreen from './LoginScreen';
-import UserScreen from './UserScreen';
+import HistoryScreen from './HistoryScreen'
+import LoginScreen from './LoginScreen'
+import RegisterScreen from './RegisterScreen'
+import UserScreen from './UserScreen'
 
 const Index = ({ navigation, route }: any): JSX.Element => {
-	const Stack: any = createStackNavigator();
+	const Stack: any = createStackNavigator()
 
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name="Main"
+				name='Main'
 				component={UserScreen}
 				options={{
 					headerShown: false,
 				}}
 			/>
 			<Stack.Screen
-				name="Register"
+				name='Register'
 				component={RegisterScreen}
 				options={{
 					title: 'Cadastro',
@@ -35,7 +36,7 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 				}}
 			/>
 			<Stack.Screen
-				name="Login"
+				name='Login'
 				component={LoginScreen}
 				options={{
 					title: 'Login',
@@ -50,8 +51,24 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 					headerTitleAlign: 'center',
 				}}
 			/>
+			<Stack.Screen
+				name='History'
+				component={HistoryScreen}
+				options={{
+					title: 'Login',
+					headerStyle: {
+						backgroundColor: '#fff',
+					},
+					headerTitleStyle: {
+						fontWeight: 'bold',
+						fontSize: 26,
+						color: '#963333',
+					},
+					headerTitleAlign: 'center',
+				}}
+			/>
 		</Stack.Navigator>
-	);
-};
+	)
+}
 
-export default Index;
+export default Index
