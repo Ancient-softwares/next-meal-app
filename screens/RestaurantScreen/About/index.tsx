@@ -26,8 +26,6 @@ const AboutScreen = ({
 	})
 
 	const showInfo = async () => {
-		console.table(route.params)
-
 		console.table(restaurante)
 	}
 
@@ -77,8 +75,7 @@ const AboutScreen = ({
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.tecoVermeio}>
-			</View>
+			<View style={styles.tecoVermeio}></View>
 			<ScrollView>
 				{/* <View style={styles.carousel}>
 					<img
@@ -118,17 +115,18 @@ const AboutScreen = ({
 								}}
 							/>
 						</div>
-						<div >
+						<div>
 							<Text style={styles.subtitle}>
-								Titulo Restaurante
-								{restaurante.getNomeRestaurante}
+								{restaurante.nomeRestaurante}
 							</Text>
 							<br />
 							<Text style={styles.description}>
-								{restaurante.getAvaliacaoRestaurante} Classificação: {''}★★★★★<br/>
+								{restaurante.rating['']}: Classificação: {''}
+								★★★★★
+								<br />
 							</Text>
 							<Text style={styles.description}>
-								Tipo De Culinaria:{restaurante.getTipoRestaurante}
+								Tipo De Culinaria: {restaurante.tipoRestaurante}
 							</Text>
 						</div>
 					</Stack>

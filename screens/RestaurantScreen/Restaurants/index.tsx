@@ -39,43 +39,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		getRestaurant()
 	}, [])
 
-	const Item = ({
-		nomeRestaurante,
-		descricaoRestaurante,
-		telRestaurante,
-		emailRestaurante,
-		cepRestaurante,
-		ruaRestaurante,
-		numRestaurante,
-		bairroRestaurante,
-		cidadeRestaurante,
-		estadoRestaurante,
-		fotoRestaurante,
-		horarioAberturaRestaurante,
-		horarioFechamentoRestaurante,
-		capacidadeRestaurante,
-		ocupacaoRestaurante,
-		tipoRestaurante,
-		avaliacaoRestaurante,
-	}: {
-		nomeRestaurante: string
-		descricaoRestaurante: string
-		telRestaurante: string
-		emailRestaurante: string
-		cepRestaurante: string
-		ruaRestaurante: string
-		numRestaurante: string
-		bairroRestaurante: string
-		cidadeRestaurante: string
-		estadoRestaurante: string
-		fotoRestaurante: string
-		horarioAberturaRestaurante: string
-		horarioFechamentoRestaurante: string
-		capacidadeRestaurante: string
-		ocupacaoRestaurante: string
-		tipoRestaurante: string
-		avaliacaoRestaurante: number
-	}): JSX.Element => {
+	const Item = (...item: any[]): JSX.Element => {
+		console.log(item[0].item)
+
 		return (
 			<View>
 				<Card style={styles.card}>
@@ -94,14 +60,16 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
 							<Card.Title>
-								{nomeRestaurante || 'Nome do restaurante'}
+								{item[0].item.nomeRestaurante ||
+									'Nome do restaurante'}
 							</Card.Title>
 							<Card.Text>
 								Tipo de cozinha:{' '}
-								{tipoRestaurante || 'Não informado'}
+								{item[0].item.tipoRestaurante ||
+									'Não informado'}
 							</Card.Text>
 							<Card.Text>
-								Nota: {avaliacaoRestaurante || 0} / 5.0
+								Nota: {item[0].item.rating[''] || 0} / 5.0
 							</Card.Text>
 						</View>
 						<View>
@@ -110,23 +78,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 								variant='primary'
 								onClick={() => {
 									navigation.navigate('About', {
-										nomeRestaurante,
-										descricaoRestaurante,
-										telRestaurante,
-										emailRestaurante,
-										cepRestaurante,
-										ruaRestaurante,
-										numRestaurante,
-										bairroRestaurante,
-										cidadeRestaurante,
-										estadoRestaurante,
-										fotoRestaurante,
-										horarioAberturaRestaurante,
-										horarioFechamentoRestaurante,
-										capacidadeRestaurante,
-										ocupacaoRestaurante,
-										tipoRestaurante,
-										avaliacaoRestaurante,
+										...item[0].item,
 									})
 								}}
 							>
