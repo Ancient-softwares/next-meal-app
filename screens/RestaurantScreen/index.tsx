@@ -8,14 +8,6 @@ import Restaurants from './Restaurants'
 const Index = ({ navigation }: any): JSX.Element => {
 	const Stack: any = createStackNavigator()
 
-	React.useEffect(() => {
-		navigation.setOptions({
-			headerShown: false,
-		})
-
-		global.setToken('token')
-	}, [])
-
 	return (
 		<Stack.Navigator initialRouteName='Restaurants'>
 			<Stack.Screen

@@ -191,15 +191,23 @@ const AboutScreen = ({
 												'Content-Type':
 													'application/json',
 												Accept: 'application/json',
-												Autorization: `Bearer ${global.TOKEN}`,
+												Authorization: `Bearer ${global.getToken()}`,
 											},
-											body: JSON.stringify({
+											/* JSON.stringify({
 												idCliente: global.user.id,
 												idStatusReserva: 1,
 												idRestaraunte:
-													restaurante.getIdRestaurante,
+													restaurante.idRestaurante,
 												dataReserva: date,
 												numPessoas: people,
+											}) */
+											body: JSON.stringify({
+												dataReserva: '11/10/2014',
+												horaReserva: '18:00:00',
+												numPessoas: 2,
+												idCliente: 1,
+												idRestaraunte: 1,
+												idStatusReserva: 2,
 											}),
 										}
 									)

@@ -29,12 +29,16 @@ declare global {
 }
 
 const Account = ({ navigation }: any): JSX.Element => {
+	const [isLogged, setIsLogged] = React.useState(false)
+
 	React.useEffect(() => {
 		navigation.setOptions({
 			headerShown: false,
 		})
 
 		console.log('User: ', global.getUser())
+		setIsLogged(global.isLogged)
+		console.log('Is logged: ', isLogged)
 	}, [])
 
 	return (
@@ -49,7 +53,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					}}
 				>
 					<ListGroup as='ul'>
-						{!global.isLogged ? (
+						{!isLogged ? (
 							<>
 								<MaterialIcons
 									style={styles.accountIcon}

@@ -120,7 +120,9 @@ global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
 // functions
 global.setUser = (user: any) => (global.user = user)
 global.getUser = () => global.user
-global.setToken('token')
+global.setToken(
+	'VI8GwtyChKzmmjdBvLS7nAVwPVAMQ328S1Cs5SNilkoVWRa9rCRjpjA4zQKHDGSQKTHTILL0WWM0MiDbxRzmw4x0qHJHpL5LB27TXvIdgW3bKY9LTK4Wcm94rCwjGfyrkQRqJ8K31qj46Q2Br2fronGsIIWPOZaCVgOZUk4eceCdBbIh5g9HJZHN5UAycNmUUdAzSSAA'
+)
 global.logout = () => {
 	global.setToken('')
 	global.setUser({

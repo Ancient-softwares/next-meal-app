@@ -48,41 +48,32 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
 					if (json.status === 200) {
 						global.setToken(response.token)
-						global.setIsLogged(true)
+						global.isLogged = true
 						global.getToken()
 
 						global.setUser({
-							id: json.idCliente,
-							name: json.nomeCliente,
-							email: json.emailCliente,
-							phone: json.telefoneCliente,
-							photo: json.fotoCliente,
-							cep: json.cepCliente,
-							number: json.numeroCliente,
-							neighborhood: json.bairroCliente,
-							city: json.cidadeCliente,
-							state: json.estadoCliente,
+							id: json.data.idCliente,
+							name: json.data.nomeCliente,
+							email: json.data.emailCliente,
+							phone: json.data.telefoneCliente,
+							photo: json.data.fotoCliente,
+							cep: json.data.cepCliente,
+							number: json.data.numCasa,
+							neighborhood: json.data.bairroCliente,
+							city: json.data.cidadeCliente,
+							state: json.data.estadoCliente,
 						})
 
-						console.log(global.getUser())
+						console.table(global.getUser())
+						console.log(global.getToken())
 
 						window.alert('Login realizado com sucesso!')
-
-						{
-							;<Modal
-								title='Login realizado com sucesso!'
-								description='Você será redirecionado para a tela inicial.'
-							/>
-						}
-
 						// navigation.navigate('Home')
 					} else {
 						setMessage(json.message)
 					}
 				})
-				.catch((error) =>
-					console.log('ERROR:: ' + JSON.stringify(error.response))
-				)
+				.catch((error) => console.log('ERROR:: ' + error.message))
 		} else {
 			setMessage('Preencha todos os campos corretamente')
 		}
