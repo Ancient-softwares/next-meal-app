@@ -1,4 +1,4 @@
-import { GoogleMap, useJsApiLoader } from '@react-google-maps/api'
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 import React from 'react'
 import { Text, View } from 'react-native'
 import styles from './style'
@@ -38,7 +38,10 @@ export default function MapsScreen() {
 				onLoad={onLoad}
 				onUnmount={onUnmount}
 			>
-				<></>
+				{/* Child components, such as markers, info windows, etc. */}
+				<>
+					<Marker label={'Teste'} position={center} />
+				</>
 			</GoogleMap>
 		</View>
 	) : (

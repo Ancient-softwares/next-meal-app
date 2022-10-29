@@ -16,7 +16,8 @@ const AboutScreen = ({
 	const exampleImage: string = require('../../../assets/example.jpeg')
 
 	const [date, setDate] = React.useState()
-	const [people, setPeople] = React.useState()
+	const [hour, setHour] = React.useState()
+	const [people, setPeople] = React.useState<number>()
 	const [message, setMessage] = React.useState<string>()
 	let restaurante: Restaurante = route.params
 
@@ -31,7 +32,19 @@ const AboutScreen = ({
 
 	React.useEffect(() => {
 		showInfo()
+
+		console.log(global.getToken())
+		console.table(global.getUser())
+		console.log(global.user.id)
 	}, [])
+
+	const getFormattedDate = (date: Date): string => {
+		let year = date.getFullYear()
+		let month = (1 + date.getMonth()).toString().padStart(2, '0')
+		let day = date.getDate().toString().padStart(2, '0')
+
+		return month + '/' + day + '/' + year
+	}
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -50,12 +63,14 @@ const AboutScreen = ({
 				headers: {
 					'Content-Type': 'application/json',
 					Accept: 'application/json',
+					Authorization: `Bearer ${global.getToken()}`,
 				},
 				body: JSON.stringify({
 					idCliente: global.user.id,
 					idStatusReserva: 1,
-					idRestaraunte: restaurante.getIdRestaurante,
+					idRestaraunte: restaurante.idRestaurante,
 					dataReserva: date,
+					horaReserva: hour + ':00',
 					numPessoas: people,
 				}),
 			})
@@ -66,9 +81,16 @@ const AboutScreen = ({
 					setMessage('Reserva realizada com sucesso!')
 				})
 				.catch((error: AxiosError<any>): void => {
-					setMessage(
-						'Erro ao realizar reserva. Tente novamente mais tarde.'
-					)
+					console.log([
+						global.user.id,
+						restaurante.idRestaurante,
+						date,
+						hour + ':00',
+						people,
+						global.getToken(),
+					])
+
+					console.log('ERR::' + JSON.stringify(error))
 				})
 		}
 	}
@@ -158,12 +180,20 @@ const AboutScreen = ({
 
 						<Form.Group controlId='formBasicHour'>
 							<Form.Label>Hora</Form.Label>
-							<Form.Control type='time' placeholder='Hora' />
+							<Form.Control
+								type='time'
+								placeholder='Hora'
+								onChange={(e: any) => setHour(e.target.value)}
+							/>
 						</Form.Group>
 
 						<Form.Group controlId='formBasicPeople'>
 							<Form.Label>Pessoas</Form.Label>
-							<Form.Control type='number' placeholder='Pessoas' />
+							<Form.Control
+								type='number'
+								placeholder='Pessoas'
+								onChange={(e: any) => setPeople(e.target.value)}
+							/>
 						</Form.Group>
 
 						<Form.Group
@@ -181,59 +211,11 @@ const AboutScreen = ({
 								}}
 								variant='outline-danger'
 								type='submit'
-								onClick={async () => {
-									await fetch(
-										`${global.API_URL}/api/reserva`,
-										{
-											method: 'post',
-											mode: 'no-cors',
-											headers: {
-												'Content-Type':
-													'application/json',
-												Accept: 'application/json',
-												Authorization: `Bearer ${global.getToken()}`,
-											},
-											/* JSON.stringify({
-												idCliente: global.user.id,
-												idStatusReserva: 1,
-												idRestaraunte:
-													restaurante.idRestaurante,
-												dataReserva: date,
-												numPessoas: people,
-											}) */
-											body: JSON.stringify({
-												dataReserva: '11/10/2014',
-												horaReserva: '18:00:00',
-												numPessoas: 2,
-												idCliente: 1,
-												idRestaraunte: 1,
-												idStatusReserva: 2,
-											}),
-										}
-									)
-										.then(
-											(
-												response: Response
-											): Promise<JSON> => response.json()
-										)
-										.then((response: JSON): void => {
-											console.log(response)
-											setMessage(`${response.message}`)
-										})
-										.catch((error: Error): void => {
-											console.log(error)
-											setMessage(`${error.message}`)
-										})
-								}}
+								onClick={(
+									event: React.FormEvent<HTMLFormElement>
+								) => handleSubmit(event)}
 							>
-								<Text
-									style={[
-										styles.subtitle,
-										{ marginRight: 20, color: 'white' },
-									]}
-								>
-									Reservar
-								</Text>
+								Reservar
 							</Button>
 						</Form.Group>
 					</Form>

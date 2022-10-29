@@ -49,7 +49,7 @@ function LoginScreen({ navigation }: { navigation: any }) {
 					if (json.status === 200) {
 						global.setToken(response.token)
 						global.isLogged = true
-						global.getToken()
+						console.log(global.isLogged)
 
 						global.setUser({
 							id: json.data.idCliente,
@@ -68,7 +68,8 @@ function LoginScreen({ navigation }: { navigation: any }) {
 						console.log(global.getToken())
 
 						window.alert('Login realizado com sucesso!')
-						// navigation.navigate('Home')
+
+						navigation.navigate('Home')
 					} else {
 						setMessage(json.message)
 					}
