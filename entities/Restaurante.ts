@@ -20,27 +20,27 @@ interface IRestaurante {
 }
 
 export class Restaurante {
-	private readonly _idRestaurante: number
-	private readonly _nomeRestaurante: string
-	private readonly _telRestaurante: string
-	private readonly _emailRestaurante: string
-	private readonly _cepRestaurante: string
-	private readonly _ruaRestaurante: string
-	private readonly _numRestaurante: string
-	private readonly _bairroRestaurante: string
-	private readonly _fotoRestaurante: string
-	private readonly _cidadeRestaurante: string
-	private readonly _estadoRestaurante: string
-	private readonly _horarioAberturaRestaurante: Date
-	private readonly _horarioFechamentoRestaurante: Date
-	private readonly _capacidadeRestaurante: number
-	private readonly _ocupacaoRestaurante: number
-	private readonly _descricaoRestaurante: string
-	private readonly _tipoRestaurante: string
-	private readonly _avaliacaoRestaurante: number
+	public readonly _idRestaurante: number
+	public readonly _nomeRestaurante: string
+	public readonly _telRestaurante: string
+	public readonly _emailRestaurante: string
+	public readonly _cepRestaurante: string
+	public readonly _ruaRestaurante: string
+	public readonly _numRestaurante: string
+	public readonly _bairroRestaurante: string
+	public readonly _fotoRestaurante: string
+	public readonly _cidadeRestaurante: string
+	public readonly _estadoRestaurante: string
+	public readonly _horarioAberturaRestaurante: Date
+	public readonly _horarioFechamentoRestaurante: Date
+	public readonly _capacidadeRestaurante: number
+	public readonly _ocupacaoRestaurante: number
+	public readonly _descricaoRestaurante: string
+	public readonly _tipoRestaurante: string
+	public readonly _avaliacaoRestaurante: number
 
 	constructor(
-		props: Omit<IRestaurante, 'idRestaurante'>,
+		props: Omit<IRestaurante, "idRestaurante">,
 		idRestaurante?: number
 	) {
 		Object.assign(this, props)

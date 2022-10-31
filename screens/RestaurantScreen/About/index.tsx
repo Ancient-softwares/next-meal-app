@@ -1,8 +1,15 @@
 import Joi, { ObjectSchema } from "joi"
 import React from "react"
 import { Button, Form, Stack } from "react-bootstrap"
-import { Dimensions, SafeAreaView, ScrollView, Text, View } from "react-native"
-import { Restaurante } from "../../../entities/Restaurante"
+import {
+	Dimensions,
+	Modal,
+	Pressable,
+	SafeAreaView,
+	ScrollView,
+	Text,
+	View
+} from "react-native"
 import styles from "./style"
 
 const AboutScreen = ({
@@ -13,16 +20,48 @@ const AboutScreen = ({
 	route: any
 }): JSX.Element => {
 	const exampleImage: string = require("../../../assets/example.jpeg")
-
-	const [date, setDate] = React.useState()
-	const [hour, setHour] = React.useState()
+	const [modalVisible, setModalVisible] = React.useState(false)
+	const [date, setDate] = React.useState<Date>(new Date())
+	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
-	const [message, setMessage] = React.useState<string>()
-	let restaurante: Restaurante = route.params
+	let restaurante: any = route.params
+
+	const ModalRender = ({
+		title,
+		message
+	}: {
+		title: string
+		message: string
+	}) => {
+		return (
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible)
+				}}
+			>
+				<View style={styles.centeredView}>
+					<View style={styles.modalView}>
+						<Text style={styles.modalText}>{title}</Text>
+						<Text style={styles.modalText}>{message}</Text>
+						<Pressable
+							style={[styles.button, styles.buttonClose]}
+							onPress={() => setModalVisible(!modalVisible)}
+						>
+							<Text style={styles.textStyle}>Fechar</Text>
+						</Pressable>
+					</View>
+				</View>
+			</Modal>
+		)
+	}
 
 	const schema: ObjectSchema<any> = Joi.object({
 		date: Joi.date().required().min("now"),
-		people: Joi.number().required().min(1).max(10).integer()
+		people: Joi.number().required().min(1).max(10).integer(),
+		hour: Joi.date().required().min("now")
 	})
 
 	const showInfo = async () => {
@@ -37,21 +76,13 @@ const AboutScreen = ({
 		console.log(global.user.id)
 	}, [])
 
-	const getFormattedDate = (date: Date): string => {
-		let year = date.getFullYear()
-		let month = (1 + date.getMonth()).toString().padStart(2, "0")
-		let day = date.getDate().toString().padStart(2, "0")
-
-		return month + "/" + day + "/" + year
-	}
-
 	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
 	): Promise<void> => {
 		event.preventDefault()
 
 		try {
-			await fetch(`${global.API_URL}/api/reserva3`, {
+			await fetch(`${global.API_URL}/api/reserva`, {
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${global.getToken()}`
@@ -78,18 +109,19 @@ const AboutScreen = ({
 		event.preventDefault()
 
 		const packets = {
-			dataReserva: date,
-			numPessoas: people
+			date: date,
+			hour: hour,
+			people: people
 		}
 
 		if (schema.validate(packets)) {
 			try {
-				await fetch(`http://127.0.0.1:8000/api/reserva3`, {
+				await fetch(`http://127.0.0.1:8000/api/reserva`, {
 					method: "POST",
 					headers: {
 						Accept: "application/json",
 						"Content-Type": "application/json",
-						Authorization: `Bearer 5CgcWLpMJlBv7hZVS70QDaSEiHJ2BMSCM2d7ivnttLklIUbqMKLGoVVRvX5fFOWJt7xOXBmylWVYTRXo84AaXOgAMidqjLjHm5lsfgg5LkPCD15tog5O7UWMVSOxCzDijCvNw7O8LqhiR5s60Tg0vWdq4BNurTJmUIE3Rih2EM84Ozs5Y2ck4T7PKIGeFc9UBnKHntrS`
+						Authorization: `Bearer ${global.getToken()}`
 					},
 					body: JSON.stringify({
 						dataReserva: date.toString(),
@@ -103,6 +135,22 @@ const AboutScreen = ({
 					.then((response) => response.json())
 					.then((json) => {
 						console.log(json)
+
+						if (json.status === 200) {
+							ModalRender({
+								title: "Sucesso",
+								message: json.message
+							})
+
+							window.alert(json.message)
+						} else {
+							ModalRender({
+								title: "Erro",
+								message: json.message
+							})
+
+							window.alert(json.message)
+						}
 					})
 					.catch((error) => {
 						console.error(error)
@@ -117,19 +165,6 @@ const AboutScreen = ({
 		<SafeAreaView style={styles.container}>
 			<View style={styles.tecoVermeio}></View>
 			<ScrollView>
-				{/* <View style={styles.carousel}>
-					<img
-						src={exampleImage}
-						style={{
-							width: Dimensions.get('window').width * 0.85,
-							height: Dimensions.get('window').height * 0.3,
-							marginTop: 54,
-							marginLeft: 57,
-							marginRight: 10,
-							borderRadius: 10,
-						}}
-					/>
-				</View> */}
 				<View
 					style={{
 						flex: 1,
