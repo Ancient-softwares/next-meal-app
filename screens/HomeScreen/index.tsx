@@ -25,7 +25,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 			global.getApiUrl(),
 			global.getMapsId(),
 			global.getMapsToken(),
-			(global.isLogged = true),
+			// (global.isLogged = true),
 		])
 	}, [])
 
