@@ -1,22 +1,22 @@
-import React from 'react'
-import { Carousel, ListGroup } from 'react-bootstrap'
+import React from "react"
+import { Carousel, ListGroup } from "react-bootstrap"
 import {
 	Dimensions,
 	Pressable,
 	SafeAreaView,
 	ScrollView,
 	Text,
-	View,
-} from 'react-native'
-import 'react-native-gesture-handler'
-import '../../constants/globals'
-import styles from './style'
+	View
+} from "react-native"
+import "react-native-gesture-handler"
+import "../../constants/globals"
+import styles from "./style"
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
-	const exampleImage = require('../../assets/example.jpeg')
-	const logo = require('../../assets/logo.png')
+	const exampleImage = require("../../assets/example.jpeg")
+	const logo = require("../../assets/logo.png")
 	function OnPressButton() {
-		alert('Click made!')
+		alert("Click made!")
 	}
 
 	React.useEffect(() => {
@@ -24,7 +24,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 			global.getToken(),
 			global.getApiUrl(),
 			global.getMapsId(),
-			global.getMapsToken(),
+			global.getMapsToken()
 			// (global.isLogged = true),
 		])
 	}, [])
@@ -39,9 +39,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 					<Carousel span={false}>
 						<Carousel.Item interval={6000}>
 							<img
-								className='d-block w-100'
+								className="d-block w-100"
 								src={exampleImage}
-								alt='First slide'
+								alt="First slide"
 								style={styles.carousel}
 							/>
 							<Carousel.Caption>
@@ -50,9 +50,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						</Carousel.Item>
 						<Carousel.Item interval={6000}>
 							<img
-								className='d-block w-100'
+								className="d-block w-100"
 								src={exampleImage}
-								alt='Second slide'
+								alt="Second slide"
 								style={styles.carousel}
 							/>
 
@@ -65,9 +65,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						</Carousel.Item>
 						<Carousel.Item interval={6000}>
 							<img
-								className='d-block w-100'
+								className="d-block w-100"
 								src={exampleImage}
-								alt='Third slide'
+								alt="Third slide"
 								style={styles.carousel}
 							/>
 
@@ -89,8 +89,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 				</View>
 				<View
 					style={{
-						width: 'auto',
-						maxWidth: Dimensions.get('screen').width,
+						width: "auto",
+						maxWidth: Dimensions.get("screen").width
 					}}
 				>
 					<ScrollView
@@ -102,12 +102,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -118,12 +118,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -134,12 +134,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -150,12 +150,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -166,12 +166,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -182,12 +182,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 								<img
 									src={exampleImage}
 									onClick={OnPressButton}
-									className='rounded-circle'
+									className="rounded-circle"
 									style={{
 										width: 90,
 										height: 90,
 										marginLeft: 10,
-										marginRight: 10,
+										marginRight: 10
 									}}
 								/>
 								<Text style={styles.nameCategory}>aa</Text>
@@ -201,101 +201,101 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 					<Text style={styles.description}>
 						Estabelecimentos que você visitou recentemente
 					</Text>
-					<ListGroup as='ul'>
+					<ListGroup as="ul">
 						<ListGroup.Item
 							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
+							as="li"
+							className="d-flex justify-content-between align-items-start"
 							style={{
-								border: 'none',
+								border: "none",
 								marginTop: 10,
-								marginBottom: 10,
+								marginBottom: 10
 							}}
 						>
 							<img
 								src={exampleImage}
-								className='rounded-circle'
+								className="rounded-circle"
 								style={{
 									width: 40,
 									height: 40,
 									marginLeft: 10,
-									marginRight: 10,
+									marginRight: 10
 								}}
 							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Armando</div>
+							<div className="ms-2 me-auto">
+								<div className="fw-bold">Bar do Armando</div>
 							</div>
 						</ListGroup.Item>
 						<ListGroup.Item
-							as='li'
-							className='d-flex justify-content-between align-items-start'
+							as="li"
+							className="d-flex justify-content-between align-items-start"
 							style={{
-								border: 'none',
+								border: "none",
 								marginTop: 10,
-								marginBottom: 10,
+								marginBottom: 10
 							}}
-							onClick={() => navigation.navigate('Restaurant')} //?
+							onClick={() => navigation.navigate("Restaurant")} //?
 						>
 							<img
 								src={exampleImage}
-								className='rounded-circle'
+								className="rounded-circle"
 								style={{
 									width: 40,
 									height: 40,
 									marginLeft: 10,
-									marginRight: 10,
+									marginRight: 10
 								}}
 							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do João</div>
-							</div>
-						</ListGroup.Item>
-						<ListGroup.Item
-							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 10,
-								marginBottom: 10,
-							}}
-						>
-							<img
-								src={exampleImage}
-								className='rounded-circle'
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10,
-								}}
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Zézin</div>
+							<div className="ms-2 me-auto">
+								<div className="fw-bold">Bar do João</div>
 							</div>
 						</ListGroup.Item>
 						<ListGroup.Item
 							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
+							as="li"
+							className="d-flex justify-content-between align-items-start"
 							style={{
-								border: 'none',
+								border: "none",
 								marginTop: 10,
-								marginBottom: 10,
+								marginBottom: 10
 							}}
 						>
 							<img
 								src={exampleImage}
-								className='rounded-circle'
+								className="rounded-circle"
 								style={{
 									width: 40,
 									height: 40,
 									marginLeft: 10,
-									marginRight: 10,
+									marginRight: 10
 								}}
 							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Edinaldo</div>
+							<div className="ms-2 me-auto">
+								<div className="fw-bold">Bar do Zézin</div>
+							</div>
+						</ListGroup.Item>
+						<ListGroup.Item
+							onClick={OnPressButton}
+							as="li"
+							className="d-flex justify-content-between align-items-start"
+							style={{
+								border: "none",
+								marginTop: 10,
+								marginBottom: 10
+							}}
+						>
+							<img
+								src={exampleImage}
+								className="rounded-circle"
+								style={{
+									width: 40,
+									height: 40,
+									marginLeft: 10,
+									marginRight: 10
+								}}
+							/>
+							<div className="ms-2 me-auto">
+								<div className="fw-bold">Bar do Edinaldo</div>
 							</div>
 						</ListGroup.Item>
 					</ListGroup>

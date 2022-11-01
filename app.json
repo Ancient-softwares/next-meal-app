@@ -4,10 +4,10 @@
 		"slug": "next-meal",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/logo.png",
+		"icon": "./assets/favicon.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/logo.png",
+			"image": "./assets/favicon.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -20,12 +20,12 @@
 		},
 		"android": {
 			"adaptiveIcon": {
-				"foregroundImage": "./assets/logo.png",
+				"foregroundImage": "./assets/adaptative-icon.png",
 				"backgroundColor": "#FFFFFF"
 			}
 		},
 		"web": {
-			"favicon": "./assets/logo.png"
+			"favicon": "./assets/favicon.png"
 		}
 	}
 }
