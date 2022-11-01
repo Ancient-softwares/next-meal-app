@@ -151,16 +151,12 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				.then((response: Response): Promise<JSON> => response.json())
 				.then((json: JSON): void => {
 					window.alert("Login feito com sucesso!" + json)
+
 					navigation.navigate("Login")
 				})
-				.catch((error: Error): void => {
-					console.log(
-						`Upload failed! ${error}\n${foto}\n${error}\n${
-							error.stack
-						}\n${error.name}\n${error.toString()}`
-					)
-
-					console.table(packets)
+				.catch((error) => {
+					console.log(error)
+					console.log(JSON.parse(packets))
 				})
 		} else {
 			setMessage("Preencha todos os campos corretamente.")
@@ -388,11 +384,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 						/>
 					</Form.Group>
 
-					<Button
-						variant="outline-danger"
-						type="submit"
-						onClick={() => navigation.navigate("Login")}
-					>
+					<Button variant="outline-danger" type="submit">
 						Registrar-se
 					</Button>
 

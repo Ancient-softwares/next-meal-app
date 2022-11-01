@@ -196,7 +196,7 @@ const AboutScreen = ({
 							</Text>
 							<br />
 							<Text style={styles.description}>
-								{restaurante.rating[""]}: Classificação: {""}
+								{restaurante.notaAvaliacao}: Classificação: {""}
 								★★★★★
 								<br />
 							</Text>
