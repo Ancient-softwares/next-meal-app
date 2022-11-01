@@ -38,7 +38,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 
 		console.log('User: ', global.getUser())
 		setIsLogged(global.isLogged)
-		console.log('Is logged: ', isLogged)
+		console.log('Is logged: ', !isLogged)
 	}, [])
 
 	return (
@@ -178,7 +178,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					</ListGroup>
 					<Text style={styles.subtitle}>Configurações gerais</Text>
 					<ListGroup as='ul'>
-						{!global.isLogged ? (
+						{!isLogged ? (
 							<></>
 						) : (
 							<TouchableOpacity

@@ -57,12 +57,12 @@ const App = (): JSX.Element => {
 					}}
 				/>
 				<Tab.Screen
-					name="About1"
+					name="About"
 					component={About}
 					options={{
-						headerShown: false,
+						headerShown: true,
 						tabBarButton: (): React.ReactNode => null,
-						TabBarVisible: false
+						TabBarVisible: true
 					}}
 				/>
 				<Tab.Screen

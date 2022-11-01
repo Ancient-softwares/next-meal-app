@@ -64,7 +64,7 @@ declare global {
 // attributes
 global.user = {
 	id: 0,
-	name: 'Visitante',
+	name: 'Armandinho do pneu',
 	email: '',
 	avatar: '',
 	phone: '',
@@ -139,4 +139,6 @@ global.logout = () => {
 		city: '',
 		state: '',
 	})
+
+	global.isLogged = false
 }
