@@ -1,16 +1,16 @@
-import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer } from '@react-navigation/native'
-import * as React from 'react'
+import { FontAwesome, Ionicons, MaterialIcons } from "@expo/vector-icons"
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { NavigationContainer } from "@react-navigation/native"
+import * as React from "react"
 
 // telas
-import Home from './screens/HomeScreen'
-import Maps from './screens/MapsScreen'
-import Profile from './screens/ProfileScreen'
-import About from './screens/RestaurantScreen/About'
-import Restaurants from './screens/RestaurantScreen/Restaurants'
+import Home from "./screens/HomeScreen"
+import Maps from "./screens/MapsScreen"
+import Profile from "./screens/ProfileScreen"
+import About from "./screens/RestaurantScreen/About"
+import Restaurants from "./screens/RestaurantScreen/Restaurants"
 
-const color: string = '#963333'
+const color: string = "#963333"
 
 const Tab: any = createBottomTabNavigator()
 
@@ -19,64 +19,64 @@ const App = (): JSX.Element => {
 		<NavigationContainer>
 			<Tab.Navigator>
 				<Tab.Screen
-					name='Home'
+					name="Home"
 					component={Home}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
-							<TabBarIcon name='home' size={32} color={color} />
+							<TabBarIcon name="home" size={32} color={color} />
 						),
-						headerShown: false,
+						headerShown: false
 					}}
 				/>
 				<Tab.Screen
-					name='Maps'
+					name="Maps"
 					component={Maps}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<FontAwesome
-								name='map-marker'
+								name="map-marker"
 								size={32}
 								color={color}
 							/>
 						),
-						headerShown: false,
+						headerShown: false
 					}}
 				/>
 				<Tab.Screen
-					name='Restaurants'
+					name="Restaurants"
 					component={Restaurants}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<Ionicons
-								name='restaurant'
+								name="restaurant"
 								size={32}
 								color={color}
 							/>
 						),
-						headerShown: false,
+						headerShown: false
 					}}
 				/>
 				<Tab.Screen
-					name='About'
+					name="About1"
 					component={About}
 					options={{
 						headerShown: false,
 						tabBarButton: (): React.ReactNode => null,
-						TabBarVisible: false,
+						TabBarVisible: false
 					}}
 				/>
 				<Tab.Screen
-					name='Profile'
+					name="Profile"
 					component={Profile}
 					options={{
 						tabBarIcon: ({ color }: any): React.ReactNode => (
 							<MaterialIcons
-								name='account-circle'
+								name="account-circle"
 								size={32}
 								color={color}
 							/>
 						),
-						headerShown: false,
+						headerShown: false
 					}}
 				/>
 			</Tab.Navigator>
