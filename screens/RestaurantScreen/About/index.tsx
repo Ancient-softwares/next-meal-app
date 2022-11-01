@@ -210,65 +210,228 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "center",
-						justifyContent: "center",
-						marginBottom: "15%",
-						backgroundColor: "#ffeeee",
-						padding: 55
+						alignItems: "flex-start",
+						justifyContent: "flex-start",
+						marginHorizontal: "10%",
+						marginBottom: "5%",
+						marginTop: "-15.5%"
 					}}
 				>
-					<Form onSubmit={handleSubmit} style={styles.formsStyle}>
-						<Form.Group controlId="formBasicDate">
-							<Form.Label>Data</Form.Label>
-							<Form.Control
-								type="date"
-								placeholder="Data da reserva"
-								onChange={(e: any) => setDate(e.target.value)}
-								style={{
-									width: Dimensions.get("window").width * 0.75
-								}}
-							/>
-						</Form.Group>
+					<Text style={styles.subtitle}>Descrição</Text>
 
-						<Form.Group controlId="formBasicHour">
-							<Form.Label>Hora</Form.Label>
-							<Form.Control
-								type="time"
-								placeholder="Hora da reserva"
-								onChange={(e: any) => setHour(e.target.value)}
-							/>
-						</Form.Group>
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "5%"
+							}
+						]}
+					>
+						{restaurante.descricaoRestaurante}
+					</Text>
+				</View>
 
-						<Form.Group controlId="formBasicPeople">
-							<Form.Label>Pessoas</Form.Label>
-							<Form.Control
-								type="number"
-								placeholder="Número de pessoas"
-								onChange={(e: any) =>
-									setPeople(Number.parseInt(e.target.value))
+				<View
+					style={{
+						flex: 1,
+						alignItems: "flex-start",
+						justifyContent: "flex-start",
+						marginHorizontal: "10%",
+						marginTop: "5%"
+					}}
+				>
+					<Text style={styles.subtitle}>Contato</Text>
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "5%"
+							}
+						]}
+					>
+						Telefone: {restaurante.telRestaurante}
+					</Text>
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "7.5%"
+							}
+						]}
+					>
+						Email: {restaurante.emailRestaurante}
+					</Text>
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "7.5%"
+							}
+						]}
+					>
+						Endereço: {restaurante.ruaRestaurante} -{" "}
+						{restaurante.bairroRestaurante}
+					</Text>
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "10%"
+							}
+						]}
+					>
+						Cidade: {restaurante.cidadeRestaurante} /{" "}
+						{restaurante.estadoRestaurante}
+					</Text>
+				</View>
+
+				<View
+					style={{
+						flex: 1,
+						alignItems: "flex-start",
+						justifyContent: "flex-start",
+						marginHorizontal: "10%",
+						marginTop: "10%"
+					}}
+				>
+					<Text style={styles.subtitle}>Horários do restaurante</Text>
+
+					<Text
+						style={[
+							styles.description,
+							{
+								textAlign: "justify",
+								marginTop: "5%"
+							}
+						]}
+					>
+						Segunda-feira: {restaurante.horarioAberturaRestaurante}{" "}
+						- {restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Terça-feira: {
+							restaurante.horarioAberturaRestaurante
+						} - {restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Quarta-feira: {
+							restaurante.horarioAberturaRestaurante
+						} - {restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Quinta-feira: {
+							restaurante.horarioAberturaRestaurante
+						} - {restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Sexta-feira: {
+							restaurante.horarioAberturaRestaurante
+						} - {restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Sábado: {restaurante.horarioAberturaRestaurante} -{" "}
+						{restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
+						Domingo: {restaurante.horarioAberturaRestaurante} -{" "}
+						{restaurante.horarioFechamentoRestaurante}
+					</Text>
+				</View>
+
+				<View
+					style={{
+						flex: 1,
+						alignItems: "flex-start",
+						justifyContent: "flex-start",
+						marginHorizontal: "10%",
+						marginTop: "15%"
+					}}
+				>
+					<View
+						style={{
+							flex: 1,
+							alignItems: "flex-start",
+							justifyContent: "flex-start"
+						}}
+					>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: "justify"
 								}
-							/>
-						</Form.Group>
-
-						<Form.Group
-							style={{
-								display: "flex",
-								justifyContent: "center",
-								alignItems: "center"
-							}}
-							controlId="formBasicSubmit"
+							]}
 						>
-							<Button
-								variant="primary"
-								type="submit"
+							Agendar reserva
+						</Text>
+
+						<Form onSubmit={handleSubmit} style={styles.formsStyle}>
+							<Form.Group controlId="formBasicDate">
+								<Form.Label>Data</Form.Label>
+								<Form.Control
+									type="date"
+									placeholder="Data da reserva"
+									onChange={(e: any) =>
+										setDate(e.target.value)
+									}
+									style={{
+										width:
+											Dimensions.get("window").width *
+											0.75
+									}}
+								/>
+							</Form.Group>
+
+							<Form.Group controlId="formBasicHour">
+								<Form.Label>Hora</Form.Label>
+								<Form.Control
+									type="time"
+									placeholder="Hora da reserva"
+									onChange={(e: any) =>
+										setHour(e.target.value)
+									}
+								/>
+							</Form.Group>
+
+							<Form.Group controlId="formBasicPeople">
+								<Form.Label>Pessoas</Form.Label>
+								<Form.Control
+									type="number"
+									placeholder="Número de pessoas"
+									onChange={(e: any) =>
+										setPeople(
+											Number.parseInt(e.target.value)
+										)
+									}
+								/>
+							</Form.Group>
+
+							<Form.Group
 								style={{
-									width: Dimensions.get("window").width * 0.75
+									display: "flex",
+									justifyContent: "center",
+									alignItems: "center",
+									marginTop: 20
 								}}
+								controlId="formBasicSubmit"
 							>
-								<Text style={styles.subtitle}>Reservar</Text>
-							</Button>
-						</Form.Group>
-					</Form>
+								<Button
+									variant="danger"
+									type="submit"
+									style={styles.button}
+								>
+									<Text style={{ color: "#fff" }}>
+										Reservar
+									</Text>
+								</Button>
+							</Form.Group>
+						</Form>
+					</View>
 				</View>
 			</ScrollView>
 		</SafeAreaView>
