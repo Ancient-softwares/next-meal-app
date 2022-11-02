@@ -3,6 +3,7 @@ import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 import {
 	Dimensions,
+	FlatList,
 	Modal,
 	Pressable,
 	SafeAreaView,
@@ -24,7 +25,13 @@ const AboutScreen = ({
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
-	let restaurante: any = route.params
+	const restaurante: any = route.params
+	const [pratos, setPratos] = React.useState<any[]>([])
+
+	React.useEffect(() => {
+		showInfo()
+		fetchPlates()
+	}, [])
 
 	const ModalRender = ({
 		title,
@@ -68,13 +75,40 @@ const AboutScreen = ({
 		console.table(restaurante)
 	}
 
-	React.useEffect(() => {
-		showInfo()
+	const fetchPlates = async () => {
+		await fetch(`${global.getApiUrl()}/api/getPratosByRestaurante`, {
+			method: 'post',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				idRestaurante: restaurante.idRestaurante
+			})
+		})
+			.then((response: any): Promise<JSON> => response.json())
+			.then((json: any): void => {
+				json.forEach((element: any) => {
+					pratos.push(element)
+				})
 
-		console.log(global.getToken())
-		console.table(global.getUser())
-		console.log(global.user.id)
-	}, [])
+				console.log(pratos)
+				console.log(pratos[0])
+			})
+			.catch((err: Error): void => console.error(err))
+	}
+
+	const renderPratos = (item: any): JSX.Element => {
+		console.log(item)
+
+		return (
+			<>
+				<Text style={styles.title}>{item.nomePrato}</Text>
+				<Text style={styles.description}>{item.tipoPrato}</Text>
+				<Text style={styles.modalText}>R$ {item.valorPrato}</Text>
+			</>
+		)
+	}
 
 	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -344,7 +378,18 @@ const AboutScreen = ({
 				>
 					<Text style={styles.subtitle}>Pratos</Text>
 					<View style={{ marginLeft: '6%', marginTop: '2.5%' }}>
-						{restaurante.nomePrato} - R$ {restaurante.valorPrato}
+						<FlatList
+							data={pratos}
+							keyExtractor={(item) => item.idPrato}
+							renderItem={renderPratos}
+						/>
+						{pratos.length === 0 ? (
+							<Text style={styles.description}>
+								Nenhum prato cadastrado
+							</Text>
+						) : (
+							console.log(pratos)
+						)}
 					</View>
 				</View>
 

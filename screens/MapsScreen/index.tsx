@@ -1,7 +1,7 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api"
-import React from "react"
-import { ActivityIndicator, View } from "react-native"
-import styles from "./style"
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
+import React from 'react'
+import { ActivityIndicator, View } from 'react-native'
+import styles from './style'
 
 export default function MapsScreen() {
 	const data: Array<Object> = Array()
@@ -20,6 +20,14 @@ export default function MapsScreen() {
 		const bounds = new window.google.maps.LatLngBounds(center)
 		map.fitBounds(bounds)
 		setMap(map)
+
+		data.forEach((item: any) => {
+			const marker = new window.google.maps.Marker({
+				position: item.position,
+				map,
+				title: item.title
+			})
+		})
 	}, [])
 
 	const onUnmount = React.useCallback(function callback(map: any) {
@@ -28,17 +36,17 @@ export default function MapsScreen() {
 
 	const fetchRestaurants = async () => {
 		await fetch(`${global.getApiUrl()}/api/restaurantes`, {
-			method: "GET",
+			method: 'GET',
 			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json"
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
 			}
 		})
 			.then((response) => response.json())
 			.then((json) => {
 				console.table(json)
 
-				json.forEach((element: any) => {
+				/* json.forEach((element: any) => {
 					data.push({
 						id: element.idRestaurante,
 						name: element.nomeRestaurante,
@@ -50,6 +58,18 @@ export default function MapsScreen() {
 					})
 
 					getLatLong(element.cep, element.id)
+				}) */
+
+				Object.keys(json).forEach((key: string) => {
+					data.push({
+						id: json[key].idRestaurante,
+						name: json[key].nomeRestaurante,
+						cep: json[key].cepRestaurante,
+						bairro: json[key].bairroRestaurante,
+						cidade: json[key].cidadeRestaurante,
+						estado: json[key].estadoRestaurante,
+						country: 'Brasil'
+					})
 				})
 
 				console.table(data)
@@ -81,8 +101,8 @@ export default function MapsScreen() {
 		<View style={styles.container}>
 			<GoogleMap
 				mapContainerStyle={{
-					width: "100%",
-					height: "100%"
+					width: '100%',
+					height: '100%'
 				}}
 				center={center}
 				zoom={10}
@@ -94,26 +114,36 @@ export default function MapsScreen() {
 					const marker = new global.google.maps.Marker({
 						position: e.latLng,
 						map: map,
-						title: "Hello World!"
+						title: 'Hello World!'
 					})
 
 					const infoWindow = new google.maps.InfoWindow()
 
-					marker.addListener("click", ({ domEvent, latLng }) => {
+					marker.addListener('click', ({ domEvent, latLng }) => {
 						const { target } = domEvent
 
 						infoWindow.close()
-						infoWindow.setContent("Hello World!")
+						infoWindow.setContent('Hello World!')
 						infoWindow.open(map, marker)
 					})
 				}}
+				{...data.map((item: any) => () => (
+					<Marker
+						key={item.id}
+						position={{
+							lat: item.lat,
+							lng: item.lng
+						}}
+						title={item.name}
+					/>
+				))}
 			>
 				{/* Child components, such as markers, info windows, etc. */}
 				<>
 					<Marker
-						label={"Teste"}
+						label={'Teste'}
 						position={center}
-						onClick={() => window.alert("teste")}
+						onClick={() => window.alert('teste')}
 					/>
 				</>
 			</GoogleMap>
@@ -122,8 +152,8 @@ export default function MapsScreen() {
 		<ActivityIndicator
 			style={{
 				flex: 1,
-				justifyContent: "center",
-				alignItems: "center"
+				justifyContent: 'center',
+				alignItems: 'center'
 			}}
 		/>
 	)

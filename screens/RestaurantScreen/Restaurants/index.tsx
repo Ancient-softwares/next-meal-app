@@ -1,24 +1,25 @@
-import React from "react"
-import { Button, Card } from "react-bootstrap"
-import { FlatList, SafeAreaView, View } from "react-native"
-import { SearchBar } from "react-native-elements"
-import styles from "./style"
+import React from 'react'
+import { Button, Card } from 'react-bootstrap'
+import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native'
+import { SearchBar } from 'react-native-elements'
+import styles from './style'
 
 const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	const DATA: Array<Object> = Array<any>()
-	const [search, setSearch] = React.useState<string>("")
+	const [search, setSearch] = React.useState<string>('')
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
 	>([])
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
+	const [isLoading, setLoading] = React.useState<boolean>(true)
 
 	const getRestaurant = async () => {
-		await fetch("http://localhost:8000/api/restaurantes", {
-			method: "get",
+		await fetch('http://localhost:8000/api/restaurantes', {
+			method: 'get',
 			headers: {
-				"Content-Type": "application/json",
-				Accept: "application/json"
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
 			}
 		})
 			.then((response: any): Promise<JSON> => response.json())
@@ -30,6 +31,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				console.table(DATA)
 				setFilteredDataSource(DATA)
 				setMasterDataSource(DATA)
+				setLoading(false)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
@@ -45,27 +47,27 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			<View>
 				<Card style={styles.card}>
 					<Card.Img
-						variant="top"
+						variant='top'
 						style={styles.cardImg}
-						src={require("../../../assets/example.jpeg")}
+						src={require('../../../assets/example.jpeg')}
 					/>
 					<Card.Body
 						style={{
 							flex: 1,
-							alignItems: "flex-start",
-							justifyContent: "flex-start"
+							alignItems: 'flex-start',
+							justifyContent: 'flex-start'
 						}}
 					>
 						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
 							<Card.Title>
 								{item[0].item.nomeRestaurante ||
-									"Nome do restaurante"}
+									'Nome do restaurante'}
 							</Card.Title>
 							<Card.Text>
-								Tipo de cozinha:{" "}
+								Tipo de cozinha:{' '}
 								{item[0].item.tipoRestaurante ||
-									"Não informado"}
+									'Não informado'}
 							</Card.Text>
 							<Card.Text>
 								Nota: {item[0].item.notaAvaliacao || 0} / 5.0
@@ -74,9 +76,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<View>
 							<Button
 								style={styles.buttonReserv}
-								variant="primary"
+								variant='primary'
 								onClick={() => {
-									navigation.navigate("About", {
+									navigation.navigate('About', {
 										...item[0].item
 									})
 								}}
@@ -103,7 +105,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				// Applying filter for the inserted text in search bar
 				const itemData = item.title
 					? item.title.toUpperCase()
-					: "".toUpperCase()
+					: ''.toUpperCase()
 
 				const textData = text.toUpperCase()
 
@@ -121,27 +123,35 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<SearchBar
-				placeholder="Pesquisar restaurantes..."
-				lightTheme
-				platform="android"
-				round
-				value={search}
-				onChangeText={(text: string) => searchFilterFunction(text)}
-				autoCorrect={false}
-				blurOnSubmit={true}
-				autoFocus={true}
-				style={{
-					width: "72vw"
-				}}
-			/>
-			<FlatList
-				data={filteredDataSource}
-				renderItem={renderItem}
-				keyExtractor={(item: any) => item.idRestaurante}
-				scrollEnabled={true}
-				showsVerticalScrollIndicator={false}
-			/>
+			{!isLoading ? (
+				<>
+					<SearchBar
+						placeholder='Pesquisar restaurantes...'
+						lightTheme
+						platform='android'
+						round
+						value={search}
+						onChangeText={(text: string) =>
+							searchFilterFunction(text)
+						}
+						autoCorrect={false}
+						blurOnSubmit={true}
+						autoFocus={true}
+						style={{
+							width: '72vw'
+						}}
+					/>
+					<FlatList
+						data={filteredDataSource}
+						renderItem={renderItem}
+						keyExtractor={(item: any) => item.idRestaurante}
+						scrollEnabled={true}
+						showsVerticalScrollIndicator={false}
+					/>
+				</>
+			) : (
+				<ActivityIndicator size='large' color='red' />
+			)}
 		</SafeAreaView>
 	)
 }

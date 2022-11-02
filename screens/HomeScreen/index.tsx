@@ -1,32 +1,79 @@
-import React from "react"
-import { Carousel, ListGroup } from "react-bootstrap"
+import React from 'react'
+import { Carousel, ListGroup } from 'react-bootstrap'
 import {
 	Dimensions,
+	FlatList,
 	Pressable,
 	SafeAreaView,
 	ScrollView,
 	Text,
 	View
-} from "react-native"
-import "react-native-gesture-handler"
-import "../../constants/globals"
-import styles from "./style"
+} from 'react-native'
+import 'react-native-gesture-handler'
+import '../../constants/globals'
+import styles from './style'
 
-const HomeScreen = ({ navigation }: { navigation: any }) => {
-	const exampleImage = require("../../assets/example.jpeg")
-	const logo = require("../../assets/logo.png")
+const HomeScreen = ({ navigation }: any): JSX.Element => {
+	const exampleImage = require('../../assets/example.jpeg')
+	const DATA: Array<Object> = Array<any>()
+	const [filteredDataSource, setFilteredDataSource] = React.useState<
+		Array<Object>
+	>([])
+	const [masterDataSource, setMasterDataSource] =
+		React.useState<Array<Object>>(DATA)
+
+	const getRestaurant = async () => {
+		await fetch('http://localhost:8000/api/restaurantes', {
+			method: 'get',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			}
+		})
+			.then((response: any): Promise<JSON> => response.json())
+			.then((json: any): void => {
+				Object.keys(json).forEach((key: string) => {
+					DATA.push(json[key])
+				})
+
+				console.table(DATA)
+				setFilteredDataSource(DATA)
+				setMasterDataSource(DATA)
+			})
+			.catch((err: Error): void => console.error(err))
+	}
+
+	const Item = (...item: any[]): JSX.Element => {
+		console.log(item[0])
+		return (
+			<View style={styles.spaceCategory}>
+				<img
+					src={exampleImage}
+					onClick={OnPressButton}
+					className='rounded-circle'
+					style={{
+						width: 90,
+						height: 90,
+						marginLeft: 10,
+						marginRight: 10
+					}}
+				/>
+				<Text style={styles.nameCategory}>
+					{item[0].item.tipoRestaurante || 'did not return'}
+				</Text>
+			</View>
+		)
+	}
+	const renderItem = (item: any): JSX.Element => {
+		return <Item {...item} />
+	}
+
 	function OnPressButton() {
-		alert("Click made!")
+		alert('Click madae!')
 	}
 
 	React.useEffect(() => {
-		console.log([
-			global.getToken(),
-			global.getApiUrl(),
-			global.getMapsId(),
-			global.getMapsToken()
-			// (global.isLogged = true),
-		])
+		console.log([getRestaurant()])
 	}, [])
 
 	return (
@@ -36,12 +83,12 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 					
 				</View> */}
 				<View style={styles.carousel}>
-					<Carousel span={false}>
+					<Carousel>
 						<Carousel.Item interval={6000}>
 							<img
-								className="d-block w-100"
+								className='d-block w-100'
 								src={exampleImage}
-								alt="First slide"
+								alt='First slide'
 								style={styles.carousel}
 							/>
 							<Carousel.Caption>
@@ -50,9 +97,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						</Carousel.Item>
 						<Carousel.Item interval={6000}>
 							<img
-								className="d-block w-100"
+								className='d-block w-100'
 								src={exampleImage}
-								alt="Second slide"
+								alt='Second slide'
 								style={styles.carousel}
 							/>
 
@@ -65,9 +112,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 						</Carousel.Item>
 						<Carousel.Item interval={6000}>
 							<img
-								className="d-block w-100"
+								className='d-block w-100'
 								src={exampleImage}
-								alt="Third slide"
+								alt='Third slide'
 								style={styles.carousel}
 							/>
 
@@ -89,20 +136,29 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 				</View>
 				<View
 					style={{
-						width: "auto",
-						maxWidth: Dimensions.get("screen").width
+						width: 'auto',
+						maxWidth: Dimensions.get('screen').width
 					}}
 				>
 					<ScrollView
 						horizontal={true}
 						showsHorizontalScrollIndicator={false}
 					>
+						<FlatList
+							data={filteredDataSource}
+							renderItem={renderItem}
+							keyExtractor={(item: any) => item.idRestaurante}
+							scrollEnabled={true}
+							horizontal={true}
+							showsVerticalScrollIndicator={false}
+						/>
+						{/* Pressable só pra deixar com espaço */}
 						<Pressable>
 							<View style={styles.spaceCategory}>
 								<img
 									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
+									onClick={Item}
+									className='rounded-circle'
 									style={{
 										width: 90,
 										height: 90,
@@ -110,15 +166,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10
 									}}
 								/>
-								<Text style={styles.nameCategory}>aa</Text>
+								<Text style={styles.nameCategory}>
+									Categoria
+								</Text>
 							</View>
 						</Pressable>
 						<Pressable>
 							<View style={styles.spaceCategory}>
 								<img
 									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
+									onClick={Item}
+									className='rounded-circle'
 									style={{
 										width: 90,
 										height: 90,
@@ -126,15 +184,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10
 									}}
 								/>
-								<Text style={styles.nameCategory}>aa</Text>
+								<Text style={styles.nameCategory}>
+									Categoria
+								</Text>
 							</View>
 						</Pressable>
 						<Pressable>
 							<View style={styles.spaceCategory}>
 								<img
 									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
+									onClick={Item}
+									className='rounded-circle'
 									style={{
 										width: 90,
 										height: 90,
@@ -142,15 +202,17 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10
 									}}
 								/>
-								<Text style={styles.nameCategory}>aa</Text>
+								<Text style={styles.nameCategory}>
+									Categoria
+								</Text>
 							</View>
 						</Pressable>
 						<Pressable>
 							<View style={styles.spaceCategory}>
 								<img
 									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
+									onClick={Item}
+									className='rounded-circle'
 									style={{
 										width: 90,
 										height: 90,
@@ -158,39 +220,9 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 										marginRight: 10
 									}}
 								/>
-								<Text style={styles.nameCategory}>aa</Text>
-							</View>
-						</Pressable>
-						<Pressable>
-							<View style={styles.spaceCategory}>
-								<img
-									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
-									style={{
-										width: 90,
-										height: 90,
-										marginLeft: 10,
-										marginRight: 10
-									}}
-								/>
-								<Text style={styles.nameCategory}>aa</Text>
-							</View>
-						</Pressable>
-						<Pressable>
-							<View style={styles.spaceCategory}>
-								<img
-									src={exampleImage}
-									onClick={OnPressButton}
-									className="rounded-circle"
-									style={{
-										width: 90,
-										height: 90,
-										marginLeft: 10,
-										marginRight: 10
-									}}
-								/>
-								<Text style={styles.nameCategory}>aa</Text>
+								<Text style={styles.nameCategory}>
+									Categoria
+								</Text>
 							</View>
 						</Pressable>
 					</ScrollView>
@@ -201,20 +233,20 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 					<Text style={styles.description}>
 						Estabelecimentos que você visitou recentemente
 					</Text>
-					<ListGroup as="ul">
+					<ListGroup as='ul'>
 						<ListGroup.Item
 							onClick={OnPressButton}
-							as="li"
-							className="d-flex justify-content-between align-items-start"
+							as='li'
+							className='d-flex justify-content-between align-items-start'
 							style={{
-								border: "none",
+								border: 'none',
 								marginTop: 10,
 								marginBottom: 10
 							}}
 						>
 							<img
 								src={exampleImage}
-								className="rounded-circle"
+								className='rounded-circle'
 								style={{
 									width: 40,
 									height: 40,
@@ -222,23 +254,23 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 									marginRight: 10
 								}}
 							/>
-							<div className="ms-2 me-auto">
-								<div className="fw-bold">Bar do Armando</div>
+							<div className='ms-2 me-auto'>
+								<div className='fw-bold'>Bar do Armando</div>
 							</div>
 						</ListGroup.Item>
 						<ListGroup.Item
-							as="li"
-							className="d-flex justify-content-between align-items-start"
+							as='li'
+							className='d-flex justify-content-between align-items-start'
 							style={{
-								border: "none",
+								border: 'none',
 								marginTop: 10,
 								marginBottom: 10
 							}}
-							onClick={() => navigation.navigate("Restaurant")} //?
+							onClick={() => navigation.navigate('Restaurant')} //?
 						>
 							<img
 								src={exampleImage}
-								className="rounded-circle"
+								className='rounded-circle'
 								style={{
 									width: 40,
 									height: 40,
@@ -246,47 +278,23 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 									marginRight: 10
 								}}
 							/>
-							<div className="ms-2 me-auto">
-								<div className="fw-bold">Bar do João</div>
-							</div>
-						</ListGroup.Item>
-						<ListGroup.Item
-							onClick={OnPressButton}
-							as="li"
-							className="d-flex justify-content-between align-items-start"
-							style={{
-								border: "none",
-								marginTop: 10,
-								marginBottom: 10
-							}}
-						>
-							<img
-								src={exampleImage}
-								className="rounded-circle"
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10
-								}}
-							/>
-							<div className="ms-2 me-auto">
-								<div className="fw-bold">Bar do Zézin</div>
+							<div className='ms-2 me-auto'>
+								<div className='fw-bold'>Bar do João</div>
 							</div>
 						</ListGroup.Item>
 						<ListGroup.Item
 							onClick={OnPressButton}
-							as="li"
-							className="d-flex justify-content-between align-items-start"
+							as='li'
+							className='d-flex justify-content-between align-items-start'
 							style={{
-								border: "none",
+								border: 'none',
 								marginTop: 10,
 								marginBottom: 10
 							}}
 						>
 							<img
 								src={exampleImage}
-								className="rounded-circle"
+								className='rounded-circle'
 								style={{
 									width: 40,
 									height: 40,
@@ -294,8 +302,32 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 									marginRight: 10
 								}}
 							/>
-							<div className="ms-2 me-auto">
-								<div className="fw-bold">Bar do Edinaldo</div>
+							<div className='ms-2 me-auto'>
+								<div className='fw-bold'>Bar do Zézin</div>
+							</div>
+						</ListGroup.Item>
+						<ListGroup.Item
+							onClick={OnPressButton}
+							as='li'
+							className='d-flex justify-content-between align-items-start'
+							style={{
+								border: 'none',
+								marginTop: 10,
+								marginBottom: 10
+							}}
+						>
+							<img
+								src={exampleImage}
+								className='rounded-circle'
+								style={{
+									width: 40,
+									height: 40,
+									marginLeft: 10,
+									marginRight: 10
+								}}
+							/>
+							<div className='ms-2 me-auto'>
+								<div className='fw-bold'>Bar do Edinaldo</div>
 							</div>
 						</ListGroup.Item>
 					</ListGroup>

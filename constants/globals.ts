@@ -62,20 +62,7 @@ declare global {
 }
 
 // attributes
-global.user = {
-	id: 0,
-	name: 'Armandinho do pneu',
-	email: '',
-	avatar: '',
-	phone: '',
-	cpf: '',
-	cep: '',
-	address: '',
-	number: '',
-	neighborhood: '',
-	city: '',
-	state: '',
-}
+global.user = null
 
 global.restaurant = {
 	id: 0,
@@ -95,7 +82,7 @@ global.restaurant = {
 	opening: '',
 	closing: '',
 	description: '',
-	type: '',
+	type: ''
 }
 
 global.defaultImage = '../assets/example.jpeg'
@@ -137,7 +124,7 @@ global.logout = () => {
 		number: '',
 		neighborhood: '',
 		city: '',
-		state: '',
+		state: ''
 	})
 
 	global.isLogged = false
