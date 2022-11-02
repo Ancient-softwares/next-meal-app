@@ -69,8 +69,8 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
 						window.alert("Login realizado com sucesso!")
 
-						// navigation.navigate("Account")
-						// navigation.navigate("Home")
+						navigation.navigate("Main")
+						navigation.navigate("Home")
 					} else {
 						setMessage(json.message)
 					}

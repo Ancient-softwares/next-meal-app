@@ -1,6 +1,6 @@
-import Joi, { ObjectSchema } from "joi"
-import React from "react"
-import { Button, Form, Stack } from "react-bootstrap"
+import Joi, { ObjectSchema } from 'joi'
+import React from 'react'
+import { Button, Form, Stack } from 'react-bootstrap'
 import {
 	Dimensions,
 	Modal,
@@ -9,8 +9,8 @@ import {
 	ScrollView,
 	Text,
 	View
-} from "react-native"
-import styles from "./style"
+} from 'react-native'
+import styles from './style'
 
 const AboutScreen = ({
 	navigation,
@@ -19,7 +19,7 @@ const AboutScreen = ({
 	navigation: any
 	route: any
 }): JSX.Element => {
-	const exampleImage: string = require("../../../assets/example.jpeg")
+	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [modalVisible, setModalVisible] = React.useState(false)
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
@@ -35,7 +35,7 @@ const AboutScreen = ({
 	}) => {
 		return (
 			<Modal
-				animationType="slide"
+				animationType='slide'
 				transparent={true}
 				visible={modalVisible}
 				onRequestClose={() => {
@@ -59,9 +59,9 @@ const AboutScreen = ({
 	}
 
 	const schema: ObjectSchema<any> = Joi.object({
-		date: Joi.date().required().min("now"),
+		date: Joi.date().required().min('now'),
 		people: Joi.number().required().min(1).max(10).integer(),
-		hour: Joi.date().required().min("now")
+		hour: Joi.date().required().min('now')
 	})
 
 	const showInfo = async () => {
@@ -83,7 +83,7 @@ const AboutScreen = ({
 
 		try {
 			await fetch(`${global.API_URL}/api/reserva`, {
-				method: "POST",
+				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${global.getToken()}`
 				},
@@ -117,15 +117,15 @@ const AboutScreen = ({
 		if (schema.validate(packets)) {
 			try {
 				await fetch(`${global.getApiUrl()}/api/reserva`, {
-					method: "POST",
+					method: 'POST',
 					headers: {
-						Accept: "application/json",
-						"Content-Type": "application/json",
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
 						Authorization: `Bearer ${global.getToken()}`
 					},
 					body: JSON.stringify({
 						dataReserva: date.toString(),
-						horaReserva: hour.toString() + ":00",
+						horaReserva: hour.toString() + ':00',
 						numPessoas: people,
 						idCliente: global.user.id,
 						idRestaurante: restaurante.idRestaurante,
@@ -143,10 +143,10 @@ const AboutScreen = ({
 						}
 					})
 					.catch((error) => {
-						console.error(error.message)
+						console.error(error)
 					})
 			} catch (error) {
-				console.log(error.message)
+				console.log(error)
 			}
 		}
 	}
@@ -158,20 +158,20 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "flex-start",
-						justifyContent: "flex-start",
-						marginTop: "5%"
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginTop: '5%'
 					}}
 				>
 					<Stack
-						direction="horizontal"
+						direction='horizontal'
 						gap={2}
 						style={{ marginLeft: 96 }}
 					>
 						<div style={styles.PositionImgRestaurant}>
 							<img
 								src={exampleImage}
-								className="rounded-circle"
+								className='rounded-circle'
 								style={{
 									width: 100,
 									height: 100,
@@ -186,7 +186,7 @@ const AboutScreen = ({
 							</Text>
 							<br />
 							<Text style={styles.description}>
-								{restaurante.notaAvaliacao}: Classificação: {""}
+								{restaurante.notaAvaliacao}: Classificação: {''}
 								★★★★★
 								<br />
 							</Text>
@@ -200,11 +200,11 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "flex-start",
-						justifyContent: "flex-start",
-						marginHorizontal: "10%",
-						marginBottom: "5%",
-						marginTop: "-15.5%"
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginHorizontal: '10%',
+						marginBottom: '5%',
+						marginTop: '-15.5%'
 					}}
 				>
 					<Text style={styles.subtitle}>Descrição</Text>
@@ -213,8 +213,8 @@ const AboutScreen = ({
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "5%"
+								textAlign: 'justify',
+								marginTop: '5%'
 							}
 						]}
 					>
@@ -225,10 +225,10 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "flex-start",
-						justifyContent: "flex-start",
-						marginHorizontal: "10%",
-						marginTop: "5%"
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginHorizontal: '10%',
+						marginTop: '6.5%'
 					}}
 				>
 					<Text style={styles.subtitle}>Contato</Text>
@@ -236,8 +236,8 @@ const AboutScreen = ({
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "5%"
+								textAlign: 'justify',
+								marginTop: '5%'
 							}
 						]}
 					>
@@ -247,8 +247,8 @@ const AboutScreen = ({
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "7.5%"
+								textAlign: 'justify',
+								marginTop: '5%'
 							}
 						]}
 					>
@@ -258,24 +258,24 @@ const AboutScreen = ({
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "7.5%"
+								textAlign: 'justify',
+								marginTop: '5%'
 							}
 						]}
 					>
-						Endereço: {restaurante.ruaRestaurante} -{" "}
+						Endereço: {restaurante.ruaRestaurante} -{' '}
 						{restaurante.bairroRestaurante}
 					</Text>
 					<Text
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "10%"
+								textAlign: 'justify',
+								marginTop: '5%'
 							}
 						]}
 					>
-						Cidade: {restaurante.cidadeRestaurante} /{" "}
+						Cidade: {restaurante.cidadeRestaurante} /{' '}
 						{restaurante.estadoRestaurante}
 					</Text>
 				</View>
@@ -283,10 +283,10 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "flex-start",
-						justifyContent: "flex-start",
-						marginHorizontal: "10%",
-						marginTop: "10%"
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginHorizontal: '10%',
+						marginTop: '-5%'
 					}}
 				>
 					<Text style={styles.subtitle}>Horários do restaurante</Text>
@@ -295,12 +295,12 @@ const AboutScreen = ({
 						style={[
 							styles.description,
 							{
-								textAlign: "justify",
-								marginTop: "5%"
+								textAlign: 'justify',
+								marginTop: '3.5%'
 							}
 						]}
 					>
-						Segunda-feira: {restaurante.horarioAberturaRestaurante}{" "}
+						Segunda-feira: {restaurante.horarioAberturaRestaurante}{' '}
 						- {restaurante.horarioFechamentoRestaurante}
 						<br />
 						<br />
@@ -324,11 +324,11 @@ const AboutScreen = ({
 						} - {restaurante.horarioFechamentoRestaurante}
 						<br />
 						<br />
-						Sábado: {restaurante.horarioAberturaRestaurante} -{" "}
+						Sábado: {restaurante.horarioAberturaRestaurante} -{' '}
 						{restaurante.horarioFechamentoRestaurante}
 						<br />
 						<br />
-						Domingo: {restaurante.horarioAberturaRestaurante} -{" "}
+						Domingo: {restaurante.horarioAberturaRestaurante} -{' '}
 						{restaurante.horarioFechamentoRestaurante}
 					</Text>
 				</View>
@@ -336,24 +336,39 @@ const AboutScreen = ({
 				<View
 					style={{
 						flex: 1,
-						alignItems: "flex-start",
-						justifyContent: "flex-start",
-						marginHorizontal: "10%",
-						marginTop: "15%"
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginHorizontal: '10%',
+						marginTop: '15%'
+					}}
+				>
+					<Text style={styles.subtitle}>Pratos</Text>
+					<View style={{ marginLeft: '6%', marginTop: '2.5%' }}>
+						{restaurante.nomePrato} - R$ {restaurante.valorPrato}
+					</View>
+				</View>
+
+				<View
+					style={{
+						flex: 1,
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start',
+						marginHorizontal: '10%',
+						marginTop: '-30%'
 					}}
 				>
 					<View
 						style={{
 							flex: 1,
-							alignItems: "flex-start",
-							justifyContent: "flex-start"
+							alignItems: 'flex-start',
+							justifyContent: 'flex-start'
 						}}
 					>
 						<Text
 							style={[
 								styles.subtitle,
 								{
-									textAlign: "justify"
+									textAlign: 'justify'
 								}
 							]}
 						>
@@ -361,38 +376,38 @@ const AboutScreen = ({
 						</Text>
 
 						<Form onSubmit={handleSubmit} style={styles.formsStyle}>
-							<Form.Group controlId="formBasicDate">
+							<Form.Group controlId='formBasicDate'>
 								<Form.Label>Data</Form.Label>
 								<Form.Control
-									type="date"
-									placeholder="Data da reserva"
+									type='date'
+									placeholder='Data da reserva'
 									onChange={(e: any) =>
 										setDate(e.target.value)
 									}
 									style={{
 										width:
-											Dimensions.get("window").width *
+											Dimensions.get('window').width *
 											0.75
 									}}
 								/>
 							</Form.Group>
 
-							<Form.Group controlId="formBasicHour">
+							<Form.Group controlId='formBasicHour'>
 								<Form.Label>Hora</Form.Label>
 								<Form.Control
-									type="time"
-									placeholder="Hora da reserva"
+									type='time'
+									placeholder='Hora da reserva'
 									onChange={(e: any) =>
 										setHour(e.target.value)
 									}
 								/>
 							</Form.Group>
 
-							<Form.Group controlId="formBasicPeople">
+							<Form.Group controlId='formBasicPeople'>
 								<Form.Label>Pessoas</Form.Label>
 								<Form.Control
-									type="number"
-									placeholder="Número de pessoas"
+									type='number'
+									placeholder='Número de pessoas'
 									onChange={(e: any) =>
 										setPeople(
 											Number.parseInt(e.target.value)
@@ -403,24 +418,38 @@ const AboutScreen = ({
 
 							<Form.Group
 								style={{
-									display: "flex",
-									justifyContent: "center",
-									alignItems: "center",
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
 									marginTop: 20
 								}}
-								controlId="formBasicSubmit"
+								controlId='formBasicSubmit'
 							>
 								<Button
-									variant="danger"
-									type="submit"
+									variant='danger'
+									type='submit'
 									style={styles.button}
 								>
-									<Text style={{ color: "#fff" }}>
+									<Text style={{ color: '#fff' }}>
 										Reservar
 									</Text>
 								</Button>
 							</Form.Group>
 						</Form>
+					</View>
+
+					<View
+						style={{
+							flex: 1,
+							alignItems: 'flex-start',
+							justifyContent: 'flex-start',
+							marginHorizontal: '10%',
+							marginTop: '115%'
+						}}
+					>
+						<Text style={styles.subtitle}>Avaliações</Text>
+
+						{restaurante.descAvaliacao}
 					</View>
 				</View>
 			</ScrollView>
