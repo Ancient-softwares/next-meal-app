@@ -141,7 +141,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
 			await fetch(`${API_URL}/api/cadastroCliente`, {
 				method: "POST",
-				mode: "no-cors",
 				headers: {
 					Accept: "application/json",
 					"Content-Type": "application/json"
