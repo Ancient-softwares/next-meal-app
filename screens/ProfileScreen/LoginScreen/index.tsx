@@ -1,23 +1,23 @@
-import Joi from 'joi'
-import React from 'react'
-import { Button, Form } from 'react-bootstrap'
-import { SafeAreaView, Text, TextInput, View } from 'react-native'
-import styles from './style'
+import Joi from "joi"
+import React from "react"
+import { Button, Form } from "react-bootstrap"
+import { SafeAreaView, Text, TextInput, View } from "react-native"
+import styles from "./style"
 
-const API_URL: string = process.env.URL || 'http://127.0.0.1:8000'
+const API_URL: string = process.env.URL || "http://127.0.0.1:8000"
 
 function LoginScreen({ navigation }: { navigation: any }) {
-	const [email, setEmail] = React.useState<string>('')
-	const [password, setPassword] = React.useState<string>('')
-	const [message, setMessage] = React.useState<string>('')
+	const [email, setEmail] = React.useState<string>("")
+	const [password, setPassword] = React.useState<string>("")
+	const [message, setMessage] = React.useState<string>("")
 
 	const schema = Joi.object({
 		emailCliente: Joi.string()
-			.email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+			.email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
 			.required(),
 		senhaCliente: Joi.string()
-			.pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
-			.required(),
+			.pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
+			.required()
 	})
 
 	const handleSubmit = async (e: Event): Promise<void> => {
@@ -25,20 +25,20 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
 		const packets = {
 			emailCliente: email,
-			senhaCliente: password,
+			senhaCliente: password
 		}
 
 		if (schema.validate(packets)) {
 			await fetch(`${API_URL}/api/loginCliente`, {
-				method: 'post',
+				method: "post",
 				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
+					Accept: "application/json",
+					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
 					emailCliente: email,
-					senhaCliente: password,
-				}),
+					senhaCliente: password
+				})
 			})
 				.then((response) => response.json())
 				.then((response) => {
@@ -61,22 +61,23 @@ function LoginScreen({ navigation }: { navigation: any }) {
 							number: json.data.numCasa,
 							neighborhood: json.data.bairroCliente,
 							city: json.data.cidadeCliente,
-							state: json.data.estadoCliente,
+							state: json.data.estadoCliente
 						})
 
 						console.table(global.getUser())
 						console.log(global.getToken())
 
-						window.alert('Login realizado com sucesso!')
+						window.alert("Login realizado com sucesso!")
 
-						navigation.navigate('Home')
+						// navigation.navigate("Account")
+						// navigation.navigate("Home")
 					} else {
 						setMessage(json.message)
 					}
 				})
-				.catch((error) => console.log('ERROR:: ' + error.message))
+				.catch((error) => console.log("ERROR:: " + error.message))
 		} else {
-			setMessage('Preencha todos os campos corretamente')
+			setMessage("Preencha todos os campos corretamente")
 		}
 	}
 
@@ -84,51 +85,51 @@ function LoginScreen({ navigation }: { navigation: any }) {
 		<SafeAreaView
 			style={[
 				styles.container,
-				{ marginTop: 35, backgroundColor: '#fff' },
+				{ marginTop: 35, backgroundColor: "#fff" }
 			]}
 		>
 			<Form onSubmit={handleSubmit} style={styles.container}>
-				<Form.Group className='mb-3' controlId='formBasicEmail'>
+				<Form.Group className="mb-3" controlId="formBasicEmail">
 					<Form.Label>Email</Form.Label>
 					<br></br>
 					<TextInput
 						style={styles.formInput}
 						onChangeText={(text) => setEmail(text)}
-						placeholder='Enter email'
-						placeholderTextColor='gray'
+						placeholder="Enter email"
+						placeholderTextColor="gray"
 					/>
 				</Form.Group>
 
-				<Form.Group className='mb-3' controlId='formBasicPassword'>
+				<Form.Group className="mb-3" controlId="formBasicPassword">
 					<Form.Label>Senha</Form.Label>
 					<br></br>
 					<TextInput
 						style={styles.formInput}
 						secureTextEntry={true}
 						onChangeText={(text) => setPassword(text)}
-						placeholder='Password'
-						placeholderTextColor='gray'
+						placeholder="Password"
+						placeholderTextColor="gray"
 					/>
 				</Form.Group>
 				<Button
-					variant='outline-danger'
-					type='submit'
+					variant="outline-danger"
+					type="submit"
 					onClick={(event: Event): void => handleSubmit(event)}
 				>
 					Entrar
 				</Button>
 
-				<View style={{ marginVertical: '5%' }}>
-					<Form.Group className='mb-3' controlId='formBasicCheckbox'>
+				<View style={{ marginVertical: "5%" }}>
+					<Form.Group className="mb-3" controlId="formBasicCheckbox">
 						<Text
 							style={{
-								color: '#000000',
+								color: "#000000"
 							}}
-							onPress={() => navigation.navigate('Register')}
+							onPress={() => navigation.navigate("Register")}
 						>
 							Não possui uma conta?
-							<Text style={{ color: '#963333' }}>
-								{' '}
+							<Text style={{ color: "#963333" }}>
+								{" "}
 								Cadastre-se
 							</Text>
 						</Text>

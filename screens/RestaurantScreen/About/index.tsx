@@ -116,7 +116,7 @@ const AboutScreen = ({
 
 		if (schema.validate(packets)) {
 			try {
-				await fetch(`http://127.0.0.1:8000/api/reserva`, {
+				await fetch(`${global.getApiUrl()}/api/reserva`, {
 					method: "POST",
 					headers: {
 						Accept: "application/json",
@@ -127,7 +127,7 @@ const AboutScreen = ({
 						dataReserva: date.toString(),
 						horaReserva: hour.toString() + ":00",
 						numPessoas: people,
-						idCliente: (global.user.id = 1),
+						idCliente: global.user.id,
 						idRestaurante: restaurante.idRestaurante,
 						idStatusReserva: 1
 					})
@@ -137,26 +137,16 @@ const AboutScreen = ({
 						console.log(json)
 
 						if (json.status === 200) {
-							ModalRender({
-								title: "Sucesso",
-								message: json.message
-							})
-
 							window.alert(json.message)
 						} else {
-							ModalRender({
-								title: "Erro",
-								message: json.message
-							})
-
 							window.alert(json.message)
 						}
 					})
 					.catch((error) => {
-						console.error(error)
+						console.error(error.message)
 					})
 			} catch (error) {
-				console.log(error)
+				console.log(error.message)
 			}
 		}
 	}
