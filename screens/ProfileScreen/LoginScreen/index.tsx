@@ -114,7 +114,9 @@ function LoginScreen({ navigation }: { navigation: any }) {
 				<Button
 					variant='outline-danger'
 					type='submit'
-					onClick={(event: Event): void => handleSubmit(event)}
+					onClick={(event: Event): Promise<void> =>
+						handleSubmit(event)
+					}
 				>
 					Entrar
 				</Button>

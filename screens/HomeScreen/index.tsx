@@ -22,6 +22,45 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
 
+	const [latest, setLatest] = React.useState<Array<Object>>([])
+
+	const getLatest = async () => {
+		if (global.user !== null) {
+			await fetch('http://localhost:8000/api/getLatestReservasCliente', {
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				},
+				body: JSON.stringify({
+					idCliente: global.user.id || 0
+				})
+			})
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					Object.keys(json).forEach((key: string) => {
+						latest.push(json[key])
+					})
+
+					console.table(latest)
+					setLatest(latest)
+				})
+				.catch((err: Error): void => console.error(err))
+		}
+	}
+
+	const onPressLatest = (item: any) => {
+		navigation.navigate('About', {
+			restaurant: item
+		})
+	}
+
+	const onPressCategory = (item: any) => {
+		navigation.navigate('Category', {
+			category: item
+		})
+	}
+
 	const getRestaurant = async () => {
 		await fetch('http://localhost:8000/api/restaurantes', {
 			method: 'get',
@@ -49,7 +88,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			<View style={styles.spaceCategory}>
 				<img
 					src={exampleImage}
-					onClick={OnPressButton}
+					onClick={onPressCategory}
 					className='rounded-circle'
 					style={{
 						width: 90,
@@ -64,16 +103,13 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			</View>
 		)
 	}
+
 	const renderItem = (item: any): JSX.Element => {
 		return <Item {...item} />
 	}
 
-	function OnPressButton() {
-		alert('Click madae!')
-	}
-
 	React.useEffect(() => {
-		console.log([getRestaurant()])
+		console.log([getRestaurant(), getLatest()])
 	}, [])
 
 	return (
@@ -229,108 +265,141 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					<hr style={styles.lineStyle} />
 				</View>
 				<View>
-					<Text style={styles.subtitle}>Reservados recentemente</Text>
-					<Text style={styles.description}>
-						Estabelecimentos que você visitou recentemente
-					</Text>
-					<ListGroup as='ul'>
-						<ListGroup.Item
-							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 10,
-								marginBottom: 10
-							}}
-						>
-							<img
-								src={exampleImage}
-								className='rounded-circle'
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10
-								}}
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Armando</div>
-							</div>
-						</ListGroup.Item>
-						<ListGroup.Item
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 10,
-								marginBottom: 10
-							}}
-							onClick={() => navigation.navigate('Restaurant')} //?
-						>
-							<img
-								src={exampleImage}
-								className='rounded-circle'
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10
-								}}
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do João</div>
-							</div>
-						</ListGroup.Item>
-						<ListGroup.Item
-							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 10,
-								marginBottom: 10
-							}}
-						>
-							<img
-								src={exampleImage}
-								className='rounded-circle'
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10
-								}}
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Zézin</div>
-							</div>
-						</ListGroup.Item>
-						<ListGroup.Item
-							onClick={OnPressButton}
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 10,
-								marginBottom: 10
-							}}
-						>
-							<img
-								src={exampleImage}
-								className='rounded-circle'
-								style={{
-									width: 40,
-									height: 40,
-									marginLeft: 10,
-									marginRight: 10
-								}}
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>Bar do Edinaldo</div>
-							</div>
-						</ListGroup.Item>
-					</ListGroup>
+					{latest.length > 0 ? (
+						<>
+							<Text style={styles.subtitle}>
+								Reservados recentemente
+							</Text>
+							<Text style={styles.description}>
+								Estabelecimentos que você visitou recentemente
+							</Text>
+							<ListGroup as='ul'>
+								<FlatList
+									data={filteredDataSource}
+									renderItem={renderItem}
+									keyExtractor={(item: any) =>
+										item.idRestaurante
+									}
+									scrollEnabled={true}
+									horizontal={false}
+									showsVerticalScrollIndicator={false}
+								/>
+								<ListGroup.Item
+									onClick={onPressLatest}
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10
+									}}
+								>
+									<img
+										src={exampleImage}
+										className='rounded-circle'
+										style={{
+											width: 40,
+											height: 40,
+											marginLeft: 10,
+											marginRight: 10
+										}}
+									/>
+									<div className='ms-2 me-auto'>
+										<div className='fw-bold'>
+											Bar do Edinaldo
+										</div>
+									</div>
+								</ListGroup.Item>
+							</ListGroup>
+						</>
+					) : (
+						<>
+							<Text style={styles.subtitle}>
+								Recomendados para você
+							</Text>
+							<Text style={styles.description}>
+								Estabelecimentos que você pode gostar
+							</Text>
+							<ListGroup as='ul'>
+								<ListGroup.Item
+									onClick={onPressLatest}
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10
+									}}
+								>
+									<img
+										src={exampleImage}
+										className='rounded-circle'
+										style={{
+											width: 40,
+											height: 40,
+											marginLeft: 10,
+											marginRight: 10
+										}}
+									/>
+									<div className='ms-2 me-auto'>
+										<div className='fw-bold'>
+											Pinguço's Bar
+										</div>
+									</div>
+								</ListGroup.Item>
+								<ListGroup.Item
+									onClick={onPressLatest}
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10
+									}}
+								>
+									<img
+										src={exampleImage}
+										className='rounded-circle'
+										style={{
+											width: 40,
+											height: 40,
+											marginLeft: 10,
+											marginRight: 10
+										}}
+									/>
+									<div className='ms-2 me-auto'>
+										<div className='fw-bold'>Mocotó</div>
+									</div>
+								</ListGroup.Item>
+								<ListGroup.Item
+									onClick={onPressLatest}
+									as='li'
+									className='d-flex justify-content-between align-items-start'
+									style={{
+										border: 'none',
+										marginTop: 10,
+										marginBottom: 10
+									}}
+								>
+									<img
+										src={exampleImage}
+										className='rounded-circle'
+										style={{
+											width: 40,
+											height: 40,
+											marginLeft: 10,
+											marginRight: 10
+										}}
+									/>
+									<div className='ms-2 me-auto'>
+										<div className='fw-bold'>
+											Restaurante do Povão
+										</div>
+									</div>
+								</ListGroup.Item>
+							</ListGroup>
+						</>
+					)}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
