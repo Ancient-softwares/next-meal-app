@@ -27,11 +27,12 @@ const AboutScreen = ({
 	const [people, setPeople] = React.useState<number>()
 	const restaurante: any = route.params
 	const [pratos, setPratos] = React.useState<any[]>([])
+	const [avaliacoes, setAvaliacoes] = React.useState<any[]>([])
 	const [message, setMessage] = React.useState<string>('')
 
 	React.useEffect(() => {
-		showInfo()
 		fetchPlates()
+		fetchAvaliacoes()
 	}, [])
 
 	const ModalRender = ({
@@ -72,8 +73,31 @@ const AboutScreen = ({
 		hour: Joi.date().required().min('now')
 	})
 
-	const showInfo = async () => {
-		console.table(restaurante)
+	const fetchAvaliacoes = async () => {
+		try {
+			await fetch(
+				`${global.getApiUrl()}/api/getAvaliacoesByRestaurante`,
+				{
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify({
+						idRestaurante: restaurante.idRestaurante
+					})
+				}
+			)
+				.then((response) => response.json())
+				.then((json) => {
+					console.log(json)
+				})
+				.catch((error) => {
+					console.error(error)
+				})
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const fetchPlates = async () => {
