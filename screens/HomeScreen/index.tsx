@@ -23,6 +23,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		React.useState<Array<Object>>(DATA)
 
 	const [latest, setLatest] = React.useState<Array<Object>>([])
+	const [popular, setPopular] = React.useState<Array<Object>>([])
 
 	const getLatest = async () => {
 		if (global.user !== null) {
@@ -47,6 +48,32 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				})
 				.catch((err: Error): void => console.error(err))
 		}
+	}
+
+	const getRecommended = async () => {
+		await fetch(
+			'http://localhost:8000/api/getRestaurantesMaisReservadosMelhoresAvaliados',
+			{
+				method: 'post',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				},
+				body: JSON.stringify({
+					limite: 3
+				})
+			}
+		)
+			.then((response: any): Promise<JSON> => response.json())
+			.then((json: any): void => {
+				Object.keys(json).forEach((key: string) => {
+					popular.push(json[key])
+				})
+
+				console.table(popular)
+				setPopular(popular)
+			})
+			.catch((err: Error): void => console.error(err))
 	}
 
 	const onPressLatest = (item: any) => {
@@ -401,6 +428,32 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						</>
 					)}
 				</View>
+				{(popular.length > 0 && (
+					<>
+						<Text style={styles.subtitle}>Populares</Text>
+						<Text style={styles.description}>
+							Estabelecimentos mais populares
+						</Text>
+						<FlatList
+							data={popular}
+							renderItem={({ id, name, rating, total }: any) => {
+								return (
+									<>
+										{id}
+										{name}
+										{rating}
+										{total}
+									</>
+								)
+							}}
+							keyExtractor={(item) => item.idRestaurante}
+							horizontal={true}
+							numColumns={2}
+							showsHorizontalScrollIndicator={false}
+							style={{ marginBottom: 20 }}
+						/>
+					</>
+				)) || <></>}
 			</ScrollView>
 		</SafeAreaView>
 	)

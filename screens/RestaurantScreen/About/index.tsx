@@ -27,6 +27,7 @@ const AboutScreen = ({
 	const [people, setPeople] = React.useState<number>()
 	const restaurante: any = route.params
 	const [pratos, setPratos] = React.useState<any[]>([])
+	const [message, setMessage] = React.useState<string>('')
 
 	React.useEffect(() => {
 		showInfo()
@@ -132,6 +133,11 @@ const AboutScreen = ({
 				.catch((error) => {
 					console.error(error)
 				})
+				.finally(() => {
+					setDate(new Date())
+					setHour(new Date())
+					setPeople(0)
+				})
 		} catch (error) {
 			console.log(error)
 		}
@@ -188,7 +194,10 @@ const AboutScreen = ({
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.tecoVermeio}></View>
-			<ScrollView>
+			<ScrollView
+				style={{ marginLeft: '-10%' }}
+				showsVerticalScrollIndicator={false}
+			>
 				<View
 					style={{
 						flex: 1,
@@ -209,7 +218,7 @@ const AboutScreen = ({
 								style={{
 									width: 100,
 									height: 100,
-									marginLeft: 5,
+									marginLeft: 25,
 									marginRight: 10
 								}}
 							/>
@@ -480,6 +489,27 @@ const AboutScreen = ({
 									</Text>
 								</Button>
 							</Form.Group>
+
+							<View
+								style={{
+									marginVertical: '5%'
+								}}
+							>
+								<Form.Group
+									className='mb-3'
+									controlId='formBasicFeedback'
+								>
+									<Text
+										style={{
+											color: '#963333',
+											fontSize: 16,
+											fontWeight: 'bold'
+										}}
+									>
+										{message}
+									</Text>
+								</Form.Group>
+							</View>
 						</Form>
 					</View>
 
@@ -492,7 +522,16 @@ const AboutScreen = ({
 							marginTop: '115%'
 						}}
 					>
-						<Text style={styles.subtitle}>Avaliações</Text>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									marginLeft: '-2.5%'
+								}
+							]}
+						>
+							Avaliações
+						</Text>
 
 						{restaurante.descAvaliacao}
 					</View>
