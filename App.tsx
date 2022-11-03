@@ -8,6 +8,7 @@ import Home from './screens/HomeScreen'
 import Maps from './screens/MapsScreen'
 import Profile from './screens/ProfileScreen'
 import About from './screens/RestaurantScreen/About'
+import Category from './screens/RestaurantScreen/Category'
 import Restaurants from './screens/RestaurantScreen/Restaurants'
 
 const color: string = '#963333'
@@ -77,6 +78,15 @@ const App = (): JSX.Element => {
 							/>
 						),
 						headerShown: false
+					}}
+				/>
+				<Tab.Screen
+					name='Category'
+					component={Category}
+					options={{
+						headerShown: false,
+						tabBarButton: (): React.ReactNode => null,
+						TabBarVisible: false
 					}}
 				/>
 			</Tab.Navigator>

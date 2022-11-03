@@ -90,7 +90,7 @@ const AboutScreen = ({
 			)
 				.then((response) => response.json())
 				.then((json) => {
-					console.log(json)
+					// console.log(json)
 				})
 				.catch((error) => {
 					console.error(error)
@@ -143,6 +143,27 @@ const AboutScreen = ({
 				</Text>
 				<Text style={styles.description}>
 					R$ {item.item.valorPrato}
+				</Text>
+			</>
+		)
+	}
+
+	const renderAvaliacoes = (item: any): JSX.Element => {
+		console.log(item)
+
+		return (
+			<>
+				<Text
+					style={[
+						styles.subtitle,
+						{
+							fontSize: 16
+						}
+					]}
+				>
+					{item.nomeCliente} - {item.notaAvaliacao}
+					{item.descAvaliacao}
+					{item.dtAvaliacao}
 				</Text>
 			</>
 		)
@@ -562,7 +583,7 @@ const AboutScreen = ({
 							alignItems: 'flex-start',
 							justifyContent: 'flex-start',
 							marginHorizontal: '10%',
-							marginTop: '115%'
+							marginTop: '100%'
 						}}
 					>
 						<Text
@@ -576,7 +597,11 @@ const AboutScreen = ({
 							Avaliações
 						</Text>
 
-						{restaurante.descAvaliacao}
+						<FlatList
+							data={avaliacoes}
+							renderItem={renderAvaliacoes}
+							keyExtractor={(item) => item.idAvaliacao}
+						/>
 					</View>
 				</View>
 			</ScrollView>

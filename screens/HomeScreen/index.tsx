@@ -25,6 +25,14 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [latest, setLatest] = React.useState<Array<Object>>([])
 	const [popular, setPopular] = React.useState<Array<Object>>([])
 
+	const getContext = async () => {
+		if (global.user !== null) {
+			getLatest()
+		} else {
+			getRecommended()
+		}
+	}
+
 	const getLatest = async () => {
 		if (global.user !== null) {
 			await fetch('http://localhost:8000/api/getLatestReservasCliente', {
@@ -84,7 +92,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 
 	const onPressCategory = (item: any) => {
 		navigation.navigate('Category', {
-			category: item
+			tipoRestaurante: item[0].item.tipoRestaurante
 		})
 	}
 
@@ -115,7 +123,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			<View style={styles.spaceCategory}>
 				<img
 					src={exampleImage}
-					onClick={onPressCategory}
+					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
 					style={{
 						width: 90,
