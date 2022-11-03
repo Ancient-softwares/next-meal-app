@@ -312,21 +312,23 @@ const Account = ({ navigation }: any): JSX.Element => {
 									className='d-flex justify-content-between align-items-start'
 									style={{
 										border: 'none',
-										marginBottom: '0.75%'
+										marginBottom: 10
 									}}
 								>
-									<TouchableOpacity
-										onPress={() => global.logout()}
-									>
-										<MaterialCommunityIcons
-											name='logout'
-											size={24}
-											color='black'
-										/>
-										<div className='ms-2 me-auto'>
-											<div className='fw-bold'>Sair</div>
-										</div>
-									</TouchableOpacity>
+										<TouchableOpacity
+											onPress={() => global.logout()}
+										>
+									<View style={{ flexDirection: 'row' }}>
+											<MaterialCommunityIcons
+												name='logout'
+												size={24}
+												color='black'
+											/>
+											<div className='ms-2 me-auto'>
+												<div className='fw-bold'>Sair</div>
+											</div>
+									</View>
+										</TouchableOpacity>
 								</ListGroup.Item>
 							</ListGroup>
 						</>
