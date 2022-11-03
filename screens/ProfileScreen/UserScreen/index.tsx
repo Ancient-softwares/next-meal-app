@@ -153,7 +153,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 						)}
 
 						<Text style={[styles.subtitle, {
-							marginVertical: 10
+							marginVertical: '2.5%'
 						}]}>Meu app, NextMeal</Text>
 						<ListGroup.Item
 							as='li'
@@ -161,7 +161,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<Ionicons
@@ -181,7 +181,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<FontAwesome
@@ -193,38 +193,13 @@ const Account = ({ navigation }: any): JSX.Element => {
 								<div className='fw-bold'>Minhas reservas</div>
 							</div>
 						</ListGroup.Item>
-						<ListGroup.Item
-							as='li'
-							className='d-flex justify-content-between align-items-start'
-							style={{
-								border: 'none',
-								marginTop: 5,
-								marginBottom: 10
-							}}
-						>
-							<MaterialCommunityIcons
-								name='human-queue'
-								size={24}
-								color='black'
-							/>
-							<div className='ms-2 me-auto'>
-								<div className='fw-bold'>
-									Meu lugar nas filas
-								</div>
-							</div>
-						</ListGroup.Item>
-					</ListGroup>
-					<Text style={[styles.subtitle, {
-						marginVertical: 10
-					}]}>Configurações gerais</Text>
-					<ListGroup as='ul'>
 						{!global.isLogged ? (
 							<></>
 						) : (
 							<TouchableOpacity
 								style={{
 									marginTop: 5,
-									marginBottom: 10
+									marginBottom: '0.75%'
 								}}
 								onPress={() => {
 									navigation.navigate('History')
@@ -248,13 +223,18 @@ const Account = ({ navigation }: any): JSX.Element => {
 								</ListGroup.Item>
 							</TouchableOpacity>
 						)}
+					</ListGroup>
+					<Text style={[styles.subtitle, {
+						marginVertical: '2.5%'
+					}]}>Configurações gerais</Text>
+					<ListGroup as='ul'>
 						<ListGroup.Item
 							as='li'
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<Ionicons
@@ -274,7 +254,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<Entypo
@@ -292,7 +272,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<Feather name='info' size={24} color='black' />
@@ -306,7 +286,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							style={{
 								border: 'none',
 								marginTop: 5,
-								marginBottom: 10
+								marginBottom: '0.75%'
 							}}
 						>
 							<MaterialCommunityIcons
@@ -322,22 +302,17 @@ const Account = ({ navigation }: any): JSX.Element => {
 
 					{!global.isLogged ? (
 						<>
-							<Text style={[styles.text, { marginTop: 5 }]}>
-								Copyrights @2022 - Ancient Softwares
-							</Text>
+
 						</>
 					) : (
 						<>
-							<Text style={[styles.subtitle, {
-								marginVertical: 10,
-							}]}>Sair</Text>
 							<ListGroup as='ul'>
 								<ListGroup.Item
 									as='li'
 									className='d-flex justify-content-between align-items-start'
 									style={{
 										border: 'none',
-										marginBottom: 10
+										marginBottom: '0.75%'
 									}}
 								>
 									<TouchableOpacity
@@ -354,10 +329,6 @@ const Account = ({ navigation }: any): JSX.Element => {
 									</TouchableOpacity>
 								</ListGroup.Item>
 							</ListGroup>
-
-							<Text style={[styles.text, { marginTop: 15 }]}>
-								Copyrights @2022 - Ancient Softwares
-							</Text>
 						</>
 					)}
 				</ScrollView>
