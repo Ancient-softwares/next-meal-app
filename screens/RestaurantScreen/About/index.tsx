@@ -128,9 +128,22 @@ const AboutScreen = ({
 
 		return (
 			<>
-				<Text style={styles.title}>{item.nomePrato}</Text>
-				<Text style={styles.description}>{item.tipoPrato}</Text>
-				<Text style={styles.modalText}>R$ {item.valorPrato}</Text>
+				<Text
+					style={[
+						styles.subtitle,
+						{
+							fontSize: 16
+						}
+					]}
+				>
+					{item.item.nomePrato}
+				</Text>
+				<Text style={styles.description}>
+					Categoria: {item.item.tipoPrato}
+				</Text>
+				<Text style={styles.description}>
+					R$ {item.item.valorPrato}
+				</Text>
 			</>
 		)
 	}
@@ -410,19 +423,25 @@ const AboutScreen = ({
 					}}
 				>
 					<Text style={styles.subtitle}>Pratos</Text>
-					<View style={{ marginLeft: '6%', marginTop: '2.5%' }}>
+					<View
+						style={{
+							marginLeft: '6%',
+							marginTop: '2.5%',
+							marginBottom: '3%'
+						}}
+					>
 						<FlatList
 							data={pratos}
 							keyExtractor={(item) => item.idPrato}
 							renderItem={renderPratos}
 						/>
-						{pratos.length === 0 ? (
+						{/* {pratos.length === 0 ? (
 							<Text style={styles.description}>
 								Nenhum prato cadastrado
 							</Text>
 						) : (
 							console.log(pratos)
-						)}
+						)} */}
 					</View>
 				</View>
 
@@ -432,7 +451,7 @@ const AboutScreen = ({
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginTop: '-30%'
+						marginTop: '-20%'
 					}}
 				>
 					<View
