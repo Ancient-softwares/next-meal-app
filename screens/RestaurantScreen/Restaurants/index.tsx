@@ -1,6 +1,12 @@
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
-import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native'
+import {
+	ActivityIndicator,
+	FlatList,
+	RefreshControl,
+	SafeAreaView,
+	View
+} from 'react-native'
 import { SearchBar } from 'react-native-elements'
 import styles from './style'
 
@@ -13,6 +19,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
 	const [isLoading, setLoading] = React.useState<boolean>(true)
+	const [refresh, setRefresh] = React.useState<boolean>(false)
 
 	const getRestaurant = async () => {
 		await fetch('http://localhost:8000/api/restaurantes', {
@@ -28,7 +35,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 					DATA.push(json[key])
 				})
 
-				console.table(DATA)
+				setRefresh(false)
 				setFilteredDataSource(DATA)
 				setMasterDataSource(DATA)
 				setLoading(false)
@@ -147,6 +154,13 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						keyExtractor={(item: any) => item.idRestaurante}
 						scrollEnabled={true}
 						showsVerticalScrollIndicator={false}
+						refreshControl={
+							<RefreshControl
+								refreshing={refresh}
+								onRefresh={getRestaurant}
+								enabled={true}
+							/>
+						}
 					/>
 				</>
 			) : (

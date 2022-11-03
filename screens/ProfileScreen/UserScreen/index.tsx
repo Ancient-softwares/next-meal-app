@@ -11,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import {
-	Alert,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -36,32 +35,47 @@ const wait = (timeout: number) => {
 
 const Account = ({ navigation }: any): JSX.Element => {
 	const [isLogged, setIsLogged] = React.useState(false)
-	const [refreshPage, setRefreshPage] = React.useState(false)
+	const [refreshPage, setRefresh] = React.useState(false)
+	const [uniqueValue, setUniqueValue] = React.useState(1)
 
 	React.useEffect(() => {
-		;(async () => {
-			console.log('Checking if user is logged in...')
+		const focusHandler = navigation.addListener('focus', () => {
+			console.log('Refreshed')
+		})
+		verifyUser()
 
-			if (global.user !== null) {
-				setIsLogged(true)
+		return focusHandler
+	}, [navigation])
 
-				console.log('user is logged')
-			} else {
-				setIsLogged(false)
+	const verifyUser = (): void => {
+		console.log('Checking if user is logged in...')
 
-				console.log('user is not logged')
-			}
-		})()
-	}, [global.user])
+		if (global.user !== null) {
+			global.isLogged = true
+
+			console.log('user is logged')
+		} else {
+			global.isLogged = false
+
+			console.log('user is not logged')
+		}
+
+		forceRemount()
+	}
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+		// setRefresh(true)
+	}
 
 	const onRefresh = React.useCallback(() => {
-		setRefreshPage(true)
-		wait(2000).then(() => setRefreshPage(false))
+		setRefresh(true)
+		wait(2000).then(() => setRefresh(false))
 	}, [])
 
 	return (
 		<>
-			<SafeAreaView style={styles.container}>
+			<SafeAreaView style={styles.container} key={uniqueValue}>
 				<ScrollView
 					showsVerticalScrollIndicator={false}
 					showsHorizontalScrollIndicator={false}
@@ -72,12 +86,13 @@ const Account = ({ navigation }: any): JSX.Element => {
 					refreshControl={
 						<RefreshControl
 							refreshing={refreshPage}
-							onRefresh={onRefresh}
+							onRefresh={verifyUser}
+							enabled={true}
 						/>
 					}
 				>
 					<ListGroup as='ul'>
-						{!isLogged ? (
+						{!global.isLogged ? (
 							<>
 								<MaterialIcons
 									style={styles.accountIcon}
@@ -123,6 +138,17 @@ const Account = ({ navigation }: any): JSX.Element => {
 									>
 										Cadastrar-se
 									</Button>
+									<Button
+										variant='outline-danger'
+										style={{
+											width: '8em',
+											marginTop: 15,
+											marginLeft: 5
+										}}
+										onClick={() => forceRemount()}
+									>
+										Refresh
+									</Button>
 								</View>
 							</>
 						) : (
@@ -137,21 +163,6 @@ const Account = ({ navigation }: any): JSX.Element => {
 								<Text style={styles.title}>
 									Olá, {global.user.name}!
 								</Text>
-								<Button
-									variant='outline-danger'
-									style={{
-										width: '8em',
-										marginTop: 15,
-										marginLeft: 5
-									}}
-									onClick={() => {
-										global.logout()
-
-										global.getUser()
-									}}
-								>
-									Sair
-								</Button>
 							</>
 						)}
 
@@ -217,7 +228,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					</ListGroup>
 					<Text style={styles.subtitle}>Configurações gerais</Text>
 					<ListGroup as='ul'>
-						{!isLogged ? (
+						{!global.isLogged ? (
 							<></>
 						) : (
 							<TouchableOpacity
