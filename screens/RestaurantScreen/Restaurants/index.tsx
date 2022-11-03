@@ -103,8 +103,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			// Filter the masterDataSource and update FilteredDataSource
 			const newData = masterDataSource.filter((item: any) => {
 				// Applying filter for the inserted text in search bar
-				const itemData = item.title
-					? item.title.toUpperCase()
+				const itemData = item.nomeRestaurante
+					? item.nomeRestaurante.toUpperCase()
 					: ''.toUpperCase()
 
 				const textData = text.toUpperCase()
@@ -131,7 +131,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						platform='android'
 						round
 						value={search}
-						onChangeText={(text: string) =>
+						onChangeText={(text: any): any =>
 							searchFilterFunction(text)
 						}
 						autoCorrect={false}

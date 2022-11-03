@@ -103,10 +103,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			categoria.destroy()
 
 			navigation.navigate('Category', {
-				tipoRestaurante: new TipoRestaurante({
-					id: item[0].item.idTipoRestaurante,
-					categoria: item[0].item.tipoRestaurante
-				})
+				...item[0].item
 			})
 		}
 	}
@@ -469,7 +466,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 									</>
 								)
 							}}
-							keyExtractor={(item) => item.idRestaurante}
+							keyExtractor={(item: any) => item.idRestaurante}
 							horizontal={true}
 							numColumns={2}
 							showsHorizontalScrollIndicator={false}
