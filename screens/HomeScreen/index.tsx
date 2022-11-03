@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import 'react-native-gesture-handler'
 import '../../constants/globals'
+import { TipoRestaurante } from '../../entities/TipoRestaurante'
 import styles from './style'
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
@@ -91,9 +92,23 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const onPressCategory = (item: any) => {
-		navigation.navigate('Category', {
-			tipoRestaurante: item[0].item.tipoRestaurante
-		})
+		if (item[0].item.tipoRestaurante === null) {
+			navigation.navigate('Restaurants')
+		} else {
+			const categoria = new TipoRestaurante({
+				id: item[0].item.tipoRestaurante.id,
+				categoria: item[0].item.tipoRestaurante
+			})
+
+			categoria.destroy()
+
+			navigation.navigate('Category', {
+				tipoRestaurante: new TipoRestaurante({
+					id: item[0].item.idTipoRestaurante,
+					categoria: item[0].item.tipoRestaurante
+				})
+			})
+		}
 	}
 
 	const getRestaurant = async () => {
