@@ -49,18 +49,12 @@ const Account = ({ navigation }: any): JSX.Element => {
 	}, [navigation, uniqueValue])
 
 	const verifyUser = (): void => {
-		console.log('Checking if user is logged in...')
 
 		if (global.user !== null) {
 			global.isLogged = true
 
-			console.log('user is logged')
-			console.log(uniqueValue)
 		} else {
 			global.isLogged = false
-			
-			console.log(uniqueValue)
-			console.log('user is not logged')
 		}
 
 		forceRemount()
@@ -119,7 +113,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 										variant='outline-danger'
 										style={{
 											width: '8em',
-											marginTop: 15,
+											marginTop: 5,
 											marginRight: 5
 										}}
 										onClick={() =>
@@ -132,7 +126,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 										variant='outline-danger'
 										style={{
 											width: '8em',
-											marginTop: 15,
+											marginTop: 5,
 											marginLeft: 5
 										}}
 										onClick={() => {
@@ -140,17 +134,6 @@ const Account = ({ navigation }: any): JSX.Element => {
 										}}
 									>
 										Cadastrar-se
-									</Button>
-									<Button
-										variant='outline-danger'
-										style={{
-											width: '8em',
-											marginTop: 15,
-											marginLeft: 5
-										}}
-										onClick={() => forceRemount()}
-									>
-										Refresh
 									</Button>
 								</View>
 							</>
@@ -169,13 +152,15 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</>
 						)}
 
-						<Text style={styles.subtitle}>Meu app, NextMeal</Text>
+						<Text style={[styles.subtitle, {
+							marginVertical: 10
+						}]}>Meu app, NextMeal</Text>
 						<ListGroup.Item
 							as='li'
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -195,7 +180,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -213,7 +198,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -229,14 +214,16 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</div>
 						</ListGroup.Item>
 					</ListGroup>
-					<Text style={styles.subtitle}>Configurações gerais</Text>
+					<Text style={[styles.subtitle, {
+						marginVertical: 10
+					}]}>Configurações gerais</Text>
 					<ListGroup as='ul'>
 						{!global.isLogged ? (
 							<></>
 						) : (
 							<TouchableOpacity
 								style={{
-									marginTop: 10,
+									marginTop: 5,
 									marginBottom: 10
 								}}
 								onPress={() => {
@@ -248,14 +235,12 @@ const Account = ({ navigation }: any): JSX.Element => {
 									className='d-flex justify-content-between align-items-start'
 									style={{
 										border: 'none',
-										marginTop: 10,
-										marginBottom: 10
 									}}
 								>
 									<FontAwesome5
 										color='black'
 										name='history'
-										size={24}
+										size={22}
 									/>
 									<div className='ms-2 me-auto'>
 										<div className='fw-bold'>Histórico</div>
@@ -268,7 +253,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -288,7 +273,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -306,7 +291,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -320,7 +305,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 							className='d-flex justify-content-between align-items-start'
 							style={{
 								border: 'none',
-								marginTop: 10,
+								marginTop: 5,
 								marginBottom: 10
 							}}
 						>
@@ -337,20 +322,21 @@ const Account = ({ navigation }: any): JSX.Element => {
 
 					{!global.isLogged ? (
 						<>
-							<Text style={[styles.text, { marginTop: 35 }]}>
+							<Text style={[styles.text, { marginTop: 5 }]}>
 								Copyrights @2022 - Ancient Softwares
 							</Text>
 						</>
 					) : (
 						<>
-							<Text style={styles.subtitle}>Sair</Text>
+							<Text style={[styles.subtitle, {
+								marginVertical: 10,
+							}]}>Sair</Text>
 							<ListGroup as='ul'>
 								<ListGroup.Item
 									as='li'
 									className='d-flex justify-content-between align-items-start'
 									style={{
 										border: 'none',
-										marginTop: 10,
 										marginBottom: 10
 									}}
 								>

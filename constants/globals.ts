@@ -111,21 +111,8 @@ global.setToken(
 	'5CgcWLpMJlBv7hZVS70QDaSEiHJ2BMSCM2d7ivnttLklIUbqMKLGoVVRvX5fFOWJt7xOXBmylWVYTRXo84AaXOgAMidqjLjHm5lsfgg5LkPCD15tog5O7UWMVSOxCzDijCvNw7O8LqhiR5s60Tg0vWdq4BNurTJmUIE3Rih2EM84Ozs5Y2ck4T7PKIGeFc9UBnKHntrS'
 )
 global.logout = () => {
-	global.setToken('')
-	global.setUser({
-		id: 0,
-		name: '',
-		email: '',
-		avatar: '',
-		phone: '',
-		cpf: '',
-		cep: '',
-		address: '',
-		number: '',
-		neighborhood: '',
-		city: '',
-		state: ''
-	})
+	global.setToken(null)
+	global.setUser(null)
 
 	global.isLogged = false
 }
