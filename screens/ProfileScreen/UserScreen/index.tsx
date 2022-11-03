@@ -42,10 +42,11 @@ const Account = ({ navigation }: any): JSX.Element => {
 		const focusHandler = navigation.addListener('focus', () => {
 			console.log('Refreshed')
 		})
+
 		verifyUser()
 
 		return focusHandler
-	}, [navigation])
+	}, [navigation, uniqueValue])
 
 	const verifyUser = (): void => {
 		console.log('Checking if user is logged in...')
@@ -54,9 +55,11 @@ const Account = ({ navigation }: any): JSX.Element => {
 			global.isLogged = true
 
 			console.log('user is logged')
+			console.log(uniqueValue)
 		} else {
 			global.isLogged = false
-
+			
+			console.log(uniqueValue)
 			console.log('user is not logged')
 		}
 
