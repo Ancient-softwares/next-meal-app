@@ -1,6 +1,6 @@
 import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
-import { Button, Form, Stack } from 'react-bootstrap'
+import { Button, Card, Form, ListGroup, Stack } from 'react-bootstrap'
 import {
 	Dimensions,
 	FlatList,
@@ -29,11 +29,23 @@ const AboutScreen = ({
 	const [pratos, setPratos] = React.useState<any[]>([])
 	const [avaliacoes, setAvaliacoes] = React.useState<any[]>([])
 	const [message, setMessage] = React.useState<string>('')
+	const [uniqueValue, setUniqueValue] = React.useState(1)
+	const [feedback, setFeedback] = React.useState<string>('')
 
 	React.useEffect(() => {
 		fetchPlates()
 		fetchAvaliacoes()
-	}, [])
+
+		const focusHandler = navigation.addListener('focus', () => {
+			console.log('Refreshed')
+		})
+
+		return focusHandler
+	}, [navigation, uniqueValue])
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+	}
 
 	const ModalRender = ({
 		title,
@@ -74,6 +86,8 @@ const AboutScreen = ({
 	})
 
 	const fetchAvaliacoes = async () => {
+		console.log('fetching avaliacoes')
+
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getAvaliacoesByRestaurante`,
@@ -88,84 +102,87 @@ const AboutScreen = ({
 					})
 				}
 			)
-				.then((response) => response.json())
-				.then((json) => {
-					// console.log(json)
+				.then((response: Response): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					json.forEach((element: any) => {
+						avaliacoes.push(element)
+					})
+
+					console.log(avaliacoes)
 				})
-				.catch((error) => {
+				.catch((error: Error): void => {
 					console.error(error)
 				})
-		} catch (error) {
+		} catch (error: unknown) {
 			console.log(error)
 		}
 	}
 
 	const fetchPlates = async () => {
-		await fetch(`${global.getApiUrl()}/api/getPratosByRestaurante`, {
-			method: 'post',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				idRestaurante: restaurante.idRestaurante
-			})
-		})
-			.then((response: any): Promise<JSON> => response.json())
-			.then((json: any): void => {
-				json.forEach((element: any) => {
-					pratos.push(element)
+		try {
+			await fetch(`${global.getApiUrl()}/api/getPratosByRestaurante`, {
+				method: 'post',
+				headers: {
+					Accept: 'application/json',
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					idRestaurante: restaurante.idRestaurante
 				})
-
-				console.log(pratos)
-				console.log(pratos[0])
 			})
-			.catch((err: Error): void => console.error(err))
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					json.forEach((element: any) => {
+						pratos.push(element)
+					})
+
+					console.log(pratos)
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		}
 	}
 
-	const renderPratos = (item: any): JSX.Element => {
-		console.log(item)
-
+	const renderCardapio = (item: any): JSX.Element => {
 		return (
-			<>
-				<Text
-					style={[
-						styles.subtitle,
-						{
-							fontSize: 16
-						}
-					]}
-				>
-					{item.item.nomePrato}
-				</Text>
-				<Text style={styles.description}>
-					Categoria: {item.item.tipoPrato}
-				</Text>
-				<Text style={styles.description}>
-					R$ {item.item.valorPrato}
-				</Text>
-			</>
+			<View style={styles.spaceCategory}>
+				<img
+					src={exampleImage}
+					onClick={() => window.alert('AAAA')}
+					className='rounded-circle'
+					style={{
+						width: 90,
+						height: 90,
+						marginLeft: 10,
+						marginRight: 10
+					}}
+				/>
+				<Text style={styles.nameCategory}>{item.item.nomePrato}</Text>
+			</View>
 		)
 	}
 
 	const renderAvaliacoes = (item: any): JSX.Element => {
-		console.log(item)
-
 		return (
-			<>
-				<Text
-					style={[
-						styles.subtitle,
-						{
-							fontSize: 16
-						}
-					]}
+			<View key={uniqueValue}>
+				<Card
+					style={{
+						width: Dimensions.get('window').width * 0.9,
+						border: 'none'
+					}}
 				>
-					{item.nomeCliente} - {item.notaAvaliacao}
-					{item.descAvaliacao}
-					{item.dtAvaliacao}
-				</Text>
-			</>
+					<Card.Body>
+						<Card.Title>
+							{item.item.nomeCliente} - {item.item.notaAvaliacao}
+						</Card.Title>
+						<Card.Subtitle className='mb-2 text-muted'>
+							{item.item.dtAvaliacao}
+						</Card.Subtitle>
+						<Card.Text>{item.item.descAvaliacao}</Card.Text>
+					</Card.Body>
+				</Card>
+			</View>
 		)
 	}
 
@@ -287,8 +304,8 @@ const AboutScreen = ({
 							</Text>
 							<br />
 							<Text style={styles.description}>
-								{restaurante.notaAvaliacao}: Classificação: {''}
-								★★★★★
+								Classificação:{' '}
+								{Number.parseFloat(restaurante.notaAvaliacao)}
 								<br />
 							</Text>
 							<Text style={styles.description}>
@@ -434,36 +451,44 @@ const AboutScreen = ({
 					</Text>
 				</View>
 
-				<View
-					style={{
-						flex: 1,
-						alignItems: 'flex-start',
-						justifyContent: 'flex-start',
-						marginHorizontal: '10%',
-						marginTop: '15%'
-					}}
-				>
-					<Text style={styles.subtitle}>Pratos</Text>
+				<View style={styles.rowList}>
+					<Text style={styles.subtitle}>Cardápio</Text>
 					<View
 						style={{
 							marginLeft: '6%',
-							marginTop: '2.5%',
-							marginBottom: '3%'
+							marginTop: '2.5%'
 						}}
 					>
-						<FlatList
-							data={pratos}
-							keyExtractor={(item) => item.idPrato}
-							renderItem={renderPratos}
-						/>
-						{/* {pratos.length === 0 ? (
-							<Text style={styles.description}>
-								Nenhum prato cadastrado
-							</Text>
-						) : (
-							console.log(pratos)
-						)} */}
+						<ListGroup>
+							<FlatList
+								data={pratos}
+								horizontal={true}
+								showsHorizontalScrollIndicator={false}
+								scrollEnabled={true}
+								keyExtractor={(item: any) => item.idPrato}
+								renderItem={renderCardapio}
+							/>
+						</ListGroup>
 					</View>
+				</View>
+
+				<View
+					style={[
+						styles.rowList,
+						{
+							marginBottom: '10%',
+							marginTop: '-20%'
+						}
+					]}
+				>
+					<Text style={styles.subtitle}>Avaliações</Text>
+
+					<FlatList
+						data={avaliacoes}
+						showsVerticalScrollIndicator={false}
+						renderItem={renderAvaliacoes}
+						keyExtractor={(item): any => item.idAvaliacao}
+					/>
 				</View>
 
 				<View
@@ -472,7 +497,7 @@ const AboutScreen = ({
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginTop: '-20%'
+						marginTop: '-2.5%'
 					}}
 				>
 					<View
@@ -575,33 +600,6 @@ const AboutScreen = ({
 								</Form.Group>
 							</View>
 						</Form>
-					</View>
-
-					<View
-						style={{
-							flex: 1,
-							alignItems: 'flex-start',
-							justifyContent: 'flex-start',
-							marginHorizontal: '10%',
-							marginTop: '100%'
-						}}
-					>
-						<Text
-							style={[
-								styles.subtitle,
-								{
-									marginLeft: '-2.5%'
-								}
-							]}
-						>
-							Avaliações
-						</Text>
-
-						<FlatList
-							data={avaliacoes}
-							renderItem={renderAvaliacoes}
-							keyExtractor={(item) => item.idAvaliacao}
-						/>
 					</View>
 				</View>
 			</ScrollView>

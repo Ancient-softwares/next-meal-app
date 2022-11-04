@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import {
+	LogBox,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -20,6 +21,11 @@ import {
 } from 'react-native'
 import '../../../constants/globals'
 import styles from './style'
+
+LogBox.ignoreLogs([
+	'Warning: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.'
+])
+LogBox.ignoreAllLogs() //Ignore all log notifications
 
 declare global {
 	namespace JSX {
@@ -49,10 +55,8 @@ const Account = ({ navigation }: any): JSX.Element => {
 	}, [navigation, uniqueValue])
 
 	const verifyUser = (): void => {
-
 		if (global.user !== null) {
 			global.isLogged = true
-
 		} else {
 			global.isLogged = false
 		}
@@ -152,9 +156,16 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</>
 						)}
 
-						<Text style={[styles.subtitle, {
-							marginVertical: '2.5%'
-						}]}>Meu app, NextMeal</Text>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									marginVertical: '2.5%'
+								}
+							]}
+						>
+							Meu app, NextMeal
+						</Text>
 						<ListGroup.Item
 							as='li'
 							className='d-flex justify-content-between align-items-start'
@@ -209,7 +220,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 									as='li'
 									className='d-flex justify-content-between align-items-start'
 									style={{
-										border: 'none',
+										border: 'none'
 									}}
 								>
 									<FontAwesome5
@@ -224,9 +235,16 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</TouchableOpacity>
 						)}
 					</ListGroup>
-					<Text style={[styles.subtitle, {
-						marginVertical: '2.5%'
-					}]}>Configurações gerais</Text>
+					<Text
+						style={[
+							styles.subtitle,
+							{
+								marginVertical: '2.5%'
+							}
+						]}
+					>
+						Configurações gerais
+					</Text>
 					<ListGroup as='ul'>
 						<ListGroup.Item
 							as='li'
@@ -301,9 +319,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					</ListGroup>
 
 					{!global.isLogged ? (
-						<>
-
-						</>
+						<></>
 					) : (
 						<>
 							<ListGroup as='ul'>
@@ -315,20 +331,22 @@ const Account = ({ navigation }: any): JSX.Element => {
 										marginBottom: 10
 									}}
 								>
-										<TouchableOpacity
-											onPress={() => global.logout()}
-										>
-									<View style={{ flexDirection: 'row' }}>
+									<TouchableOpacity
+										onPress={() => global.logout()}
+									>
+										<View style={{ flexDirection: 'row' }}>
 											<MaterialCommunityIcons
 												name='logout'
 												size={24}
 												color='black'
 											/>
 											<div className='ms-2 me-auto'>
-												<div className='fw-bold'>Sair</div>
+												<div className='fw-bold'>
+													Sair
+												</div>
 											</div>
-									</View>
-										</TouchableOpacity>
+										</View>
+									</TouchableOpacity>
 								</ListGroup.Item>
 							</ListGroup>
 						</>

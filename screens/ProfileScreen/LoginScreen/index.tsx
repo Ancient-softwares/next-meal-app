@@ -85,7 +85,11 @@ function LoginScreen({ navigation }: { navigation: any }) {
 		<SafeAreaView
 			style={[
 				styles.container,
-				{ marginTop: 35, backgroundColor: '#fff' }
+				{
+					marginTop: '40%',
+					justifyContent: 'center',
+					alignItems: 'center'
+				}
 			]}
 		>
 			<Form onSubmit={handleSubmit} style={styles.container}>

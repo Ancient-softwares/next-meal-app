@@ -3,6 +3,7 @@ import { Carousel, ListGroup } from 'react-bootstrap'
 import {
 	Dimensions,
 	FlatList,
+	LogBox,
 	Pressable,
 	SafeAreaView,
 	ScrollView,
@@ -13,6 +14,17 @@ import 'react-native-gesture-handler'
 import '../../constants/globals'
 import { TipoRestaurante } from '../../entities/TipoRestaurante'
 import styles from './style'
+
+LogBox.ignoreLogs([
+	`Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot`,
+	`Uncaught (in promise) TypeError: Cannot convert undefined or null to object
+    at Function.keys (<anonymous>)
+    at companion-bubble.js:1465:19726
+    at Generator.next (<anonymous>)
+    at Ln (companion-bubble.js:1465:19144)`,
+	`Unchecked runtime.lastError: The message port closed before a response was received.
+	`
+])
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const exampleImage = require('../../assets/example.jpeg')
