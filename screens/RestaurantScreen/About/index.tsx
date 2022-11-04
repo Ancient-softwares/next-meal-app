@@ -146,19 +146,30 @@ const AboutScreen = ({
 
 	const renderCardapio = (item: any): JSX.Element => {
 		return (
-			<View style={styles.spaceCategory}>
+			<View style={[styles.spaceCategory, {
+				width: '100%'
+			}]}>
 				<img
 					src={exampleImage}
 					onClick={() => window.alert('AAAA')}
-					className='rounded-circle'
 					style={{
-						width: 90,
-						height: 90,
-						marginLeft: 10,
-						marginRight: 10
+						width: 140,
+						height: 125,
+						marginLeft: 7.5,
+						marginRight: 20,
+						borderRadius: '7.5%'
 					}}
 				/>
-				<Text style={styles.nameCategory}>{item.item.nomePrato}</Text>
+				<Text style={[styles.nameCategory, {
+					marginLeft: 12.5,
+					fontWeight: 'bold'
+				}]}>{item.item.nomePrato}</Text>
+				<Text style={[styles.nameCategory, {
+					marginLeft: 12.5
+				}]}>Categoria: {item.item.tipoPrato}</Text>
+				<Text style={[styles.nameCategory, {
+					marginLeft: 12.5
+				}]}>Valor: {item.item.valorPrato}</Text>
 			</View>
 		)
 	}
@@ -477,7 +488,6 @@ const AboutScreen = ({
 						styles.rowList,
 						{
 							marginBottom: '10%',
-							marginTop: '-20%'
 						}
 					]}
 				>
