@@ -148,7 +148,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				body: packets
 			})
 				.then((response: Response): Promise<JSON> => response.json())
-				.then((json: JSON): void => {
+				.then((json: any): void => {
 					if (json.status === 201) {
 						setMessage('Cadastro realizado com sucesso!')
 						window.alert(json.message)
