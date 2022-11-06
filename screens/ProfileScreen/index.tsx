@@ -16,7 +16,7 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 				name='Main'
 				component={UserScreen}
 				options={{
-					headerShown: false,
+					headerShown: false
 				}}
 			/>
 			<Stack.Screen
@@ -25,14 +25,14 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 				options={{
 					title: 'Cadastro',
 					headerStyle: {
-						backgroundColor: '#fff',
+						backgroundColor: '#fff'
 					},
 					headerTitleStyle: {
 						fontWeight: 'bold',
 						fontSize: 26,
-						color: '#963333',
+						color: '#963333'
 					},
-					headerTitleAlign: 'center',
+					headerTitleAlign: 'center'
 				}}
 			/>
 			<Stack.Screen
@@ -41,30 +41,31 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 				options={{
 					title: 'Login',
 					headerStyle: {
-						backgroundColor: '#fff',
+						backgroundColor: '#fff'
 					},
 					headerTitleStyle: {
 						fontWeight: 'bold',
 						fontSize: 26,
-						color: '#963333',
+						color: '#963333'
 					},
-					headerTitleAlign: 'center',
+					headerTitleAlign: 'center'
 				}}
 			/>
 			<Stack.Screen
 				name='History'
 				component={HistoryScreen}
 				options={{
-					title: 'Login',
+					title: 'Histórico',
 					headerStyle: {
-						backgroundColor: '#fff',
+						backgroundColor: '#fff'
 					},
 					headerTitleStyle: {
 						fontWeight: 'bold',
 						fontSize: 26,
-						color: '#963333',
+						color: '#963333'
 					},
 					headerTitleAlign: 'center',
+					headerShown: true
 				}}
 			/>
 		</Stack.Navigator>

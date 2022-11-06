@@ -1,5 +1,12 @@
 import React from 'react'
-import { ActivityIndicator, FlatList, Text, View } from 'react-native'
+import { Stack } from 'react-bootstrap'
+import {
+	ActivityIndicator,
+	FlatList,
+	SafeAreaView,
+	Text,
+	View
+} from 'react-native'
 import styles from './style'
 
 const HistoryScreen = () => {
@@ -12,12 +19,12 @@ const HistoryScreen = () => {
 				method: 'POST',
 				mode: 'no-cors',
 				headers: {
-					Authorization: `Bearer ${global.getToken()}`,
+					Authorization: `Bearer ${global.getToken()}`
 				},
 				body: JSON.stringify({
 					idCliente: global.user.id,
-					idStatusReserva: 1,
-				}),
+					idStatusReserva: 1
+				})
 			})
 				.then((response) => response.json())
 				.then((json) => {
@@ -33,39 +40,29 @@ const HistoryScreen = () => {
 
 	const getReservas = async () => {
 		try {
-			fetch(`${global.API_URL}/api/getReservasByCliente`, {
+			fetch(`${global.getApiUrl()}/api/getReservasByCliente`, {
 				method: 'POST',
-				mode: 'no-cors',
 				headers: {
-					Authorization: `Bearer ${global.getToken()}`,
+					Accept: 'application/json',
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${global.getToken()}`
 				},
 				body: JSON.stringify({
-					idCliente: global.user.id,
-					idStatusReserva: 1,
-				}),
-			})
-				.then((response) => {
-					console.log(response)
-
-					return response.json()
+					idCliente: Number.parseInt(global.user.id)
 				})
-				.then((json) => {
-					json.map((element: any) => {
-						/* 					data.push({
-                            dataReserva: element.dataReserva,
-                            horaReserva: element.horaReserva,
-                            numPessoas: element.numPessoas,
-                            nomeRestaurante: element.nomeRestaurante,
-                            statusReserva: element.statusReserva,
-                        }) */
+			})
+				.then((response: Response): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					console.log(json)
 
-						console.table(element)
+					json.data.map((item: any) => {
+						data.push(item)
 					})
 				})
-				.catch((error) => {
+				.catch((error: Error): void => {
 					console.error(error)
 				})
-				.finally(() => {
+				.finally((): void => {
 					setIsLoading(false)
 				})
 		} catch (error) {
@@ -75,12 +72,47 @@ const HistoryScreen = () => {
 
 	const Item = ({ item }) => {
 		return (
-			<View>
-				<Text>{item.dataReserva}</Text>
-				<Text>{item.horaReserva}</Text>
-				<Text>{item.numPessoas}</Text>
-				<Text>{item.nomeRestaurante}</Text>
-				<Text>{item.statusReserva}</Text>
+			<View
+				style={{
+					flex: 1,
+					alignItems: 'flex-start',
+					justifyContent: 'flex-start',
+					marginTop: '5%'
+				}}
+			>
+				<Stack
+					direction='horizontal'
+					gap={2}
+					style={{ marginLeft: 96 }}
+				>
+					<div style={styles.PositionImgRestaurant}>
+						<img
+							src={require('../../../assets/example.jpeg')}
+							className='rounded-circle'
+							style={{
+								width: 100,
+								height: 100,
+								marginLeft: 25,
+								marginRight: 10
+							}}
+						/>
+					</div>
+					<div>
+						<Text style={styles.subtitle}>{item.restaurante}</Text>
+						<br />
+						<Text style={styles.description}>
+							Data: {item.dataReserva} - {item.horaReserva}
+							<br />
+						</Text>
+						<Text style={styles.description}>
+							Nº Pessoas: {item.numPessoas}
+						</Text>
+						<br />
+						<Text style={styles.description}>
+							Status: {item.status}
+						</Text>
+					</div>
+				</Stack>
 			</View>
 		)
 	}
@@ -90,21 +122,20 @@ const HistoryScreen = () => {
 	}
 
 	React.useEffect(() => {
-		global.user.id = 1
-		global.setToken(
-			'veXRDoBjl7VPLeCRHIRAYA1jnwLd4TMpiu96SkRdCiKEYQpcFWoiBKX6GaqX2q2o0pyA9VTQMaSXn4cFvcVq5aeqC2mUyGfDa6E6vsA60Vy4u5YT3fldpJ3BeSKIon7i9L0ckhPsMxWjZbRaE9FccDhfNvw9ga4wY8OT272dRSoeAb6vBFbZbMRV0dulrAiRLY6wjPle'
-		)
-
-        console.log(global.getToken())
-
-		bearerTokenTest(global.getToken())
+		console.log(global.getToken())
+		getReservas()
 	}, [])
 
 	return (
-		<View>
+		<SafeAreaView
+			style={{
+				width: '100%',
+				height: '100%',
+				backgroundColor: '#fff'
+			}}
+		>
 			{data.length > 0 ? (
 				<>
-					<Text>HistoryScreen</Text>
 					<FlatList
 						data={data}
 						renderItem={renderItem}
@@ -116,14 +147,14 @@ const HistoryScreen = () => {
 					style={[
 						styles.container,
 						{
-							backgroundColor: 'none',
-						},
+							backgroundColor: 'none'
+						}
 					]}
 				>
 					<ActivityIndicator />
 				</View>
 			)}
-		</View>
+		</SafeAreaView>
 	)
 }
 

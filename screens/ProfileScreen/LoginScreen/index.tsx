@@ -83,65 +83,70 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
 	return (
 		<SafeAreaView
-			style={[
-				styles.container,
-				{
-					marginTop: '40%',
-					justifyContent: 'center',
-					alignItems: 'center'
-				}
-			]}
+			style={{
+				justifyContent: 'center',
+				alignItems: 'center',
+				flex: 1,
+				backgroundColor: '#fff',
+				width: '100%',
+				height: '100%'
+			}}
 		>
-			<Form onSubmit={handleSubmit} style={styles.container}>
-				<Form.Group className='mb-3' controlId='formBasicEmail'>
-					<Form.Label>Email</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						onChangeText={(text) => setEmail(text)}
-						placeholder='Enter email'
-						placeholderTextColor='gray'
-					/>
-				</Form.Group>
-
-				<Form.Group className='mb-3' controlId='formBasicPassword'>
-					<Form.Label>Senha</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						secureTextEntry={true}
-						onChangeText={(text) => setPassword(text)}
-						placeholder='Password'
-						placeholderTextColor='gray'
-					/>
-				</Form.Group>
-				<Button
-					variant='outline-danger'
-					type='submit'
-					onClick={(event: Event): Promise<void> =>
-						handleSubmit(event)
-					}
-				>
-					Entrar
-				</Button>
-
-				<View style={{ marginVertical: '5%' }}>
-					<Form.Group className='mb-3' controlId='formBasicCheckbox'>
-						<Text
-							style={{
-								color: '#000000'
-							}}
-							onPress={() => navigation.navigate('Register')}
-						>
-							Não possui uma conta?
-							<Text style={{ color: '#963333' }}>
-								{' '}
-								Cadastre-se
-							</Text>
-						</Text>
+			<View>
+				<Form onSubmit={handleSubmit} style={styles.container}>
+					<Form.Group className='mb-3' controlId='formBasicEmail'>
+						<Form.Label>Email</Form.Label>
+						<br></br>
+						<TextInput
+							style={styles.formInput}
+							onChangeText={(text) => setEmail(text)}
+							placeholder='Enter email'
+							placeholderTextColor='gray'
+						/>
 					</Form.Group>
-				</View>
-			</Form>
+
+					<Form.Group className='mb-3' controlId='formBasicPassword'>
+						<Form.Label>Senha</Form.Label>
+						<br></br>
+						<TextInput
+							style={styles.formInput}
+							secureTextEntry={true}
+							onChangeText={(text) => setPassword(text)}
+							placeholder='Password'
+							placeholderTextColor='gray'
+						/>
+					</Form.Group>
+					<Button
+						variant='outline-danger'
+						type='submit'
+						onClick={(event: Event): Promise<void> =>
+							handleSubmit(event)
+						}
+					>
+						Entrar
+					</Button>
+
+					<View style={{ marginVertical: '5%' }}>
+						<Form.Group
+							className='mb-3'
+							controlId='formBasicCheckbox'
+						>
+							<Text
+								style={{
+									color: '#000000'
+								}}
+								onPress={() => navigation.navigate('Register')}
+							>
+								Não possui uma conta?
+								<Text style={{ color: '#963333' }}>
+									{' '}
+									Cadastre-se
+								</Text>
+							</Text>
+						</Form.Group>
+					</View>
+				</Form>
+			</View>
 		</SafeAreaView>
 	)
 }

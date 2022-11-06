@@ -168,7 +168,12 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	React.useEffect(() => {
-		console.log([getRestaurant(), getLatest()])
+		getRestaurant()
+		getLatest()
+		getRecommended()
+
+		console.log(latest)
+		console.log(popular)
 	}, [])
 
 	return (
@@ -485,7 +490,69 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							style={{ marginBottom: 20 }}
 						/>
 					</>
-				)) || <></>}
+				)) || (
+					<>
+						<Text style={styles.subtitle}>
+							Reservados recentemente
+						</Text>
+						<Text style={styles.description}>
+							Estabelecimentos que você visitou recentemente
+						</Text>
+						<ListGroup as='ul'>
+							<FlatList
+								data={latest}
+								renderItem={({
+									idReserva,
+									restaurante,
+									dataReserva,
+									horaReserva,
+									numPessoas,
+									total
+								}: any) => {
+									return (
+										<>
+											{idReserva}
+											{restaurante}
+											{dataReserva}
+											{horaReserva}
+											{numPessoas}
+										</>
+									)
+								}}
+								keyExtractor={(item: any) => item.idReserva}
+								scrollEnabled={true}
+								horizontal={false}
+								showsVerticalScrollIndicator={false}
+							/>
+							<ListGroup.Item
+								onClick={onPressLatest}
+								as='li'
+								className='d-flex justify-content-between align-items-start'
+								style={{
+									border: 'none',
+									marginTop: 10,
+									marginBottom: 10
+								}}
+							>
+								<img
+									src={exampleImage}
+									className='rounded-circle'
+									style={{
+										width: 40,
+										height: 40,
+										marginLeft: 10,
+										marginRight: 10
+									}}
+								/>
+								<div className='ms-2 me-auto'>
+									<div className='fw-bold'>
+										Bar do Edinaldo
+									</div>
+								</div>
+							</ListGroup.Item>
+						</ListGroup>
+					</>
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	)

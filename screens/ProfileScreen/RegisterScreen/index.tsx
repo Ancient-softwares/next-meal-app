@@ -171,8 +171,20 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	}
 
 	return (
-		<SafeAreaView style={[styles.container, { marginTop: 35 }]}>
-			<ScrollView showsVerticalScrollIndicator={false}>
+		<SafeAreaView
+			style={{
+				flex: 1,
+				backgroundColor: '#fff',
+				alignItems: 'center',
+				justifyContent: 'center'
+			}}
+		>
+			<ScrollView
+				showsVerticalScrollIndicator={false}
+				style={{
+					marginTop: '7.5%'
+				}}
+			>
 				<Form onSubmit={handleSubmit} style={styles.container}>
 					<Form.Group className='mb-3' controlId='formBasicEmail'>
 						<Form.Label>Email</Form.Label>
