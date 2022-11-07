@@ -31,10 +31,12 @@ const AboutScreen = ({
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
+	const [rating, setRating] = React.useState<number>(0)
 
 	React.useEffect(() => {
 		fetchPlates()
 		fetchAvaliacoes()
+		// test()
 
 		const focusHandler = navigation.addListener('focus', () => {
 			console.log('Refreshed')
@@ -45,6 +47,31 @@ const AboutScreen = ({
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
+	}
+
+	const test = async () => {
+		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${global.getToken()}`
+			},
+			body: JSON.stringify({
+				idRestaurante: restaurante.idRestaurante,
+				idCliente: global.user.id,
+				notaAvaliacao: 5,
+				descAvaliacao: 'kakakakaka, muito bom',
+				dataAvaliacao: Date.now()
+			})
+		})
+			.then((response: Response): Promise<JSON> => response.json())
+			.then((json: any): void => {
+				console.log(json)
+			})
+			.catch((error: Error) => {
+				console.log(error)
+			})
 	}
 
 	const ModalRender = ({
@@ -84,6 +111,39 @@ const AboutScreen = ({
 		people: Joi.number().required().min(1).max(10).integer(),
 		hour: Joi.date().required().min('now')
 	})
+
+	const avaliar = async (): Promise<any> => {
+		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${global.getToken()}`
+			},
+			body: JSON.stringify({
+				idRestaurante: restaurante.id,
+				idCliente: global.getId(),
+				descAvaliacao: feedback,
+				nota: rating,
+				dtAvaliacao: new Date()
+			})
+		})
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.message === 'Avaliação criada com sucesso') {
+					setMessage(json.message)
+					forceRemount()
+				} else {
+					console.log(json.message)
+
+					setModalVisible(true)
+					setMessage(json.message)
+				}
+			})
+			.catch((error) => {
+				console.error(error)
+			})
+	}
 
 	const fetchAvaliacoes = async () => {
 		console.log('fetching avaliacoes')
@@ -146,9 +206,14 @@ const AboutScreen = ({
 
 	const renderCardapio = (item: any): JSX.Element => {
 		return (
-			<View style={[styles.spaceCategory, {
-				width: '100%'
-			}]}>
+			<View
+				style={[
+					styles.spaceCategory,
+					{
+						width: '100%'
+					}
+				]}
+			>
 				<img
 					src={exampleImage}
 					onClick={() => window.alert('AAAA')}
@@ -160,16 +225,37 @@ const AboutScreen = ({
 						borderRadius: '7.5%'
 					}}
 				/>
-				<Text style={[styles.nameCategory, {
-					marginLeft: 12.5,
-					fontWeight: 'bold'
-				}]}>{item.item.nomePrato}</Text>
-				<Text style={[styles.nameCategory, {
-					marginLeft: 12.5
-				}]}>Categoria: {item.item.tipoPrato}</Text>
-				<Text style={[styles.nameCategory, {
-					marginLeft: 12.5
-				}]}>Valor: {item.item.valorPrato}</Text>
+				<Text
+					style={[
+						styles.nameCategory,
+						{
+							marginLeft: 12.5,
+							fontWeight: 'bold'
+						}
+					]}
+				>
+					{item.item.nomePrato}
+				</Text>
+				<Text
+					style={[
+						styles.nameCategory,
+						{
+							marginLeft: 12.5
+						}
+					]}
+				>
+					Categoria: {item.item.tipoPrato}
+				</Text>
+				<Text
+					style={[
+						styles.nameCategory,
+						{
+							marginLeft: 12.5
+						}
+					]}
+				>
+					Valor: {item.item.valorPrato}
+				</Text>
 			</View>
 		)
 	}
@@ -487,18 +573,88 @@ const AboutScreen = ({
 					style={[
 						styles.rowList,
 						{
-							marginBottom: '10%',
+							marginBottom: '10%'
 						}
 					]}
 				>
-					<Text style={styles.subtitle}>Avaliações</Text>
+					<Text
+						style={[
+							styles.subtitle,
+							{
+								marginBottom: '5%'
+							}
+						]}
+					>
+						Avaliações
+					</Text>
 
-					<FlatList
-						data={avaliacoes}
-						showsVerticalScrollIndicator={false}
-						renderItem={renderAvaliacoes}
-						keyExtractor={(item): any => item.idAvaliacao}
-					/>
+					<View
+						style={{
+							marginLeft: '3%',
+							marginTop: '2.5%',
+							marginBottom: '5%'
+						}}
+					>
+						<FlatList
+							data={avaliacoes}
+							showsVerticalScrollIndicator={false}
+							renderItem={renderAvaliacoes}
+							keyExtractor={(item): any => item.idAvaliacao}
+						/>
+
+						{/* <View
+							style={{
+								flex: 1,
+								alignItems: 'center',
+								justifyContent: 'center'
+							}}
+						>
+							<TextInput
+								multiline={true}
+								style={{
+									padding: 10,
+									width: Dimensions.get('window').width - 40,
+									height: 300,
+									borderColor: 'gray',
+									borderWidth: 1,
+									borderRadius: 10,
+									marginBottom: 10,
+									marginLeft: '5%'
+								}}
+								placeholder='Escreva sua avaliação'
+								onChangeText={(text: any) => setFeedback(text)}
+								numberOfLines={4}
+								maxLength={40}
+								editable
+								value={feedback}
+							/>
+
+							<TextInput
+								keyboardType='numeric'
+								style={{
+									padding: 10,
+									width: Dimensions.get('window').width - 40,
+									height: 50,
+									borderColor: 'gray',
+									borderWidth: 1,
+									borderRadius: 10,
+									marginBottom: 10,
+									marginLeft: '5%'
+								}}
+								placeholder='Nota'
+								onChangeText={(text: any) => setRating(text)}
+								editable
+								value={rating}
+							/>
+
+							<TouchableOpacity
+								style={styles.button}
+								onPress={() => avaliar()}
+							>
+								<Text style={styles.textStyle}>Avaliar</Text>
+							</TouchableOpacity>
+						</View> */}
+					</View>
 				</View>
 
 				<View
@@ -507,7 +663,7 @@ const AboutScreen = ({
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginTop: '-2.5%'
+						marginTop: '67.5%'
 					}}
 				>
 					<View
