@@ -4,10 +4,10 @@
 		"slug": "next-meal",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/favicon.png",
+		"icon": "./assets/logo-red.png",
 		"userInterfaceStyle": "light",
 		"splash": {
-			"image": "./assets/favicon.png",
+			"image": "./assets/logo-red.png",
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
@@ -25,7 +25,7 @@
 			}
 		},
 		"web": {
-			"favicon": "./assets/favicon.png"
+			"favicon": "./assets/logo-red.png"
 		}
 	}
 }
