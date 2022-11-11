@@ -117,23 +117,13 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			if (json.nomeRestaurante) {
 				// Inserted text is not blank
 				// Filter the masterDataSource and update FilteredDataSource
-				const newData = masterDataSource.filter((item: any) => {
-					// Applying filter for the inserted text in search bar
-					const itemData = item.nomeRestaurante
-						? item.nomeRestaurante.toUpperCase()
-						: ''.toUpperCase()
-	
-					const textData = json.nomeRestaurante.toUpperCase()
-	
-					return itemData.indexOf(textData) > -1
-				})
-				setFilteredDataSource(newData)
-				setSearch(json.nomeRestaurante)
+				setFilteredDataSource(json)
+				setSearch('')
 			} else {
 				// Inserted text is blank
 				// Update FilteredDataSource with masterDataSource
 				setFilteredDataSource(masterDataSource)
-				setSearch(json.nomeRestaurante)
+				setSearch('')
 			}
 		})
 		.catch((err: Error) => console.error(err))
