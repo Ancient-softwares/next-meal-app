@@ -99,6 +99,46 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		)
 	}
 
+	const searchFilter = async (text: string) => {
+		await fetch('http://127.0.0.1:8000/filterByMealsOrIngredients', {
+			method: 'post',
+			headers: {
+				Accept: "Application/json",
+				'Content-Type': "Application/json"
+			},
+			body: JSON.stringify({
+				input: text
+			})
+		})
+		.then((response: Response) => response.json())
+		.then((json: any) => {
+			console.log(json)
+
+			if (json.nomeRestaurante) {
+				// Inserted text is not blank
+				// Filter the masterDataSource and update FilteredDataSource
+				const newData = masterDataSource.filter((item: any) => {
+					// Applying filter for the inserted text in search bar
+					const itemData = item.nomeRestaurante
+						? item.nomeRestaurante.toUpperCase()
+						: ''.toUpperCase()
+	
+					const textData = json.nomeRestaurante.toUpperCase()
+	
+					return itemData.indexOf(textData) > -1
+				})
+				setFilteredDataSource(newData)
+				setSearch(json.nomeRestaurante)
+			} else {
+				// Inserted text is blank
+				// Update FilteredDataSource with masterDataSource
+				setFilteredDataSource(masterDataSource)
+				setSearch(json.nomeRestaurante)
+			}
+		})
+		.catch((err: Error) => console.error(err))
+	}
+
 	const renderItem = (item: any): JSX.Element => {
 		return <Item {...item} />
 	}
