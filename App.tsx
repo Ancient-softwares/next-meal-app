@@ -9,6 +9,8 @@ import Maps from './screens/MapsScreen'
 import Profile from './screens/ProfileScreen'
 import About from './screens/RestaurantScreen/About'
 import Category from './screens/RestaurantScreen/Category'
+import Menu from './screens/RestaurantScreen/Menu'
+import Ratings from './screens/RestaurantScreen/Ratings'
 import Restaurants from './screens/RestaurantScreen/Restaurants'
 
 const color: string = '#963333'
@@ -85,6 +87,50 @@ const App = (): JSX.Element => {
 					component={Category}
 					options={{
 						headerShown: false,
+						tabBarButton: (): React.ReactNode => null,
+						TabBarVisible: false
+					}}
+				/>
+				<Tab.Screen
+					name='Ratings'
+					component={Ratings}
+					options={{
+						headerShown: true,
+						headerTitle: 'Avaliações',
+						headerStyle: {
+							backgroundColor: '#fff',
+							elevation: 0,
+							shadowOpacity: 0,
+							borderBottomWidth: 0
+						},
+						headerTitleStyle: {
+							fontFamily: 'Poppins_600SemiBold',
+							fontSize: 18,
+							color: '#000'
+						},
+						headerTintColor: '#000',
+						tabBarButton: (): React.ReactNode => null,
+						TabBarVisible: false
+					}}
+				/>
+				<Tab.Screen
+					name='Menu'
+					component={Menu}
+					options={{
+						headerShown: true,
+						headerTitle: 'Cardápio',
+						headerStyle: {
+							backgroundColor: '#fff',
+							elevation: 0,
+							shadowOpacity: 0,
+							borderBottomWidth: 0
+						},
+						headerTitleStyle: {
+							fontFamily: 'Poppins_600SemiBold',
+							fontSize: 18,
+							color: '#000'
+						},
+						headerTintColor: '#000',
 						tabBarButton: (): React.ReactNode => null,
 						TabBarVisible: false
 					}}

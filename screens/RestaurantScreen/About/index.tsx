@@ -1,16 +1,7 @@
 import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
-import { Button, Card, Form, ListGroup, Stack } from 'react-bootstrap'
-import {
-	Dimensions,
-	FlatList,
-	Modal,
-	Pressable,
-	SafeAreaView,
-	ScrollView,
-	Text,
-	View
-} from 'react-native'
+import { Button, Form, Stack } from 'react-bootstrap'
+import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import styles from './style'
 
 const AboutScreen = ({
@@ -21,23 +12,14 @@ const AboutScreen = ({
 	route: any
 }): JSX.Element => {
 	const exampleImage: string = require('../../../assets/example.jpeg')
-	const [modalVisible, setModalVisible] = React.useState(false)
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
 	const restaurante: any = route.params
-	const [pratos, setPratos] = React.useState<any[]>([])
-	const [avaliacoes, setAvaliacoes] = React.useState<any[]>([])
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
-	const [feedback, setFeedback] = React.useState<string>('')
-	const [rating, setRating] = React.useState<number>(0)
 
 	React.useEffect(() => {
-		fetchPlates()
-		fetchAvaliacoes()
-		// test()
-
 		const focusHandler = navigation.addListener('focus', () => {
 			console.log('Refreshed')
 		})
@@ -49,239 +31,11 @@ const AboutScreen = ({
 		setUniqueValue(uniqueValue + 1)
 	}
 
-	const test = async () => {
-		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${global.getToken()}`
-			},
-			body: JSON.stringify({
-				idRestaurante: restaurante.idRestaurante,
-				idCliente: global.user.id,
-				notaAvaliacao: 5,
-				descAvaliacao: 'kakakakaka, muito bom',
-				dataAvaliacao: Date.now()
-			})
-		})
-			.then((response: Response): Promise<JSON> => response.json())
-			.then((json: any): void => {
-				console.log(json)
-			})
-			.catch((error: Error) => {
-				console.log(error)
-			})
-	}
-
-	const ModalRender = ({
-		title,
-		message
-	}: {
-		title: string
-		message: string
-	}) => {
-		return (
-			<Modal
-				animationType='slide'
-				transparent={true}
-				visible={modalVisible}
-				onRequestClose={() => {
-					setModalVisible(!modalVisible)
-				}}
-			>
-				<View style={styles.centeredView}>
-					<View style={styles.modalView}>
-						<Text style={styles.modalText}>{title}</Text>
-						<Text style={styles.modalText}>{message}</Text>
-						<Pressable
-							style={[styles.button, styles.buttonClose]}
-							onPress={() => setModalVisible(!modalVisible)}
-						>
-							<Text style={styles.textStyle}>Fechar</Text>
-						</Pressable>
-					</View>
-				</View>
-			</Modal>
-		)
-	}
-
 	const schema: ObjectSchema<any> = Joi.object({
 		date: Joi.date().required().min('now'),
 		people: Joi.number().required().min(1).max(10).integer(),
 		hour: Joi.date().required().min('now')
 	})
-
-	const avaliar = async (): Promise<any> => {
-		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${global.getToken()}`
-			},
-			body: JSON.stringify({
-				idRestaurante: restaurante.id,
-				idCliente: global.getId(),
-				descAvaliacao: feedback,
-				nota: rating,
-				dtAvaliacao: new Date()
-			})
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				if (json.message === 'Avaliação criada com sucesso') {
-					setMessage(json.message)
-					forceRemount()
-				} else {
-					console.log(json.message)
-
-					setModalVisible(true)
-					setMessage(json.message)
-				}
-			})
-			.catch((error) => {
-				console.error(error)
-			})
-	}
-
-	const fetchAvaliacoes = async () => {
-		console.log('fetching avaliacoes')
-
-		try {
-			await fetch(
-				`${global.getApiUrl()}/api/getAvaliacoesByRestaurante`,
-				{
-					method: 'POST',
-					headers: {
-						Accept: 'application/json',
-						'Content-Type': 'application/json'
-					},
-					body: JSON.stringify({
-						idRestaurante: restaurante.idRestaurante
-					})
-				}
-			)
-				.then((response: Response): Promise<JSON> => response.json())
-				.then((json: any): void => {
-					json.forEach((element: any) => {
-						avaliacoes.push(element)
-					})
-
-					console.log(avaliacoes)
-				})
-				.catch((error: Error): void => {
-					console.error(error)
-				})
-		} catch (error: unknown) {
-			console.log(error)
-		}
-	}
-
-	const fetchPlates = async () => {
-		try {
-			await fetch(`${global.getApiUrl()}/api/getPratosByRestaurante`, {
-				method: 'post',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					idRestaurante: restaurante.idRestaurante
-				})
-			})
-				.then((response: any): Promise<JSON> => response.json())
-				.then((json: any): void => {
-					json.forEach((element: any) => {
-						pratos.push(element)
-					})
-
-					console.log(pratos)
-				})
-				.catch((err: Error): void => console.error(err))
-		} catch (error: unknown) {
-			console.error(error)
-		}
-	}
-
-	const renderCardapio = (item: any): JSX.Element => {
-		return (
-			<View
-				style={[
-					styles.spaceCategory,
-					{
-						width: '100%'
-					}
-				]}
-			>
-				<img
-					src={exampleImage}
-					onClick={() => window.alert('AAAA')}
-					style={{
-						width: 140,
-						height: 125,
-						marginLeft: 7.5,
-						marginRight: 20,
-						borderRadius: '7.5%'
-					}}
-				/>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5,
-							fontWeight: 'bold'
-						}
-					]}
-				>
-					{item.item.nomePrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5
-						}
-					]}
-				>
-					Categoria: {item.item.tipoPrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5
-						}
-					]}
-				>
-					Valor: {item.item.valorPrato}
-				</Text>
-			</View>
-		)
-	}
-
-	const renderAvaliacoes = (item: any): JSX.Element => {
-		return (
-			<View key={uniqueValue}>
-				<Card
-					style={{
-						width: Dimensions.get('window').width * 0.9,
-						border: 'none'
-					}}
-				>
-					<Card.Body>
-						<Card.Title>
-							{item.item.nomeCliente} - {item.item.notaAvaliacao}
-						</Card.Title>
-						<Card.Subtitle className='mb-2 text-muted'>
-							{item.item.dtAvaliacao}
-						</Card.Subtitle>
-						<Card.Text>{item.item.descAvaliacao}</Card.Text>
-					</Card.Body>
-				</Card>
-			</View>
-		)
-	}
 
 	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
@@ -545,116 +299,27 @@ const AboutScreen = ({
 						<br />
 						Domingo: {restaurante.horarioAberturaRestaurante} -{' '}
 						{restaurante.horarioFechamentoRestaurante}
+						<br />
+						<br />
 					</Text>
-				</View>
-
-				<View style={styles.rowList}>
-					<Text style={styles.subtitle}>Cardápio</Text>
-					<View
-						style={{
-							marginLeft: '6%',
-							marginTop: '2.5%'
-						}}
-					>
-						<ListGroup>
-							<FlatList
-								data={pratos}
-								horizontal={true}
-								showsHorizontalScrollIndicator={false}
-								scrollEnabled={true}
-								keyExtractor={(item: any) => item.idPrato}
-								renderItem={renderCardapio}
-							/>
-						</ListGroup>
-					</View>
 				</View>
 
 				<View
-					style={[
-						styles.rowList,
-						{
-							marginBottom: '10%'
-						}
-					]}
+					style={{ flex: 1, alignItems: 'center', marginTop: '15%' }}
 				>
-					<Text
-						style={[
-							styles.subtitle,
-							{
-								marginBottom: '5%'
-							}
-						]}
+					<Text style={styles.subtitle}>Cardápio</Text>
+					<Button
+						variant='danger'
+						type='submit'
+						style={styles.button}
+						onClick={() =>
+							navigation.navigate('Menu', {
+								restaurante: restaurante
+							})
+						}
 					>
-						Avaliações
-					</Text>
-
-					<View
-						style={{
-							marginLeft: '3%',
-							marginTop: '2.5%',
-							marginBottom: '5%'
-						}}
-					>
-						<FlatList
-							data={avaliacoes}
-							showsVerticalScrollIndicator={false}
-							renderItem={renderAvaliacoes}
-							keyExtractor={(item): any => item.idAvaliacao}
-						/>
-
-						{/* <View
-							style={{
-								flex: 1,
-								alignItems: 'center',
-								justifyContent: 'center'
-							}}
-						>
-							<TextInput
-								multiline={true}
-								style={{
-									padding: 10,
-									width: Dimensions.get('window').width - 40,
-									height: 300,
-									borderColor: 'gray',
-									borderWidth: 1,
-									borderRadius: 10,
-									marginBottom: 10,
-									marginLeft: '5%'
-								}}
-								placeholder='Escreva sua avaliação'
-								onChangeText={(text: any) => setFeedback(text)}
-								numberOfLines={4}
-								maxLength={40}
-								editable
-								value={feedback}
-							/>
-
-							<TextInput
-								keyboardType='numeric'
-								style={{
-									padding: 10,
-									width: Dimensions.get('window').width - 40,
-									height: 50,
-									borderColor: 'gray',
-									borderWidth: 1,
-									borderRadius: 10,
-									marginBottom: 10,
-									marginLeft: '5%'
-								}}
-								placeholder='Nota'
-								onChangeText={(text: any) => setRating(text)}
-								editable
-								value={rating}
-							/>
-
-							<TouchableOpacity
-								style={styles.button}
-								onPress={() => avaliar()}
-							>
-								<Text style={styles.textStyle}>Avaliar</Text>
-							</TouchableOpacity>
-						</View> */}
-					</View>
+						<Text style={{ color: '#fff' }}>Ver cardápio</Text>
+					</Button>
 				</View>
 
 				<View
@@ -662,8 +327,7 @@ const AboutScreen = ({
 						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginHorizontal: '10%',
-						marginTop: '67.5%'
+						marginHorizontal: '5%'
 					}}
 				>
 					<View
@@ -764,6 +428,26 @@ const AboutScreen = ({
 										{message}
 									</Text>
 								</Form.Group>
+							</View>
+
+							<View style={{ marginTop: '10%' }}>
+								<Text style={styles.subtitle}>
+									Avaliações e comentários
+								</Text>
+								<Button
+									variant='danger'
+									type='submit'
+									style={styles.button}
+									onClick={() =>
+										navigation.navigate('Ratings', {
+											restaurante: restaurante
+										})
+									}
+								>
+									<Text style={{ color: '#fff' }}>
+										Ver avaliações
+									</Text>
+								</Button>
 							</View>
 						</Form>
 					</View>

@@ -11,7 +11,7 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 	const Stack: any = createStackNavigator()
 
 	return (
-		<Stack.Navigator>
+		<Stack.Navigator initialRouteName='Main'>
 			<Stack.Screen
 				name='Main'
 				component={UserScreen}
