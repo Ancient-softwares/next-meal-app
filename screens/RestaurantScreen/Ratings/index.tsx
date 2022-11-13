@@ -7,15 +7,15 @@ import {
 	TextInput,
 	View
 } from 'react-native'
-import styles from './style'
 
 const Ratings = ({ navigation, route }: any) => {
 	const [avaliacoes, setAvaliacoes] = React.useState<any[]>([])
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
-	const [rating, setRating] = React.useState<number>(0)
+	const [rating, setRating] = React.useState<string>('')
 	const restaurante = route.params.restaurante
+	const [flag, setFlag] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
 		fetchAvaliacoes()
@@ -24,12 +24,22 @@ const Ratings = ({ navigation, route }: any) => {
 			console.log('Refreshed')
 		})
 
+		onRefresh()
+
 		return focusHandler
 	}, [navigation, uniqueValue])
+
+	const wait = (timeout: number) => {
+		return new Promise((resolve) => setTimeout(resolve, timeout))
+	}
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
 	}
+
+	const onRefresh = React.useCallback(() => {
+		wait(250).then(() => forceRemount())
+	}, [])
 
 	const fetchAvaliacoes = async () => {
 		console.log('fetching avaliacoes')
@@ -120,15 +130,71 @@ const Ratings = ({ navigation, route }: any) => {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
-			<View
-				style={[
-					styles.rowList,
-					{
-						marginBottom: '10%'
-					}
-				]}
+		<>
+			<SafeAreaView
+				style={{
+					backgroundColor: '#fff',
+					alignItems: 'flex-start',
+					justifyContent: 'flex-start'
+				}}
+				key={uniqueValue}
 			>
+				<View
+					style={{
+						flex: 1,
+						alignItems: 'center',
+						justifyContent: 'center'
+					}}
+				>
+					<TextInput
+						multiline={true}
+						style={{
+							padding: 10,
+							width: Dimensions.get('window').width - 40,
+							height: 100,
+							borderColor: 'gray',
+							borderWidth: 1,
+							borderRadius: 10,
+							marginBottom: 10,
+							marginLeft: '5%'
+						}}
+						placeholder='Escreva sua avaliação'
+						onChangeText={(text: any) => setFeedback(text)}
+						numberOfLines={4}
+						maxLength={40}
+						editable
+						value={feedback}
+					/>
+
+					<TextInput
+						keyboardType='numeric'
+						style={{
+							padding: 10,
+							width: Dimensions.get('window').width - 40,
+							height: 50,
+							borderColor: 'gray',
+							borderWidth: 1,
+							borderRadius: 10,
+							marginBottom: 10,
+							marginLeft: '5%'
+						}}
+						placeholder='Nota'
+						onChangeText={(text: any) => setRating(text)}
+						editable
+						value={rating}
+					/>
+
+					<Button
+						variant='danger'
+						style={{
+							width: Dimensions.get('window').width - 40,
+							marginLeft: '5%'
+						}}
+						onClick={() => avaliar}
+					>
+						Avaliar
+					</Button>
+				</View>
 				<View
 					style={{
 						marginLeft: '3%',
@@ -142,66 +208,9 @@ const Ratings = ({ navigation, route }: any) => {
 						renderItem={renderAvaliacoes}
 						keyExtractor={(item): any => item.idAvaliacao}
 					/>
-
-					<View
-						style={{
-							flex: 1,
-							alignItems: 'center',
-							justifyContent: 'center'
-						}}
-					>
-						<TextInput
-							multiline={true}
-							style={{
-								padding: 10,
-								width: Dimensions.get('window').width - 40,
-								height: 300,
-								borderColor: 'gray',
-								borderWidth: 1,
-								borderRadius: 10,
-								marginBottom: 10,
-								marginLeft: '5%'
-							}}
-							placeholder='Escreva sua avaliação'
-							onChangeText={(text: any) => setFeedback(text)}
-							numberOfLines={4}
-							maxLength={40}
-							editable
-							value={feedback}
-						/>
-
-						<TextInput
-							keyboardType='numeric'
-							style={{
-								padding: 10,
-								width: Dimensions.get('window').width - 40,
-								height: 50,
-								borderColor: 'gray',
-								borderWidth: 1,
-								borderRadius: 10,
-								marginBottom: 10,
-								marginLeft: '5%'
-							}}
-							placeholder='Nota'
-							onChangeText={(text: any) => setRating(text)}
-							editable
-							value={rating}
-						/>
-
-						<Button
-							variant='danger'
-							style={{
-								width: Dimensions.get('window').width - 40,
-								marginLeft: '5%'
-							}}
-							onPress={avaliar}
-						>
-							Avaliar
-						</Button>
-					</View>
 				</View>
-			</View>
-		</SafeAreaView>
+			</SafeAreaView>
+		</>
 	)
 }
 

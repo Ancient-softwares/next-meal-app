@@ -13,6 +13,7 @@ declare global {
 	var restaurant: any
 	var defaultImage: string
 	var isLogged: boolean
+	var color: string
 
 	// getters
 	function getToken(): string
@@ -86,6 +87,7 @@ global.restaurant = {
 }
 
 global.defaultImage = '../assets/example.jpeg'
+global.color = '#963333'
 
 // getters
 global.getToken = () => global.TOKEN

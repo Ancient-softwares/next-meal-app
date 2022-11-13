@@ -13,8 +13,6 @@ import Menu from './screens/RestaurantScreen/Menu'
 import Ratings from './screens/RestaurantScreen/Ratings'
 import Restaurants from './screens/RestaurantScreen/Restaurants'
 
-const color: string = '#963333'
-
 const Tab: any = createBottomTabNavigator()
 
 const App = (): JSX.Element => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
-import { FlatList, SafeAreaView, Text, View } from 'react-native'
+import { Dimensions, FlatList, SafeAreaView, Text, View } from 'react-native'
 import styles from './style'
 
 const Menu = ({ navigation, route }: any) => {
@@ -17,8 +17,22 @@ const Menu = ({ navigation, route }: any) => {
 			console.log('Refreshed')
 		})
 
+		onRefresh()
+
 		return focusHandler
 	}, [navigation, uniqueValue])
+
+	const wait = (timeout: number) => {
+		return new Promise((resolve) => setTimeout(resolve, timeout))
+	}
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+	}
+
+	const onRefresh = React.useCallback(() => {
+		wait(250).then(() => forceRemount())
+	}, [])
 
 	const fetchMenu = async () => {
 		try {
@@ -60,11 +74,10 @@ const Menu = ({ navigation, route }: any) => {
 					src={exampleImage}
 					onClick={() => window.alert('AAAA')}
 					style={{
-						width: 140,
-						height: 125,
-						marginLeft: 7.5,
-						marginRight: 20,
-						borderRadius: '7.5%'
+						width: Dimensions.get('window').width * 0.8,
+						height: Dimensions.get('window').height * 0.2,
+						borderRadius: '7.5%',
+						marginLeft: '-5%'
 					}}
 				/>
 				<Text
@@ -72,7 +85,9 @@ const Menu = ({ navigation, route }: any) => {
 						styles.nameCategory,
 						{
 							marginLeft: 12.5,
-							fontWeight: 'bold'
+							fontWeight: 'bold',
+							fontSize: 18,
+							color: '#963333'
 						}
 					]}
 				>
@@ -82,7 +97,9 @@ const Menu = ({ navigation, route }: any) => {
 					style={[
 						styles.nameCategory,
 						{
-							marginLeft: 12.5
+							marginLeft: 12.5,
+							fontWeight: 'bold',
+							marginBottom: 10
 						}
 					]}
 				>
@@ -92,7 +109,8 @@ const Menu = ({ navigation, route }: any) => {
 					style={[
 						styles.nameCategory,
 						{
-							marginLeft: 12.5
+							marginLeft: 12.5,
+							marginBottom: 12.5
 						}
 					]}
 				>
@@ -103,34 +121,41 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	return (
-		<SafeAreaView
-			style={[
-				styles.container,
-				{
-					height: '100%'
-				}
-			]}
-		>
-			<View style={styles.rowList}>
-				<View
-					style={{
-						marginLeft: '6%',
-						marginTop: '2.5%'
-					}}
-				>
-					<ListGroup>
-						<FlatList
-							data={cardapio}
-							horizontal={false}
-							showsHorizontalScrollIndicator={false}
-							scrollEnabled={true}
-							keyExtractor={(item: any) => item.idPrato}
-							renderItem={renderCardapio}
-						/>
-					</ListGroup>
+		<>
+			<SafeAreaView
+				style={[
+					{
+						height: '100%',
+						flexDirection: 'column',
+						flex: 1,
+						justifyContent: 'flex-start',
+						alignItems: 'flex-start',
+						backgroundColor: '#fff'
+					}
+				]}
+				key={uniqueValue}
+			>
+				<View style={styles.rowList}>
+					<View
+						style={{
+							marginLeft: '6%',
+							marginTop: '2.5%'
+						}}
+					>
+						<ListGroup>
+							<FlatList
+								data={cardapio}
+								horizontal={false}
+								showsHorizontalScrollIndicator={false}
+								scrollEnabled={true}
+								keyExtractor={(item: any) => item.idPrato}
+								renderItem={renderCardapio}
+							/>
+						</ListGroup>
+					</View>
 				</View>
-			</View>
-		</SafeAreaView>
+			</SafeAreaView>
+		</>
 	)
 }
 

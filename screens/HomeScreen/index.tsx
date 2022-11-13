@@ -65,7 +65,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					})
 
 					console.table(latest)
-					setLatest(latest)
 				})
 				.catch((err: Error): void => console.error(err))
 		}
@@ -87,12 +86,17 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		)
 			.then((response: any): Promise<JSON> => response.json())
 			.then((json: any): void => {
+				let temp = Array<any>()
+
 				Object.keys(json).forEach((key: string) => {
-					popular.push(json[key])
+					temp.push(json[key])
+				})
+
+				Object.keys(temp[1]).forEach((key: string) => {
+					popular.push(temp[1][key])
 				})
 
 				console.table(popular)
-				setPopular(popular)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
@@ -142,7 +146,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const Item = (...item: any[]): JSX.Element => {
-		console.log(item[0])
 		return (
 			<View style={styles.spaceCategory}>
 				<img
@@ -171,9 +174,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		getRestaurant()
 		getLatest()
 		getRecommended()
-
-		console.log(latest)
-		console.log(popular)
 	}, [])
 
 	return (
@@ -473,19 +473,44 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						</Text>
 						<FlatList
 							data={popular}
-							renderItem={({ id, name, rating, total }: any) => {
+							renderItem={({
+								idRestaurante,
+								nomeRestaurante,
+								total,
+								media
+							}: any) => {
 								return (
 									<>
-										{id}
-										{name}
-										{rating}
-										{total}
+										<View
+											onClick={onPressLatest}
+											as='li'
+											className='d-flex justify-content-between align-items-start'
+											style={{
+												marginTop: 10,
+												marginBottom: 10
+											}}
+										>
+											<img
+												src={exampleImage}
+												className='rounded-circle'
+												style={{
+													width: 40,
+													height: 40,
+													marginLeft: 10,
+													marginRight: 10
+												}}
+											/>
+											<div className='ms-2 me-auto'>
+												<div className='fw-bold'>
+													{nomeRestaurante} - {total}
+												</div>
+											</div>
+										</View>
 									</>
 								)
 							}}
 							keyExtractor={(item: any) => item.idRestaurante}
-							horizontal={true}
-							numColumns={2}
+							horizontal={false}
 							showsHorizontalScrollIndicator={false}
 							style={{ marginBottom: 20 }}
 						/>
