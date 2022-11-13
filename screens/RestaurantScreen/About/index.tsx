@@ -460,7 +460,6 @@ const AboutScreen = ({
 								</Text>
 								<Button
 									variant='danger'
-									type='submit'
 									style={{
 										marginTop: '5%',
 										marginBottom: '5%',

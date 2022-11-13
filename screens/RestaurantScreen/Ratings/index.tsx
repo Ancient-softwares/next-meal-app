@@ -24,8 +24,6 @@ const Ratings = ({ navigation, route }: any) => {
 			console.log('Refreshed')
 		})
 
-		onRefresh()
-
 		return focusHandler
 	}, [navigation, uniqueValue])
 
@@ -98,6 +96,14 @@ const Ratings = ({ navigation, route }: any) => {
 	}
 
 	const avaliar = async (): Promise<any> => {
+		const params = JSON.stringify({
+			idRestaurante: restaurante.idRestaurante,
+			idCliente: global.user.id,
+			descAvaliacao: feedback,
+			notaAvaliacao: rating,
+			dtAvaliacao: new Date()
+		})
+
 		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
 			method: 'POST',
 			headers: {
@@ -105,24 +111,11 @@ const Ratings = ({ navigation, route }: any) => {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${global.getToken()}`
 			},
-			body: JSON.stringify({
-				idRestaurante: restaurante.id,
-				idCliente: global.getId(),
-				descAvaliacao: feedback,
-				nota: rating,
-				dtAvaliacao: new Date()
-			})
+			body: params
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				if (json.message === 'Avaliação criada com sucesso') {
-					setMessage(json.message)
-					forceRemount()
-				} else {
-					console.log(json.message)
-
-					setMessage(json.message)
-				}
+				window.alert('Avaliação criada com sucesso')
 			})
 			.catch((error) => {
 				console.error(error)
@@ -190,7 +183,7 @@ const Ratings = ({ navigation, route }: any) => {
 							width: Dimensions.get('window').width - 40,
 							marginLeft: '5%'
 						}}
-						onClick={() => avaliar}
+						onClick={() => avaliar()}
 					>
 						Avaliar
 					</Button>
