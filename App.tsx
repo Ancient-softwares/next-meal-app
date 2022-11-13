@@ -104,10 +104,11 @@ const App = (): JSX.Element => {
 							borderBottomWidth: 0
 						},
 						headerTitleStyle: {
-							fontFamily: 'Poppins_600SemiBold',
-							fontSize: 18,
-							color: '#000'
+							fontWeight: 'bold',
+							fontSize: 26,
+							color: '#963333'
 						},
+						headerTitleAlign: 'center',
 						headerTintColor: '#000',
 						tabBarButton: (): React.ReactNode => null,
 						TabBarVisible: false
@@ -126,10 +127,11 @@ const App = (): JSX.Element => {
 							borderBottomWidth: 0
 						},
 						headerTitleStyle: {
-							fontFamily: 'Poppins_600SemiBold',
-							fontSize: 18,
-							color: '#000'
+							fontWeight: 'bold',
+							fontSize: 26,
+							color: '#963333'
 						},
+						headerTitleAlign: 'center',
 						headerTintColor: '#000',
 						tabBarButton: (): React.ReactNode => null,
 						TabBarVisible: false

@@ -10,6 +10,16 @@ const Menu = ({ navigation, route }: any) => {
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
 
+	React.useEffect(() => {
+		fetchMenu()
+
+		const focusHandler = navigation.addListener('focus', () => {
+			console.log('Refreshed')
+		})
+
+		return focusHandler
+	}, [navigation, uniqueValue])
+
 	const fetchMenu = async () => {
 		try {
 			await fetch(`${global.getApiUrl()}/api/getPratosByRestaurante`, {
@@ -93,9 +103,15 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView
+			style={[
+				styles.container,
+				{
+					height: '100%'
+				}
+			]}
+		>
 			<View style={styles.rowList}>
-				<Text style={styles.subtitle}>Cardápio</Text>
 				<View
 					style={{
 						marginLeft: '6%',
@@ -105,7 +121,7 @@ const Menu = ({ navigation, route }: any) => {
 					<ListGroup>
 						<FlatList
 							data={cardapio}
-							horizontal={true}
+							horizontal={false}
 							showsHorizontalScrollIndicator={false}
 							scrollEnabled={true}
 							keyExtractor={(item: any) => item.idPrato}

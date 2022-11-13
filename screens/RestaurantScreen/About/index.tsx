@@ -255,7 +255,7 @@ const AboutScreen = ({
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginTop: '-5%'
+						marginVertical: '5%'
 					}}
 				>
 					<Text style={styles.subtitle}>Horários do restaurante</Text>
@@ -305,13 +305,23 @@ const AboutScreen = ({
 				</View>
 
 				<View
-					style={{ flex: 1, alignItems: 'center', marginTop: '15%' }}
+					style={{
+						flex: 1,
+						marginTop: '15%',
+						marginHorizontal: '10%'
+					}}
 				>
 					<Text style={styles.subtitle}>Cardápio</Text>
 					<Button
 						variant='danger'
 						type='submit'
-						style={styles.button}
+						style={{
+							marginTop: '5%',
+							marginBottom: '5%',
+							marginLeft: '5%',
+							width: Dimensions.get('window').width * 0.4,
+							borderRadius: 10
+						}}
 						onClick={() =>
 							navigation.navigate('Menu', {
 								restaurante: restaurante
@@ -327,7 +337,8 @@ const AboutScreen = ({
 						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginHorizontal: '5%'
+						marginHorizontal: '10%',
+						marginTop: '-15%'
 					}}
 				>
 					<View
@@ -401,7 +412,15 @@ const AboutScreen = ({
 								<Button
 									variant='danger'
 									type='submit'
-									style={styles.button}
+									style={{
+										marginTop: '5%',
+										marginBottom: '5%',
+										marginLeft: '5%',
+										width:
+											Dimensions.get('window').width *
+											0.4,
+										borderRadius: 10
+									}}
 								>
 									<Text style={{ color: '#fff' }}>
 										Reservar
@@ -430,14 +449,27 @@ const AboutScreen = ({
 								</Form.Group>
 							</View>
 
-							<View style={{ marginTop: '10%' }}>
+							<View
+								style={{
+									marginTop: '10%',
+									marginLeft: '-2.5%'
+								}}
+							>
 								<Text style={styles.subtitle}>
 									Avaliações e comentários
 								</Text>
 								<Button
 									variant='danger'
 									type='submit'
-									style={styles.button}
+									style={{
+										marginTop: '5%',
+										marginBottom: '5%',
+										marginLeft: '5%',
+										width:
+											Dimensions.get('window').width *
+											0.4,
+										borderRadius: 10
+									}}
 									onClick={() =>
 										navigation.navigate('Ratings', {
 											restaurante: restaurante
