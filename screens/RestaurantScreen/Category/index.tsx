@@ -1,6 +1,12 @@
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
-import { ActivityIndicator, FlatList, SafeAreaView, View } from 'react-native'
+import {
+	ActivityIndicator,
+	FlatList,
+	Keyboard,
+	SafeAreaView,
+	View
+} from 'react-native'
 import { SearchBar } from 'react-native-elements'
 import styles from './style'
 
@@ -57,8 +63,6 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	}
 
 	const Item = (...item: any[]): JSX.Element => {
-		console.log(item[0])
-
 		return (
 			<View>
 				<Card style={styles.card}>
@@ -147,15 +151,29 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 						platform='android'
 						round
 						value={search}
-						onChangeText={(text: string) =>
-							searchFilterFunction(text)
+						onChange={(event: any) =>
+							searchFilterFunction(event.nativeEvent.text)
 						}
-						autoCorrect={false}
-						blurOnSubmit={true}
+						onSubmitEditing={() => {
+							Keyboard.dismiss()
+						}}
 						autoFocus={true}
 						style={{
 							width: '72vw'
 						}}
+						onBlur={undefined}
+						onChangeText={undefined}
+						onFocus={undefined}
+						onClear={undefined}
+						loadingProps={undefined}
+						autoCompleteType={undefined}
+						clearIcon={undefined}
+						searchIcon={undefined}
+						showLoading={false}
+						onCancel={undefined}
+						cancelButtonTitle={''}
+						cancelButtonProps={undefined}
+						showCancel={false}
 					/>
 					<FlatList
 						data={filteredDataSource}

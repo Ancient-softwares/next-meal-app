@@ -50,7 +50,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					popular.push(temp[1][key])
 				})
 
-				console.log('popular', popular)
+				console.table(popular)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
@@ -179,10 +179,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							/>
 
 							<Carousel.Caption>
-								<h3>
-									Economize tempo na hora de realizar sua
-									reserva.
-								</h3>
+								<h3>Economize tempo ao reservar.</h3>
 							</Carousel.Caption>
 						</Carousel.Item>
 						<Carousel.Item interval={6000}>
@@ -194,10 +191,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							/>
 
 							<Carousel.Caption>
-								<h3>
-									Conosco você pode visualizar o pratos do
-									restaurantes que selecionar.
-								</h3>
+								<h3>Visualizar o cardápio dos restaurantes.</h3>
 							</Carousel.Caption>
 						</Carousel.Item>
 					</Carousel>

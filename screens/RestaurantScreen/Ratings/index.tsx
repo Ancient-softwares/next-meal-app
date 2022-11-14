@@ -14,16 +14,17 @@ const Ratings = ({ navigation, route }: any) => {
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
 	const [rating, setRating] = React.useState<string>('')
-	let restaurante = route.params.restaurante
+	const restaurante = route.params.restaurante
 	const [flag, setFlag] = React.useState<boolean>(true)
 
 	React.useEffect(() => {
-		navigation.addListener('focus', async () => {
-			setAvaliacoes([])
-			restaurante = route.params.restaurante
-			fetchAvaliacoes()
-			forceRemount()
+		fetchAvaliacoes()
+
+		const focusHandler = navigation.addListener('focus', () => {
+			console.log('Refreshed')
 		})
+
+		return focusHandler
 	}, [navigation, uniqueValue])
 
 	const wait = (timeout: number) => {

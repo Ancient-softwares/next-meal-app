@@ -166,8 +166,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						platform='android'
 						round
 						value={search}
-						onChangeText={(text: any): any =>
-							searchFilterFunction(text)
+						onChange={(event: any): any =>
+							searchFilterFunction(event.nativeEvent.text)
 						}
 						autoCorrect={false}
 						blurOnSubmit={true}
@@ -175,6 +175,19 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						style={{
 							width: '72vw'
 						}}
+						onBlur={undefined}
+						onChangeText={undefined}
+						onFocus={undefined}
+						onClear={undefined}
+						loadingProps={undefined}
+						autoCompleteType={undefined}
+						clearIcon={undefined}
+						searchIcon={undefined}
+						showLoading={false}
+						onCancel={undefined}
+						cancelButtonTitle={''}
+						cancelButtonProps={undefined}
+						showCancel={false}
 					/>
 					<FlatList
 						data={filteredDataSource}

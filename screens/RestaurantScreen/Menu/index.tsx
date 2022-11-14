@@ -1,6 +1,7 @@
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
 import {
+	ActivityIndicator,
 	Dimensions,
 	FlatList,
 	RefreshControl,
@@ -18,12 +19,14 @@ const Menu = ({ navigation, route }: any) => {
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [refresh, setRefresh] = React.useState(false)
+	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
-		fetchMenu()
-
 		navigation.addListener('focus', async () => {
+			fetchMenu()
 			console.table(restaurante)
+
+			onRefresh()
 		})
 	}, [navigation, uniqueValue])
 
@@ -42,6 +45,8 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	const onRefresh = React.useCallback(() => {
+		restaurante = Object.assign({}, route.params.restaurante)
+
 		wait(250).then(() => forceRemount())
 	}, [])
 
@@ -59,15 +64,21 @@ const Menu = ({ navigation, route }: any) => {
 			})
 				.then((response: any): Promise<JSON> => response.json())
 				.then((json: any): void => {
-					json.forEach((element: any) => {
+					if (cardapio) {
+						setCardapio(json)
+					}
+
+					/* json.forEach((element: any) => {
 						cardapio.push(element)
-					})
+					}) */
 
 					console.log(cardapio)
 				})
 				.catch((err: Error): void => console.error(err))
 		} catch (error: unknown) {
 			console.error(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -133,55 +144,69 @@ const Menu = ({ navigation, route }: any) => {
 
 	return (
 		<>
-			<SafeAreaView
-				style={[
-					{
-						height: '100%',
-						flexDirection: 'column',
-						flex: 1,
-						justifyContent: 'flex-start',
-						backgroundColor: '#fff'
-					}
-				]}
-				key={uniqueValue}
-			>
-				<ScrollView
-					style={{
-						width: '100%',
-						height: '100%'
-					}}
-					refreshControl={
-						<RefreshControl
-							refreshing={false}
-							onRefresh={onRefresh}
-						/>
-					}
-					scrollEnabled={true}
-					showsVerticalScrollIndicator={false}
+			{loading ? (
+				<View style={styles.container}>
+					<ActivityIndicator
+						style={{
+							marginTop: '70%'
+						}}
+						size='large'
+						color='#963333'
+					/>
+				</View>
+			) : (
+				<SafeAreaView
+					style={[
+						{
+							height: '100%',
+							flexDirection: 'column',
+							flex: 1,
+							justifyContent: 'flex-start',
+							backgroundColor: '#fff'
+						}
+					]}
+					key={uniqueValue}
 				>
-					<View style={styles.rowList}>
-						<View
-							style={{
-								marginLeft: '6%',
-								marginTop: '2.5%'
-							}}
-						>
-							<ListGroup>
-								<FlatList
-									data={cardapio}
-									horizontal={false}
-									showsHorizontalScrollIndicator={false}
-									scrollEnabled={true}
-									keyExtractor={(item: any) => item.idPrato}
-									renderItem={renderCardapio}
-									refreshing={refresh}
-									onRefresh={handleRefresh}
-								/>
-							</ListGroup>
+					<ScrollView
+						style={{
+							width: '100%',
+							height: '100%'
+						}}
+						refreshControl={
+							<RefreshControl
+								refreshing={false}
+								onRefresh={onRefresh}
+							/>
+						}
+						scrollEnabled={true}
+						showsVerticalScrollIndicator={false}
+					>
+						<View style={styles.rowList}>
+							<View
+								style={{
+									marginLeft: '6%',
+									marginTop: '2.5%'
+								}}
+							>
+								<ListGroup>
+									<FlatList
+										data={cardapio}
+										horizontal={false}
+										showsHorizontalScrollIndicator={false}
+										scrollEnabled={true}
+										keyExtractor={(item: any) =>
+											item.idPrato
+										}
+										renderItem={renderCardapio}
+										refreshing={refresh}
+										onRefresh={handleRefresh}
+									/>
+								</ListGroup>
+							</View>
 						</View>
-					</View>
-				</ScrollView>
-			</SafeAreaView>
+					</ScrollView>
+				</SafeAreaView>
+			)}
 		</>
 	)
 }
