@@ -66,6 +66,7 @@ const Menu = ({ navigation, route }: any) => {
 				.then((json: any): void => {
 					if (cardapio) {
 						setCardapio(json)
+						setRefresh(false)
 					}
 
 					/* json.forEach((element: any) => {
@@ -174,7 +175,7 @@ const Menu = ({ navigation, route }: any) => {
 						}}
 						refreshControl={
 							<RefreshControl
-								refreshing={false}
+								refreshing={refresh}
 								onRefresh={onRefresh}
 							/>
 						}

@@ -1,12 +1,15 @@
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import {
+	ActivityIndicator,
 	Dimensions,
 	FlatList,
+	RefreshControl,
 	SafeAreaView,
 	TextInput,
 	View
 } from 'react-native'
+import styles from './style'
 
 const Ratings = ({ navigation, route }: any) => {
 	const [avaliacoes, setAvaliacoes] = React.useState<any[]>([])
@@ -15,13 +18,15 @@ const Ratings = ({ navigation, route }: any) => {
 	const [feedback, setFeedback] = React.useState<string>('')
 	const [rating, setRating] = React.useState<string>('')
 	const restaurante = route.params.restaurante
-	const [flag, setFlag] = React.useState<boolean>(true)
+	const [refresh, setRefresh] = React.useState(false)
+	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
-		fetchAvaliacoes()
-
 		const focusHandler = navigation.addListener('focus', () => {
-			console.log('Refreshed')
+			setTimeout(() => {
+				fetchRatings()
+			}, 250)
+			setRefresh(false)
 		})
 
 		return focusHandler
@@ -39,9 +44,7 @@ const Ratings = ({ navigation, route }: any) => {
 		wait(250).then(() => forceRemount())
 	}, [])
 
-	const fetchAvaliacoes = async () => {
-		console.log('fetching avaliacoes')
-
+	const fetchRatings = async () => {
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getAvaliacoesByRestaurante`,
@@ -67,8 +70,13 @@ const Ratings = ({ navigation, route }: any) => {
 				.catch((error: Error): void => {
 					console.error(error)
 				})
+				.finally((): void => {
+					setLoading(false)
+				})
 		} catch (error: unknown) {
 			console.log(error)
+		} finally {
+			setLoading(false)
 		}
 	}
 
@@ -120,89 +128,113 @@ const Ratings = ({ navigation, route }: any) => {
 			.catch((error) => {
 				console.error(error)
 			})
+			.finally(() => {
+				setFeedback('')
+				setRating('')
+				setMessage('')
+				forceRemount()
+			})
 	}
 
 	return (
 		<>
-			<SafeAreaView
-				style={{
-					backgroundColor: '#fff',
-					alignItems: 'flex-start',
-					justifyContent: 'flex-start'
-				}}
-				key={uniqueValue}
-			>
-				<View
+			{loading ? (
+				<View style={styles.container}>
+					<ActivityIndicator
+						style={{
+							marginTop: '75%'
+						}}
+						size='large'
+						color='#FF0000'
+					/>
+				</View>
+			) : (
+				<SafeAreaView
 					style={{
-						flex: 1,
-						alignItems: 'center',
-						justifyContent: 'center'
+						backgroundColor: '#fff',
+						alignItems: 'flex-start',
+						justifyContent: 'flex-start'
 					}}
+					key={uniqueValue}
 				>
-					<TextInput
-						multiline={true}
+					<View
 						style={{
-							padding: 10,
-							width: Dimensions.get('window').width - 40,
-							height: 100,
-							borderColor: 'gray',
-							borderWidth: 1,
-							borderRadius: 10,
-							marginBottom: 10,
-							marginLeft: '5%'
+							flex: 1,
+							alignItems: 'center',
+							justifyContent: 'center'
 						}}
-						placeholder='Escreva sua avaliação'
-						onChangeText={(text: any) => setFeedback(text)}
-						numberOfLines={4}
-						maxLength={40}
-						editable
-						value={feedback}
-					/>
-
-					<TextInput
-						keyboardType='numeric'
-						style={{
-							padding: 10,
-							width: Dimensions.get('window').width - 40,
-							height: 50,
-							borderColor: 'gray',
-							borderWidth: 1,
-							borderRadius: 10,
-							marginBottom: 10,
-							marginLeft: '5%'
-						}}
-						placeholder='Nota'
-						onChangeText={(text: any) => setRating(text)}
-						editable
-						value={rating}
-					/>
-
-					<Button
-						variant='danger'
-						style={{
-							width: Dimensions.get('window').width - 40,
-							marginLeft: '5%'
-						}}
-						onClick={() => avaliar()}
 					>
-						Avaliar
-					</Button>
-				</View>
-				<View
-					style={{
-						marginLeft: '3%',
-						marginTop: '2.5%',
-						marginBottom: '5%'
-					}}
-				>
-					<FlatList
-						data={avaliacoes}
-						showsVerticalScrollIndicator={false}
-						renderItem={renderAvaliacoes}
-						keyExtractor={(item): any => item.idAvaliacao}
-					/>
-				</View>
-			</SafeAreaView>
+						<TextInput
+							multiline={true}
+							style={{
+								padding: 10,
+								width: Dimensions.get('window').width - 40,
+								height: 100,
+								borderColor: 'gray',
+								borderWidth: 1,
+								borderRadius: 10,
+								marginBottom: 10,
+								marginLeft: '5%'
+							}}
+							placeholder='Escreva sua avaliação'
+							onChangeText={(text: any) => setFeedback(text)}
+							numberOfLines={4}
+							maxLength={40}
+							editable
+							value={feedback}
+						/>
+
+						<TextInput
+							keyboardType='numeric'
+							style={{
+								padding: 10,
+								width: Dimensions.get('window').width - 40,
+								height: 50,
+								borderColor: 'gray',
+								borderWidth: 1,
+								borderRadius: 10,
+								marginBottom: 10,
+								marginLeft: '5%'
+							}}
+							placeholder='Nota'
+							onChangeText={(text: any) => setRating(text)}
+							editable
+							value={rating}
+						/>
+
+						<Button
+							variant='danger'
+							style={{
+								width: Dimensions.get('window').width - 40,
+								marginLeft: '5%'
+							}}
+							onClick={() => avaliar()}
+						>
+							Avaliar
+						</Button>
+					</View>
+					<View
+						style={{
+							marginLeft: '3%',
+							marginTop: '2.5%',
+							marginBottom: '5%'
+						}}
+					>
+						<FlatList
+							data={avaliacoes}
+							showsVerticalScrollIndicator={false}
+							renderItem={renderAvaliacoes}
+							keyExtractor={(item): any => item.idAvaliacao}
+							refreshControl={
+								<RefreshControl
+									refreshing={refresh}
+									onRefresh={fetchRatings}
+								/>
+							}
+						/>
+					</View>
+				</SafeAreaView>
+			)}
 		</>
 	)
 }
