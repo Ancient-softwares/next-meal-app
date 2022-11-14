@@ -48,8 +48,6 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	}, [])
 
 	const Item = (...item: any[]): JSX.Element => {
-		console.log(item[0].item)
-
 		return (
 			<View>
 				<Card style={styles.card}>
@@ -103,30 +101,30 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		await fetch('http://127.0.0.1:8000/filterByMealsOrIngredients', {
 			method: 'post',
 			headers: {
-				Accept: "Application/json",
-				'Content-Type': "Application/json"
+				Accept: 'Application/json',
+				'Content-Type': 'Application/json'
 			},
 			body: JSON.stringify({
 				input: text
 			})
 		})
-		.then((response: Response) => response.json())
-		.then((json: any) => {
-			console.log(json)
+			.then((response: Response) => response.json())
+			.then((json: any) => {
+				console.log(json)
 
-			if (json.nomeRestaurante) {
-				// Inserted text is not blank
-				// Filter the masterDataSource and update FilteredDataSource
-				setFilteredDataSource(json)
-				setSearch('')
-			} else {
-				// Inserted text is blank
-				// Update FilteredDataSource with masterDataSource
-				setFilteredDataSource(masterDataSource)
-				setSearch('')
-			}
-		})
-		.catch((err: Error) => console.error(err))
+				if (json.nomeRestaurante) {
+					// Inserted text is not blank
+					// Filter the masterDataSource and update FilteredDataSource
+					setFilteredDataSource(json)
+					setSearch('')
+				} else {
+					// Inserted text is blank
+					// Update FilteredDataSource with masterDataSource
+					setFilteredDataSource(masterDataSource)
+					setSearch('')
+				}
+			})
+			.catch((err: Error) => console.error(err))
 	}
 
 	const renderItem = (item: any): JSX.Element => {

@@ -22,11 +22,6 @@ import {
 import '../../../constants/globals'
 import styles from './style'
 
-LogBox.ignoreLogs([
-	'Warning: Maximum update depth exceeded. This can happen when a component repeatedly calls setState inside componentWillUpdate or componentDidUpdate. React limits the number of nested updates to prevent infinite loops.'
-])
-LogBox.ignoreAllLogs() //Ignore all log notifications
-
 declare global {
 	namespace JSX {
 		interface IntrinisicElements {

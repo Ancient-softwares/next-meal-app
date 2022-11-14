@@ -4,13 +4,7 @@ import { Button, Form, Stack } from 'react-bootstrap'
 import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import styles from './style'
 
-const AboutScreen = ({
-	navigation,
-	route
-}: {
-	navigation: any
-	route: any
-}): JSX.Element => {
+const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
@@ -322,11 +316,11 @@ const AboutScreen = ({
 							width: Dimensions.get('window').width * 0.4,
 							borderRadius: 10
 						}}
-						onClick={() =>
+						onClick={() => {
 							navigation.navigate('Menu', {
 								restaurante: restaurante
 							})
-						}
+						}}
 					>
 						<Text style={{ color: '#fff' }}>Ver cardápio</Text>
 					</Button>

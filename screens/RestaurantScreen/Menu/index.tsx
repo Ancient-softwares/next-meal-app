@@ -1,26 +1,37 @@
 import React from 'react'
 import { ListGroup } from 'react-bootstrap'
-import { Dimensions, FlatList, SafeAreaView, Text, View } from 'react-native'
+import {
+	Dimensions,
+	FlatList,
+	RefreshControl,
+	SafeAreaView,
+	ScrollView,
+	Text,
+	View
+} from 'react-native'
 import styles from './style'
 
 const Menu = ({ navigation, route }: any) => {
 	const [message, setMessage] = React.useState('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
-	const restaurante = route.params.restaurante
+	let restaurante = Object.assign({}, route.params.restaurante)
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
+	const [refresh, setRefresh] = React.useState(false)
 
 	React.useEffect(() => {
 		fetchMenu()
 
-		const focusHandler = navigation.addListener('focus', () => {
-			console.log('Refreshed')
+		navigation.addListener('focus', async () => {
+			console.table(restaurante)
 		})
-
-		onRefresh()
-
-		return focusHandler
 	}, [navigation, uniqueValue])
+
+	const handleRefresh = () => {
+		setRefresh(true)
+		setUniqueValue(uniqueValue + 1)
+		setRefresh(false)
+	}
 
 	const wait = (timeout: number) => {
 		return new Promise((resolve) => setTimeout(resolve, timeout))
@@ -129,31 +140,47 @@ const Menu = ({ navigation, route }: any) => {
 						flexDirection: 'column',
 						flex: 1,
 						justifyContent: 'flex-start',
-						alignItems: 'flex-start',
 						backgroundColor: '#fff'
 					}
 				]}
 				key={uniqueValue}
 			>
-				<View style={styles.rowList}>
-					<View
-						style={{
-							marginLeft: '6%',
-							marginTop: '2.5%'
-						}}
-					>
-						<ListGroup>
-							<FlatList
-								data={cardapio}
-								horizontal={false}
-								showsHorizontalScrollIndicator={false}
-								scrollEnabled={true}
-								keyExtractor={(item: any) => item.idPrato}
-								renderItem={renderCardapio}
-							/>
-						</ListGroup>
+				<ScrollView
+					style={{
+						width: '100%',
+						height: '100%'
+					}}
+					refreshControl={
+						<RefreshControl
+							refreshing={false}
+							onRefresh={onRefresh}
+						/>
+					}
+					scrollEnabled={true}
+					showsVerticalScrollIndicator={false}
+				>
+					<View style={styles.rowList}>
+						<View
+							style={{
+								marginLeft: '6%',
+								marginTop: '2.5%'
+							}}
+						>
+							<ListGroup>
+								<FlatList
+									data={cardapio}
+									horizontal={false}
+									showsHorizontalScrollIndicator={false}
+									scrollEnabled={true}
+									keyExtractor={(item: any) => item.idPrato}
+									renderItem={renderCardapio}
+									refreshing={refresh}
+									onRefresh={handleRefresh}
+								/>
+							</ListGroup>
+						</View>
 					</View>
-				</View>
+				</ScrollView>
 			</SafeAreaView>
 		</>
 	)

@@ -5,7 +5,7 @@ import { SearchBar } from 'react-native-elements'
 import styles from './style'
 
 const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
-	const DATA: Array<Object> = Array<any>()
+	let DATA: Array<Object> = Array<any>()
 	const [search, setSearch] = React.useState<string>('')
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
@@ -13,6 +13,9 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
 	const [isLoading, setLoading] = React.useState<boolean>(true)
+	const [refresh, setRefresh] = React.useState<boolean>(false)
+	let tipoRestaurante = route.params.tipoRestaurante
+	const [key, setKey] = React.useState<number>(0)
 
 	const getRestaurant = async () => {
 		await fetch('http://localhost:8000/api/getRestaurantsByType', {
@@ -22,7 +25,7 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 				Accept: 'application/json'
 			},
 			body: JSON.stringify({
-				tipoRestaurante: route.params.tipoRestaurante
+				tipoRestaurante: tipoRestaurante
 			})
 		})
 			.then((response: any): Promise<JSON> => response.json())
@@ -40,8 +43,18 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	}
 
 	React.useEffect(() => {
-		getRestaurant()
-	}, [])
+		navigation.addListener('focus', () => {
+			// refresh the screen
+			DATA = []
+			tipoRestaurante = route.params.tipoRestaurante
+			getRestaurant()
+			forceRemount()
+		})
+	}, [navigation, key])
+
+	const forceRemount = (): void => {
+		setKey(key + 1)
+	}
 
 	const Item = (...item: any[]): JSX.Element => {
 		console.log(item[0])
@@ -125,7 +138,7 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={styles.container} key={key}>
 			{!isLoading ? (
 				<>
 					<SearchBar
