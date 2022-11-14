@@ -11,7 +11,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import {
-	LogBox,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -40,13 +39,9 @@ const Account = ({ navigation }: any): JSX.Element => {
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 
 	React.useEffect(() => {
-		const focusHandler = navigation.addListener('focus', () => {
-			console.log('Refreshed')
+		navigation.addListener('focus', () => {
+			setUniqueValue(uniqueValue + 1)
 		})
-
-		verifyUser()
-
-		return focusHandler
 	}, [navigation, uniqueValue])
 
 	const verifyUser = (): void => {
@@ -327,7 +322,11 @@ const Account = ({ navigation }: any): JSX.Element => {
 									}}
 								>
 									<TouchableOpacity
-										onPress={() => global.logout()}
+										onPress={() => {
+											global.logout()
+
+											forceRemount()
+										}}
 									>
 										<View style={{ flexDirection: 'row' }}>
 											<MaterialCommunityIcons
