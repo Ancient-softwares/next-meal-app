@@ -6,8 +6,8 @@ interface ITipoRestaurante {
 export class TipoRestaurante implements ITipoRestaurante {
 	id: number
 	categoria: string
-	public _id: number
-	public _tipoRestaurante: string
+	public static _id: number
+	public static _tipoRestaurante: string
 
 	constructor(
 		props: Omit<ITipoRestaurante, 'idTipoRestaurante'>,
@@ -16,23 +16,23 @@ export class TipoRestaurante implements ITipoRestaurante {
 		Object.assign(this, props)
 	}
 
-	public get getId(): number {
+	public static get getId(): number {
 		return this._id
 	}
 
-	public get getTipoRestaurante(): string {
+	public static get getTipoRestaurante(): string {
 		return this._tipoRestaurante
 	}
 
-	public set setTipoRestaurante(tipoRestaurante: string) {
+	public static set setTipoRestaurante(tipoRestaurante: string) {
 		this._tipoRestaurante = tipoRestaurante
 	}
 
-	public set setId(id: number) {
+	public static set setId(id: number) {
 		this._id = id
 	}
 
-	public destroy(): void {
+	public static destroy(): void {
 		this._id = null
 		this._tipoRestaurante = null
 	}

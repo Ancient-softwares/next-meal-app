@@ -1,8 +1,10 @@
 import React from 'react'
-import { Carousel } from 'react-bootstrap'
+import { Carousel, Stack } from 'react-bootstrap'
 import {
+	ActivityIndicator,
 	Dimensions,
 	FlatList,
+	RefreshControl,
 	SafeAreaView,
 	ScrollView,
 	Text,
@@ -21,43 +23,53 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	>([])
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
-
 	const [popular, setPopular] = React.useState<Array<Object>>([])
+	const [isLoading, setLoading] = React.useState<boolean>(true)
+	const [refresh, setRefresh] = React.useState<boolean>(false)
 
-	const getRecommended = async () => {
-		await fetch(
-			'http://localhost:8000/api/getRestaurantesMaisReservadosMelhoresAvaliados',
-			{
-				method: 'post',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				},
-				body: JSON.stringify({
-					limite: 3
+	const getPopular = async () => {
+		try {
+			await fetch(
+				`${global.getApiUrl()}/api/getRestaurantesMaisReservadosMelhoresAvaliados`,
+				{
+					method: 'post',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}),
+					body: JSON.stringify({
+						limite: 3
+					})
+				}
+			)
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					setPopular(json.data)
 				})
-			}
-		)
-			.then((response: any): Promise<JSON> => response.json())
-			.then((json: any): void => {
-				let temp = Array<any>()
-
-				Object.keys(json).forEach((key: string) => {
-					temp.push(json[key])
-				})
-
-				Object.keys(temp[1]).forEach((key: string) => {
-					popular.push(temp[1][key])
-				})
-
-				console.table(popular)
-			})
-			.catch((err: Error): void => console.error(err))
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+			setRefresh(false)
+		}
 	}
 
-	const onPressLatest = (item: any) => {
-		navigation.navigate('About', {
-			restaurant: item
+	const onPressPopular = (item: any) => {
+		console.log('got here', item)
+		let params = []
+
+		filteredDataSource.forEach((element: any) => {
+			if (element.idRestaurante === item.idRestaurante) {
+				params = element
+
+				console.log(params)
+				navigation.navigate('About', {
+					...params
+				})
+
+				return
+			}
 		})
 	}
 
@@ -65,37 +77,43 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		if (item[0].item.tipoRestaurante === null) {
 			navigation.navigate('Restaurants')
 		} else {
+			TipoRestaurante.destroy()
+
 			const categoria = new TipoRestaurante({
 				id: item[0].item.tipoRestaurante.id,
 				categoria: item[0].item.tipoRestaurante
 			})
 
-			categoria.destroy()
-
 			navigation.navigate('Category', {
-				...item[0].item
+				tipoRestaurante: categoria
 			})
 		}
 	}
 
 	const getRestaurant = async () => {
-		await fetch('http://localhost:8000/api/restaurantes', {
-			method: 'get',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			}
-		})
-			.then((response: any): Promise<JSON> => response.json())
-			.then((json: any): void => {
-				Object.keys(json).forEach((key: string) => {
-					DATA.push(json[key])
-				})
-
-				setFilteredDataSource(DATA)
-				setMasterDataSource(DATA)
+		try {
+			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
+				method: 'get',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
 			})
-			.catch((err: Error): void => console.error(err))
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					Object.keys(json).forEach((key: string) => {
+						DATA.push(json[key])
+					})
+
+					setFilteredDataSource(DATA)
+					setMasterDataSource(DATA)
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+		}
 	}
 
 	const Item = (...item: any[]): JSX.Element => {
@@ -121,22 +139,47 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 
 	const Popular = (...item: any[]): JSX.Element => {
 		return (
-			<View style={styles.container}>
-				<img
-					src={exampleImage}
-					onClick={() => onPressLatest(item)}
-					className='rounded-circle'
-					style={{
-						width: 90,
-						height: 90,
-						marginLeft: 10,
-						marginRight: 10
-					}}
-				/>
-				<Text style={styles.nameCategory}>
-					{item[0].item.nomeRestaurante || 'did not return'} -{' '}
-					{item[0].item.media}
-				</Text>
+			<View
+				style={{
+					flex: 1,
+					alignItems: 'flex-start',
+					justifyContent: 'flex-start',
+					marginTop: '2.5%'
+				}}
+				onTouchStart={() => onPressPopular(item[0].item)}
+			>
+				<Stack
+					direction='horizontal'
+					gap={2}
+					style={{ marginLeft: 96 }}
+				>
+					<div style={styles.PositionImgRestaurant}>
+						<img
+							src={exampleImage}
+							className='rounded-circle'
+							style={{
+								width: 100,
+								height: 100,
+								marginLeft: 25,
+								marginRight: 10
+							}}
+						/>
+					</div>
+					<div>
+						<Text style={styles.subtitle}>
+							{item[0].item.nomeRestaurante}
+						</Text>
+						<br />
+						<Text style={styles.description}>
+							Total de reservas: {item[0].item.total}
+							<br />
+						</Text>
+						<Text style={styles.description}>
+							Media de avaliações: {item[0].item.media}
+						</Text>
+						<br />
+					</div>
+				</Stack>
 			</View>
 		)
 	}
@@ -151,7 +194,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 
 	React.useEffect(() => {
 		getRestaurant()
-		getRecommended()
+		getPopular()
 	}, [])
 
 	return (
@@ -225,27 +268,54 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					<hr style={styles.lineStyle} />
 				</View>
 				{(popular.length > 0 && (
-					<>
-						<Text style={styles.subtitle}>Populares</Text>
-						<Text style={styles.description}>
-							Estabelecimentos mais populares
+					<View
+						style={{
+							marginTop: 15
+						}}
+					>
+						<Text style={[styles.subtitle]}>
+							Recomendados para você
 						</Text>
+						<Text style={styles.description}>
+							Os restaurantes mais populares do nosso app
+						</Text>
+						<br />
 						<FlatList
+							style={{
+								marginTop: -10,
+								marginBottom: 10
+							}}
 							data={popular}
 							renderItem={renderPopular}
 							keyExtractor={(item: any) => item.idRestaurante}
-							horizontal={false}
-							showsHorizontalScrollIndicator={false}
-							style={{ marginBottom: 20 }}
+							refreshControl={
+								<RefreshControl
+									refreshing={refresh}
+									onRefresh={getPopular}
+								/>
+							}
 						/>
-					</>
+					</View>
 				)) || (
 					<>
-						{console.log(popular)}
-						<Text style={styles.subtitle}>
-							Oops, parece que ocorreu um erro ao buscar suas
-							recomendações
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: 'center'
+								}
+							]}
+						>
+							Encontrando restaurantes...
 						</Text>
+						<br />
+						<ActivityIndicator
+							style={{
+								marginTop: '75%'
+							}}
+							size='large'
+							color='#ff0000'
+						/>
 					</>
 				)}
 			</ScrollView>
