@@ -3,16 +3,8 @@ import { cpf } from 'cpf-cnpj-validator'
 import Joi from 'joi'
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
-import {
-	Dimensions,
-	Platform,
-	SafeAreaView,
-	Text,
-	TextInput,
-	View
-} from 'react-native'
+import { Dimensions, SafeAreaView, Text, TextInput, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import { launchImageLibrary } from 'react-native-image-picker'
 import MaskInput from 'react-native-mask-input'
 import '../../../constants/globals'
 import styles from './style'
@@ -22,7 +14,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	const [cpff, setCpf] = React.useState<string>('')
 	const [cel, setCellphone] = React.useState<string>('')
 	const [password, setPassword] = React.useState<string>('')
-	const [foto, setFoto] = React.useState<string>()
 	const [email, setEmail] = React.useState<string>('')
 	const [cep, setCep] = React.useState<string>('')
 	const [rua, setRua] = React.useState<string>('')
@@ -32,43 +23,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	const [estado, setEstado] = React.useState<string>('')
 	const [message, setMessage] = React.useState<string>('')
 
-	function createFormData(photo: any, body: any) {
-		const data: FormData = new FormData()
-
-		data.append('photo', {
-			name: photo.fileName,
-			type: photo.type,
-			uri:
-				Platform.OS === 'ios'
-					? photo.uri.replace('file://', '')
-					: photo.uri
-		})
-
-		Object.keys(body).forEach((key: any) => {
-			data.append(key, body[key])
-		})
-
-		return data
-	}
-
-	const handleChoosePhoto = async (): Promise<void> => {
-		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
-			try {
-				if (response) {
-					setFoto(response.assets[0].uri.toString())
-
-					console.log(response)
-					console.log(response.assets[0].uri)
-					console.log(foto)
-				} else {
-					console.log('error')
-				}
-			} catch (err) {
-				console.log(err)
-			}
-		})
-	}
-
 	const schema: Joi.ObjectSchema<any> = Joi.object({
 		nomeCliente: Joi.string().alphanum().min(3).max(30).required(),
 		cpfCliente: Joi.string().alphanum().min(11).max(11).required(),
@@ -76,7 +30,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		senhaCliente: Joi.string()
 			.pattern(new RegExp('^[a-zA-Z0-9]{3,30}$'))
 			.required(),
-		fotoCliente: Joi.string().required().uri(),
 		cepCliente: Joi.string().alphanum().min(8).max(8).required(),
 		emailCliente: Joi.string()
 			.email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
@@ -377,17 +330,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 							placeholder='Numero'
 							placeholderTextColor={'gray'}
 						/>
-					</Form.Group>
-
-					<Form.Group className='mb-3' controlId='formBasicPhoto'>
-						<Form.Label>Foto de perfil</Form.Label>
-						<br></br>
-						<Button
-							variant='outline-info'
-							onClick={handleChoosePhoto}
-						>
-							Escolher foto
-						</Button>
 					</Form.Group>
 
 					<Form.Group className='mb-3' controlId='formBasicCheckbox'>

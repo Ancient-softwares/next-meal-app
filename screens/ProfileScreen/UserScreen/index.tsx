@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import React from 'react'
 import { Button, ListGroup } from 'react-bootstrap'
 import {
+	Image,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -18,6 +19,10 @@ import {
 	TouchableOpacity,
 	View
 } from 'react-native'
+import {
+	ImageLibraryOptions,
+	launchImageLibrary
+} from 'react-native-image-picker'
 import '../../../constants/globals'
 import styles from './style'
 
@@ -34,9 +39,10 @@ const wait = (timeout: number) => {
 }
 
 const Account = ({ navigation }: any): JSX.Element => {
-	const [isLogged, setIsLogged] = React.useState(false)
-	const [refreshPage, setRefresh] = React.useState(false)
-	const [uniqueValue, setUniqueValue] = React.useState(1)
+	const [isLogged, setIsLogged] = React.useState<boolean>(false)
+	const [refreshPage, setRefresh] = React.useState<boolean>(false)
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
+	const [photo, setPhoto] = React.useState<any>(new FormData())
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
@@ -56,13 +62,30 @@ const Account = ({ navigation }: any): JSX.Element => {
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
-		// setRefresh(true)
 	}
 
-	const onRefresh = React.useCallback(() => {
-		setRefresh(true)
-		wait(2000).then(() => setRefresh(false))
-	}, [])
+	const handleChoosePhoto = (): void => {
+		const options: ImageLibraryOptions = {
+			mediaType: 'photo'
+		}
+
+		launchImageLibrary(options, async (response: any): void => {
+			console.log('response', response)
+
+			if (response.uri) {
+				setPhoto(response)
+
+				const data = new FormData()
+				data.append('file', {
+					name: response.fileName,
+					type: response.type,
+					uri: response.uri
+				})
+
+				await fetch(`${global.getApiUrl()}`)
+			}
+		})
+	}
 
 	return (
 		<>
@@ -138,6 +161,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 									name='account-circle'
 									size={64}
 									color='#963333'
+									onPress={handleChoosePhoto}
 								/>
 
 								<Text style={styles.title}>
@@ -344,6 +368,16 @@ const Account = ({ navigation }: any): JSX.Element => {
 								</ListGroup.Item>
 							</ListGroup>
 						</>
+					)}
+					{photo ? (
+						<>
+							<Image
+								source={{ uri: photo }}
+								style={{ width: 300, height: 300 }}
+							/>
+						</>
+					) : (
+						<></>
 					)}
 				</ScrollView>
 			</SafeAreaView>

@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import {
@@ -5,9 +6,9 @@ import {
 	FlatList,
 	RefreshControl,
 	SafeAreaView,
+	TextInput,
 	View
 } from 'react-native'
-import { SearchBar } from 'react-native-elements'
 import styles from './style'
 
 const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
@@ -20,6 +21,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		React.useState<Array<Object>>(DATA)
 	const [isLoading, setLoading] = React.useState<boolean>(true)
 	const [refresh, setRefresh] = React.useState<boolean>(false)
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
 
 	const getRestaurant = async () => {
 		await fetch('http://localhost:8000/api/restaurantes', {
@@ -97,8 +99,16 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		)
 	}
 
+	const forceRemount = (): void => {
+		setRefresh(true)
+		setUniqueValue(uniqueValue + 1)
+		setRefresh(false)
+
+		console.log('refresh')
+	}
+
 	const searchFilter = async (text: string) => {
-		await fetch('http://127.0.0.1:8000/filterByMealsOrIngredients', {
+		await fetch(`${global.getApiUrl()}/api/filterByMealsOrIngredients`, {
 			method: 'post',
 			headers: {
 				Accept: 'Application/json',
@@ -113,18 +123,25 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				console.log(json)
 
 				if (json.nomeRestaurante) {
+					setFilteredDataSource([])
+
 					// Inserted text is not blank
 					// Filter the masterDataSource and update FilteredDataSource
 					setFilteredDataSource(json)
-					setSearch('')
+					console.log(filteredDataSource)
+
+					forceRemount()
 				} else {
 					// Inserted text is blank
 					// Update FilteredDataSource with masterDataSource
 					setFilteredDataSource(masterDataSource)
-					setSearch('')
 				}
 			})
 			.catch((err: Error) => console.error(err))
+			.finally(() => {
+				setSearch('')
+				forceRemount()
+			})
 	}
 
 	const renderItem = (item: any): JSX.Element => {
@@ -157,41 +174,63 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={styles.container} key={uniqueValue}>
 			{!isLoading ? (
 				<>
-					<SearchBar
-						placeholder='Pesquisar restaurantes...'
-						lightTheme
-						platform='android'
-						round
-						value={search}
-						onChange={(event: any): any =>
-							searchFilterFunction(event.nativeEvent.text)
-						}
-						autoCorrect={false}
-						blurOnSubmit={true}
-						autoFocus={true}
+					<View
 						style={{
-							width: '72vw'
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							width: '100%',
+							marginTop: 20,
+							marginBottom: 20
 						}}
-						onBlur={undefined}
-						onChangeText={undefined}
-						onFocus={undefined}
-						onClear={undefined}
-						loadingProps={undefined}
-						autoCompleteType={undefined}
-						clearIcon={undefined}
-						searchIcon={undefined}
-						showLoading={false}
-						onCancel={undefined}
-						cancelButtonTitle={''}
-						cancelButtonProps={undefined}
-						showCancel={false}
-					/>
+					>
+						<FontAwesome
+							style={{
+								marginLeft: 20
+							}}
+							name='search'
+							size={24}
+							color='grey'
+						/>
+						<TextInput
+							style={[
+								styles.searchBar,
+								{
+									width: '80%',
+									marginLeft: 20,
+									marginRight: 20,
+									height: 40
+								}
+							]}
+							placeholder='Pesquisar restaurantes...'
+							placeholderTextColor='gray'
+							onChangeText={(text) => {
+								searchFilterFunction(text)
+
+								setSearch(text)
+							}}
+							value={search}
+						/>
+						<Button
+							variant='danger'
+							style={{
+								marginRight: 20
+							}}
+							onClick={() => {
+								searchFilter(search)
+							}}
+						>
+							Pesquisar
+						</Button>
+					</View>
 					<FlatList
 						data={filteredDataSource}
 						renderItem={renderItem}
+						extraData={refresh}
 						keyExtractor={(item: any) => item.idRestaurante}
 						scrollEnabled={true}
 						showsVerticalScrollIndicator={false}
