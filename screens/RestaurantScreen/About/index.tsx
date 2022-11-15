@@ -105,8 +105,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					.catch((error) => {
 						console.error(error)
 					})
-			} catch (error) {
-				console.log(error)
+			} catch (error: unknown) {
+				setMessage('Você precisa estar logado para avaliar!')
 			}
 		}
 	}

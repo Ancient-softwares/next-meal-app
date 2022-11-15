@@ -6,6 +6,7 @@ import {
 	FlatList,
 	RefreshControl,
 	SafeAreaView,
+	Text,
 	TextInput,
 	View
 } from 'react-native'
@@ -43,6 +44,36 @@ const Ratings = ({ navigation, route }: any) => {
 	const onRefresh = React.useCallback(() => {
 		wait(250).then(() => forceRemount())
 	}, [])
+
+	const checkRatingPermission = async () => {
+		try {
+			const response = await fetch(
+				`${global.getApiUrl()}/api/checkRatingPermission`,
+				{
+					method: 'post',
+					headers: new Headers({
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					}),
+					body: JSON.stringify({
+						idRestaurante: restaurante.idRestaurante,
+						idCliente: global.user.id
+					})
+				}
+			)
+			const json = await response.json()
+			if (json.status) {
+				setMessage('')
+				return true
+			} else {
+				setMessage(json.message)
+				console.log(json)
+				return false
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
 
 	const fetchRatings = async () => {
 		try {
@@ -103,37 +134,58 @@ const Ratings = ({ navigation, route }: any) => {
 		)
 	}
 
-	const avaliar = async (): Promise<any> => {
-		const params = JSON.stringify({
-			idRestaurante: restaurante.idRestaurante,
-			idCliente: global.user.id,
-			descAvaliacao: feedback,
-			notaAvaliacao: rating,
-			dtAvaliacao: new Date()
-		})
+	const submitRating = async (): Promise<any> => {
+		try {
+			if (!global.isLogged) {
+				setMessage('Você precisa estar logado para avaliar!')
+				return
+			}
 
-		await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
-			method: 'POST',
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${global.getToken()}`
-			},
-			body: params
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				window.alert('Avaliação criada com sucesso')
+			const params = JSON.stringify({
+				idRestaurante: restaurante.idRestaurante,
+				idCliente: global.user.id,
+				descAvaliacao: feedback,
+				notaAvaliacao: rating,
+				dtAvaliacao: new Date()
 			})
-			.catch((error) => {
-				console.error(error)
-			})
-			.finally(() => {
-				setFeedback('')
-				setRating('')
-				setMessage('')
-				forceRemount()
-			})
+
+			if (!checkRatingPermission()) {
+				try {
+					await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
+						method: 'POST',
+						headers: {
+							Accept: 'application/json',
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${global.getToken()}`
+						},
+						body: params
+					})
+						.then((response) => response.json())
+						.then((json) => {
+							window.alert('Avaliação criada com sucesso')
+						})
+						.catch((error) => {
+							console.error(error)
+						})
+						.finally(() => {
+							setFeedback('')
+							setRating('')
+							setMessage('')
+						})
+				} catch (error: unknown) {
+					console.log(error)
+				} finally {
+					setLoading(false)
+					forceRemount()
+				}
+			}
+		} catch (error: unknown) {
+			if (!global.isLogged) {
+				setMessage('Você precisa estar logado para avaliar!')
+			}
+
+			console.log(error)
+		}
 	}
 
 	return (
@@ -208,10 +260,26 @@ const Ratings = ({ navigation, route }: any) => {
 								width: Dimensions.get('window').width - 40,
 								marginLeft: '5%'
 							}}
-							onClick={() => avaliar()}
+							onClick={() => submitRating()}
 						>
 							Avaliar
 						</Button>
+
+						<View
+							style={{
+								marginVertical: '5%'
+							}}
+						>
+							<Text
+								style={{
+									color: '#963333',
+									fontSize: 16,
+									fontWeight: 'bold'
+								}}
+							>
+								{message}
+							</Text>
+						</View>
 					</View>
 					<View
 						style={{
@@ -224,6 +292,7 @@ const Ratings = ({ navigation, route }: any) => {
 							data={avaliacoes}
 							showsVerticalScrollIndicator={false}
 							renderItem={renderAvaliacoes}
+							scrollEnabled={true}
 							keyExtractor={(item): any => item.idAvaliacao}
 							refreshControl={
 								<RefreshControl
