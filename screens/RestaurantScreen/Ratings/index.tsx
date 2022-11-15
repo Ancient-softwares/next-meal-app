@@ -23,8 +23,15 @@ const Ratings = ({ navigation, route }: any) => {
 	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
+		console.log('kkkkkk', route.params.restaurante)
+
 		const focusHandler = navigation.addListener('focus', () => {
+			setRefresh(true)
+
 			setTimeout(() => {
+				setRating('')
+				setFeedback('')
+				setUniqueValue(uniqueValue + 1)
 				fetchRatings()
 			}, 250)
 			setRefresh(false)
@@ -67,7 +74,6 @@ const Ratings = ({ navigation, route }: any) => {
 				return true
 			} else {
 				setMessage(json.message)
-				console.log(json)
 				return false
 			}
 		} catch (error) {
@@ -76,6 +82,8 @@ const Ratings = ({ navigation, route }: any) => {
 	}
 
 	const fetchRatings = async () => {
+		setAvaliacoes([])
+
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getAvaliacoesByRestaurante`,
@@ -92,9 +100,7 @@ const Ratings = ({ navigation, route }: any) => {
 			)
 				.then((response: Response): Promise<JSON> => response.json())
 				.then((json: any): void => {
-					json.forEach((element: any) => {
-						avaliacoes.push(element)
-					})
+					setAvaliacoes(json)
 
 					console.log(avaliacoes)
 				})
@@ -103,6 +109,8 @@ const Ratings = ({ navigation, route }: any) => {
 				})
 				.finally((): void => {
 					setLoading(false)
+					setRating('')
+					setFeedback('')
 				})
 		} catch (error: unknown) {
 			console.log(error)
@@ -297,7 +305,7 @@ const Ratings = ({ navigation, route }: any) => {
 							refreshControl={
 								<RefreshControl
 									refreshing={refresh}
-									onRefresh={fetchRatings}
+									onRefresh={onRefresh}
 								/>
 							}
 						/>
