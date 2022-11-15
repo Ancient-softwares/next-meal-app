@@ -26,19 +26,23 @@ const Ratings = ({ navigation, route }: any) => {
 		console.log('kkkkkk', route.params.restaurante)
 
 		const focusHandler = navigation.addListener('focus', () => {
-			setRefresh(true)
-
 			setTimeout(() => {
-				setRating('')
-				setFeedback('')
-				setUniqueValue(uniqueValue + 1)
-				fetchRatings()
+				refreshScreen()
 			}, 250)
-			setRefresh(false)
 		})
 
 		return focusHandler
 	}, [navigation, uniqueValue])
+
+	const refreshScreen = (): void => {
+		setRefresh(true)
+		setRating('')
+		setFeedback('')
+		setUniqueValue(uniqueValue + 1)
+		fetchRatings()
+		setRefresh(false)
+		forceRemount()
+	}
 
 	const wait = (timeout: number) => {
 		return new Promise((resolve) => setTimeout(resolve, timeout))

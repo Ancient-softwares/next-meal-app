@@ -23,12 +23,19 @@ const Menu = ({ navigation, route }: any) => {
 
 	React.useEffect(() => {
 		navigation.addListener('focus', async () => {
-			fetchMenu()
-			console.table(restaurante)
-
-			onRefresh()
+			setTimeout(() => {
+				refreshScreen()
+			}, 250)
 		})
 	}, [navigation, uniqueValue])
+
+	const refreshScreen = (): void => {
+		setRefresh(true)
+		setUniqueValue(uniqueValue + 1)
+		fetchMenu()
+		setRefresh(false)
+		forceRemount()
+	}
 
 	const handleRefresh = () => {
 		setRefresh(true)
@@ -45,8 +52,6 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	const onRefresh = React.useCallback(() => {
-		restaurante = Object.assign({}, route.params.restaurante)
-
 		wait(250).then(() => forceRemount())
 	}, [])
 
@@ -192,15 +197,18 @@ const Menu = ({ navigation, route }: any) => {
 								<ListGroup>
 									<FlatList
 										data={cardapio}
-										horizontal={false}
 										showsHorizontalScrollIndicator={false}
 										scrollEnabled={true}
 										keyExtractor={(item: any) =>
 											item.idPrato
 										}
 										renderItem={renderCardapio}
-										refreshing={refresh}
-										onRefresh={handleRefresh}
+										refreshControl={
+											<RefreshControl
+												refreshing={refresh}
+												onRefresh={onRefresh}
+											/>
+										}
 									/>
 								</ListGroup>
 							</View>
