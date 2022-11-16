@@ -19,10 +19,7 @@ import {
 	TouchableOpacity,
 	View
 } from 'react-native'
-import {
-	ImageLibraryOptions,
-	launchImageLibrary
-} from 'react-native-image-picker'
+import { launchImageLibrary } from 'react-native-image-picker'
 import '../../../constants/globals'
 import styles from './style'
 
@@ -42,7 +39,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 	const [isLogged, setIsLogged] = React.useState<boolean>(false)
 	const [refreshPage, setRefresh] = React.useState<boolean>(false)
 	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
-	const [photo, setPhoto] = React.useState<any>(new FormData())
+	const [photo, setPhoto] = React.useState<any>(null)
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
@@ -64,27 +61,65 @@ const Account = ({ navigation }: any): JSX.Element => {
 		setUniqueValue(uniqueValue + 1)
 	}
 
-	const handleChoosePhoto = (): void => {
-		const options: ImageLibraryOptions = {
-			mediaType: 'photo'
+	const createFormData = (photo, body = {}) => {
+		try {
+			const data = new FormData()
+			const file = {
+				uri: photo.uri,
+				type: photo.type,
+				name: photo.fileName
+			}
+
+			data.append('file', {
+				name: global.user.name + '.jpg',
+				type: 'image/jpg',
+				uri: 'img/fotosCliente'
+			})
+
+			Object.keys(body).forEach((key) => {
+				data.append(key, body[key])
+			})
+
+			return data
+		} catch (err) {
+			console.log(err)
 		}
+	}
 
-		launchImageLibrary(options, async (response: any): void => {
-			console.log('response', response)
+	const handleChoosePhoto = async (): Promise<void> => {
+		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
+			try {
+				if (response) {
+					// setPhoto(response.assets[0].uri.toString())
 
-			if (response.uri) {
-				setPhoto(response)
-
-				const data = new FormData()
-				data.append('file', {
-					name: response.fileName,
-					type: response.type,
-					uri: response.uri
-				})
-
-				await fetch(`${global.getApiUrl()}`)
+					console.log(response)
+					// console.log(photo)
+				} else {
+					console.log('error')
+				}
+			} catch (err) {
+				console.log(err)
 			}
 		})
+	}
+
+	const handleUploadPhoto = async (): Promise<void> => {
+		await fetch(`${global.getApiUrl()}/api/uploadImage`, {
+			method: 'POST',
+			headers: new Headers({
+				Authorization: `Bearer ${global.user.token}`,
+				Accept: 'application/json',
+				'Content-Type': 'multipart/form-data'
+			}),
+			body: createFormData(photo)
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				console.log('response', response)
+			})
+			.catch((error) => {
+				console.log('error', error)
+			})
 	}
 
 	return (
@@ -161,7 +196,9 @@ const Account = ({ navigation }: any): JSX.Element => {
 									name='account-circle'
 									size={64}
 									color='#963333'
-									onPress={handleChoosePhoto}
+									onPress={() => {
+										handleChoosePhoto()
+									}}
 								/>
 
 								<Text style={styles.title}>

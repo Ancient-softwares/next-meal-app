@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const getPopular = async () => {
 		try {
 			await fetch(
-				`${global.getApiUrl()}/api/getRestaurantesMaisReservadosMelhoresAvaliados`,
+				`${global.getApiUrl()}/api/getRestaurantesMaisReservados`,
 				{
 					method: 'post',
 					headers: new Headers({
@@ -84,8 +84,12 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				categoria: item[0].item.tipoRestaurante
 			})
 
+			let params = {}
+			params = categoria
+
+			// first save the categoria
 			navigation.navigate('Category', {
-				tipoRestaurante: categoria
+				tipoRestaurante: params
 			})
 		}
 	}
@@ -174,10 +178,16 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							Total de reservas: {item[0].item.total}
 							<br />
 						</Text>
-						<Text style={styles.description}>
-							Media de avaliações: {item[0].item.media}
-						</Text>
-						<br />
+						{item[0].item.media !== null ? (
+							<>
+								<Text style={styles.description}>
+									Media de avaliações: {item[0].item.media}
+								</Text>
+								<br />
+							</>
+						) : (
+							<></>
+						)}
 					</div>
 				</Stack>
 			</View>

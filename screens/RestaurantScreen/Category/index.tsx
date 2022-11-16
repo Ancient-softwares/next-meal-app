@@ -4,6 +4,7 @@ import {
 	ActivityIndicator,
 	FlatList,
 	Keyboard,
+	RefreshControl,
 	SafeAreaView,
 	View
 } from 'react-native'
@@ -24,7 +25,7 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	const [key, setKey] = React.useState<number>(0)
 
 	const getRestaurant = async () => {
-		await fetch('http://localhost:8000/api/getRestaurantsByType', {
+		await fetch(`${global.getApiUrl()}/api/getRestaurantsByType`, {
 			method: 'post',
 			headers: {
 				'Content-Type': 'application/json',
@@ -36,11 +37,14 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 		})
 			.then((response: any): Promise<JSON> => response.json())
 			.then((json: any): void => {
+				DATA = []
+
 				Object.keys(json).forEach((key: string) => {
 					DATA.push(json[key])
 				})
 
 				console.table(DATA)
+				setRefresh(false)
 				setFilteredDataSource(DATA)
 				setMasterDataSource(DATA)
 				setLoading(false)
@@ -51,10 +55,13 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
 			// refresh the screen
+			setRefresh(true)
 			DATA = []
 			tipoRestaurante = route.params.tipoRestaurante
 			getRestaurant()
 			forceRemount()
+			getRestaurant()
+			setRefresh(false)
 		})
 	}, [navigation, key])
 
@@ -181,6 +188,12 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 						keyExtractor={(item: any) => item.idRestaurante}
 						scrollEnabled={true}
 						showsVerticalScrollIndicator={false}
+						refreshControl={
+							<RefreshControl
+								refreshing={refresh}
+								onRefresh={getRestaurant}
+							/>
+						}
 					/>
 				</>
 			) : (
