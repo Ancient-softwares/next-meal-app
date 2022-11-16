@@ -93,6 +93,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 					// setPhoto(response.assets[0].uri.toString())
 
 					console.log(response)
+					handleUploadUri(response)
 					// console.log(photo)
 				} else {
 					console.log('error')
@@ -104,6 +105,8 @@ const Account = ({ navigation }: any): JSX.Element => {
 	}
 
 	const handleUploadPhoto = async (): Promise<void> => {
+		console.log('we here')
+		
 		await fetch(`${global.getApiUrl()}/api/uploadImage`, {
 			method: 'POST',
 			headers: new Headers({
@@ -112,6 +115,27 @@ const Account = ({ navigation }: any): JSX.Element => {
 				'Content-Type': 'multipart/form-data'
 			}),
 			body: createFormData(photo)
+		})
+			.then((response) => response.json())
+			.then((response) => {
+				console.log('response', response)
+			})
+			.catch((error) => {
+				console.log('error', error)
+			})
+	}
+
+	const handleUploadUri = async (uri: string): Promise<void> => {
+		await fetch(`${global.getApiUrl()}/api/uploadUri`, {
+			method: 'POST',
+			headers: new Headers({
+				Authorization: `Bearer ${global.user.token}`,
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify({
+				image: uri.toString().toLowerCase()
+			})
 		})
 			.then((response) => response.json())
 			.then((response) => {
