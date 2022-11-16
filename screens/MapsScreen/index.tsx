@@ -44,22 +44,6 @@ export default function MapsScreen() {
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				console.table(json)
-
-				/* json.forEach((element: any) => {
-					data.push({
-						id: element.idRestaurante,
-						name: element.nomeRestaurante,
-						cep: element.cepRestaurante,
-						bairro: element.bairroRestaurante,
-						cidade: element.cidadeRestaurante,
-						estado: element.estadoRestaurante,
-						country: "Brasil"
-					})
-
-					getLatLong(element.cep, element.id)
-				}) */
-
 				Object.keys(json).forEach((key: string) => {
 					data.push({
 						id: json[key].idRestaurante,
@@ -70,6 +54,9 @@ export default function MapsScreen() {
 						estado: json[key].estadoRestaurante,
 						country: 'Brasil'
 					})
+
+					console.log(json[key].cepRestaurante)
+					getLatLong(json[key].cepRestaurante, json[key].idRestaurante)
 				})
 
 				console.table(data)
@@ -80,17 +67,21 @@ export default function MapsScreen() {
 	}
 
 	const getLatLong = async (address: string, id: number) => {
+		console.log(address, global.getMapsToken())
+		
 		const response = await fetch(
 			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
 		)
 		const result = await response.json()
-		data[id - 1] = {
+		// console.log("Latitude: "+ result.results[0].geometry.location.lat)
+		// console.log("longititude : "+ result.results[0].geometry.location.lng)
+		 data[id - 1] = {
 			...data[id - 1],
 			lat: result.results[0].geometry.location.lat,
 			lng: result.results[0].geometry.location.lng
 		}
-
-		return result.results[0].geometry.location
+		
+		return result.results[0].geometry.location 
 	}
 
 	React.useEffect(() => {
@@ -108,25 +99,29 @@ export default function MapsScreen() {
 				zoom={10}
 				onLoad={onLoad}
 				onUnmount={onUnmount}
-				onClick={(e) => {
-					console.log(e)
+				/* 
+				
+					onClick={(e) => {
+						console.log(e)
 
-					const marker = new global.google.maps.Marker({
-						position: e.latLng,
-						map: map,
-						title: 'Hello World!'
-					})
+						const marker = new global.google.maps.Marker({
+							position: e.latLng,
+							map: map,
+							title: 'Hello World!'
+						})
 
-					const infoWindow = new google.maps.InfoWindow()
+						const infoWindow = new google.maps.InfoWindow()
 
-					marker.addListener('click', ({ domEvent, latLng }) => {
-						const { target } = domEvent
+						// marker.addListener('click', ({ domEvent, latLng }) => {
+						// 	const { target } = domEvent
 
-						infoWindow.close()
-						infoWindow.setContent('Hello World!')
-						infoWindow.open(map, marker)
-					})
-				}}
+						// 	infoWindow.close()
+						// 	infoWindow.setContent('Hello World!')
+						// 	infoWindow.open(map, marker)
+						// }) // Exibe o text do mark
+					}} 
+					
+				*/
 				{...data.map((item: any) => () => (
 					<Marker
 						key={item.id}
@@ -134,7 +129,6 @@ export default function MapsScreen() {
 							lat: item.lat,
 							lng: item.lng
 						}}
-						title={item.name}
 					/>
 				))}
 			>
