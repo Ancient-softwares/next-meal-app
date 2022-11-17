@@ -17,7 +17,7 @@ import styles from './style'
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const exampleImage = require('../../assets/example.jpeg')
-	const DATA: Array<Object> = Array<any>()
+	let DATA: Array<Object> = Array<any>()
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
 	>([])
@@ -27,14 +27,58 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [melhores, setMelhores] = React.useState<Array<Object>>([])
 	const [isLoading, setLoading] = React.useState<boolean>(true)
 	const [refresh, setRefresh] = React.useState<boolean>(false)
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
 
 	React.useEffect(() => {
+		navigation.addListener('focus', (): void => {
+			refreshScreen()
+			forceRemount()
+		})
+	}, [navigation, global.tipoRestaurante])
+
+	const refreshScreen = (): void => {
 		getRestaurant()
 		getPopular()
 		getMelhores()
-	}, [])
+	}
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+	}
+
+	const getRestaurant = async () => {
+		setFilteredDataSource([])
+		setMasterDataSource([])
+		DATA = []
+
+		try {
+			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
+				method: 'get',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			})
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					Object.keys(json).forEach((key: string) => {
+						DATA.push(json[key])
+					})
+
+					setFilteredDataSource(DATA)
+					setMasterDataSource(DATA)
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+		}
+	}
 
 	const getPopular = async () => {
+		setPopular([])
+
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getRestaurantesMaisReservados`,
@@ -63,6 +107,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const getMelhores = async () => {
+		setMelhores([])
+
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getRestaurantesMelhoresAvaliados`,
@@ -126,32 +172,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			navigation.navigate('Category', {
 				tipoRestaurante: params
 			})
-		}
-	}
-
-	const getRestaurant = async () => {
-		try {
-			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
-				method: 'get',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
-			})
-				.then((response: any): Promise<JSON> => response.json())
-				.then((json: any): void => {
-					Object.keys(json).forEach((key: string) => {
-						DATA.push(json[key])
-					})
-
-					setFilteredDataSource(DATA)
-					setMasterDataSource(DATA)
-				})
-				.catch((err: Error): void => console.error(err))
-		} catch (error: unknown) {
-			console.error(error)
-		} finally {
-			setLoading(false)
 		}
 	}
 
@@ -255,7 +275,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={styles.container} key={uniqueValue}>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View style={styles.carousel}>
 					<Carousel>

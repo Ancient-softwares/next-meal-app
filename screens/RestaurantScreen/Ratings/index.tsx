@@ -26,7 +26,7 @@ const Ratings = ({ navigation, route }: any) => {
 		navigation.addListener('focus', () => {
 			setTimeout(() => {
 				refreshScreen()
-			}, 250)
+			}, 500)
 		})
 	}, [navigation, global.idRestaurante])
 

@@ -27,7 +27,7 @@ const Menu = ({ navigation, route }: any) => {
 
 			setTimeout(() => {
 				refreshScreen()
-			}, 250)
+			}, 500)
 		})
 	}, [navigation, global.idRestaurante])
 
