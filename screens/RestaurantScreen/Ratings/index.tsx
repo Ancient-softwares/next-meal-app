@@ -28,7 +28,7 @@ const Ratings = ({ navigation, route }: any) => {
 				refreshScreen()
 			}, 500)
 		})
-	}, [navigation, global.idRestaurante])
+	}, [navigation, global.idRestaurante, uniqueValue])
 
 	const refreshScreen = (): void => {
 		setRefresh(true)
@@ -157,7 +157,7 @@ const Ratings = ({ navigation, route }: any) => {
 				dtAvaliacao: new Date()
 			})
 
-			if (!checkRatingPermission()) {
+			if (checkRatingPermission()) {
 				try {
 					await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
 						method: 'POST',
@@ -170,7 +170,7 @@ const Ratings = ({ navigation, route }: any) => {
 					})
 						.then((response) => response.json())
 						.then((json) => {
-							window.alert('Avaliação criada com sucesso')
+							setMessage('Avaliação criada com sucesso')
 						})
 						.catch((error) => {
 							console.error(error)
@@ -178,7 +178,6 @@ const Ratings = ({ navigation, route }: any) => {
 						.finally(() => {
 							setFeedback('')
 							setRating('')
-							setMessage('')
 						})
 				} catch (error: unknown) {
 					console.log(error)
@@ -278,15 +277,29 @@ const Ratings = ({ navigation, route }: any) => {
 								marginVertical: '5%'
 							}}
 						>
-							<Text
-								style={{
-									color: '#963333',
-									fontSize: 16,
-									fontWeight: 'bold'
-								}}
-							>
-								{message}
-							</Text>
+							{message === 'Avaliação criada com sucesso' ? (
+								<Text
+									style={{
+										color: '#2ea621',
+										fontSize: 16,
+										fontWeight: 'bold',
+										textAlign: 'center'
+									}}
+								>
+									{message}
+								</Text>
+							) : (
+								<Text
+									style={{
+										color: '#963333',
+										fontSize: 16,
+										fontWeight: 'bold',
+										textAlign: 'center'
+									}}
+								>
+									{message}
+								</Text>
+							)}
 						</View>
 					</View>
 					<View
