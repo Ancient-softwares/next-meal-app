@@ -17,8 +17,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 		navigation.addListener('focus', () => {
 			refreshScreen()
 			forceRemount()
+			global.idRestaurante = restaurante.idRestaurante
+			console.log(global.idRestaurante)
 		})
-	}, [navigation])
+	}, [navigation, restaurante.idRestaurante])
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
@@ -326,7 +328,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						}}
 						onClick={() => {
 							navigation.navigate('Menu', {
-								restaurante: restaurante
+								idRestaurante: global.idRestaurante
 							})
 						}}
 					>

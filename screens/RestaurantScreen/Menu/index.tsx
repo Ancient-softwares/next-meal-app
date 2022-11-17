@@ -15,7 +15,7 @@ import styles from './style'
 const Menu = ({ navigation, route }: any) => {
 	const [message, setMessage] = React.useState('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
-	let idRestaurante = route.params.restaurante.idRestaurante
+	let idRestaurante = route.params.idRestaurante
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [refresh, setRefresh] = React.useState(false)
@@ -23,11 +23,13 @@ const Menu = ({ navigation, route }: any) => {
 
 	React.useEffect((): void => {
 		navigation.addListener('focus', async () => {
+			console.log(route.params)
+
 			setTimeout(() => {
 				refreshScreen()
 			}, 250)
 		})
-	}, [navigation, uniqueValue])
+	}, [navigation, global.idRestaurante])
 
 	const refreshScreen = (): void => {
 		setRefresh(true)
