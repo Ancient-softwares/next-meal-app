@@ -104,7 +104,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 				.then((json: any): void => {
 					if (json.status === 201) {
 						setMessage('Cadastro realizado com sucesso!')
-						window.alert(json.message)
 						navigation.navigate('Login')
 					} else {
 						setMessage(json.message)

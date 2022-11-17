@@ -13,16 +13,22 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 
-	React.useEffect(() => {
-		const focusHandler = navigation.addListener('focus', () => {
-			console.log('Refreshed')
+	React.useEffect((): void => {
+		navigation.addListener('focus', () => {
+			refreshScreen()
+			forceRemount()
 		})
-
-		return focusHandler
-	}, [navigation, uniqueValue])
+	}, [navigation])
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
+	}
+
+	const refreshScreen = (): void => {
+		setMessage('')
+		setDate(new Date())
+		setHour(new Date())
+		setPeople(0)
 	}
 
 	const schema: ObjectSchema<any> = Joi.object({
@@ -97,16 +103,18 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						console.log(json)
 
 						if (json.status === 200) {
-							window.alert(json.message)
+							setMessage(json.message)
 						} else {
-							window.alert(json.message)
+							setMessage(json.message)
 						}
 					})
 					.catch((error) => {
-						console.error(error)
+						setMessage(error.message)
 					})
 			} catch (error: unknown) {
-				setMessage('Você precisa estar logado para avaliar!')
+				setMessage(
+					'Você precisa estar logado para agendar uma reserva!'
+				)
 			}
 		}
 	}
@@ -431,15 +439,32 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									className='mb-3'
 									controlId='formBasicFeedback'
 								>
-									<Text
-										style={{
-											color: '#963333',
-											fontSize: 16,
-											fontWeight: 'bold'
-										}}
-									>
-										{message}
-									</Text>
+									<View style={styles.container}>
+										{message ===
+										'Reserva realizada com sucesso' ? (
+											<Text
+												style={{
+													color: '#2ea621',
+													fontSize: 16,
+													fontWeight: 'bold',
+													textAlign: 'center'
+												}}
+											>
+												{message}
+											</Text>
+										) : (
+											<Text
+												style={{
+													color: '#963333',
+													fontSize: 16,
+													fontWeight: 'bold',
+													textAlign: 'center'
+												}}
+											>
+												{message}
+											</Text>
+										)}
+									</View>
 								</Form.Group>
 							</View>
 

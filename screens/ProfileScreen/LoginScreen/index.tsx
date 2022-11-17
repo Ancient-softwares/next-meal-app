@@ -44,12 +44,9 @@ function LoginScreen({ navigation }: { navigation: any }) {
 				.then((response) => {
 					const json: any = JSON.parse(JSON.stringify(response))
 
-					console.table(json)
-
 					if (json.status === 200) {
 						global.setToken(response.token)
 						global.isLogged = true
-						console.log(global.isLogged)
 
 						global.setUser({
 							id: json.data.idCliente,
@@ -64,13 +61,8 @@ function LoginScreen({ navigation }: { navigation: any }) {
 							state: json.data.estadoCliente
 						})
 
-						console.table(global.getUser())
-						console.log(global.getToken())
-
-						window.alert('Login realizado com sucesso!')
-
+						setMessage('Login efetuado com sucesso!')
 						navigation.navigate('Main')
-						navigation.navigate('Home')
 					} else {
 						setMessage(json.message)
 					}
