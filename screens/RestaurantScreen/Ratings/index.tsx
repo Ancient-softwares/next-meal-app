@@ -38,10 +38,10 @@ const Ratings = ({ navigation, route }: any) => {
 		setRefresh(true)
 		setRating('')
 		setFeedback('')
-		setUniqueValue(uniqueValue + 1)
+		setMessage('')
 		fetchRatings()
-		setRefresh(false)
 		forceRemount()
+		setRefresh(false)
 	}
 
 	const wait = (timeout: number) => {

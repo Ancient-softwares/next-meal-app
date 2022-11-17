@@ -15,13 +15,13 @@ import styles from './style'
 const Menu = ({ navigation, route }: any) => {
 	const [message, setMessage] = React.useState('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
-	let restaurante = Object.assign({}, route.params.restaurante)
+	let idRestaurante = route.params.restaurante.idRestaurante
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
 
-	React.useEffect(() => {
+	React.useEffect((): void => {
 		navigation.addListener('focus', async () => {
 			setTimeout(() => {
 				refreshScreen()
@@ -64,21 +64,18 @@ const Menu = ({ navigation, route }: any) => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					idRestaurante: restaurante.idRestaurante
+					idRestaurante: idRestaurante
 				})
 			})
 				.then((response: any): Promise<JSON> => response.json())
 				.then((json: any): void => {
+					console.log(json)
+
 					if (cardapio) {
+						setRefresh(true)
 						setCardapio(json)
 						setRefresh(false)
 					}
-
-					/* json.forEach((element: any) => {
-						cardapio.push(element)
-					}) */
-
-					console.log(cardapio)
 				})
 				.catch((err: Error): void => console.error(err))
 		} catch (error: unknown) {

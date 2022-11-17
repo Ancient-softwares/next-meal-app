@@ -57,7 +57,6 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 			// refresh the screen
 			setRefresh(true)
 			DATA = []
-			tipoRestaurante = route.params.tipoRestaurante
 			getRestaurant()
 			forceRemount()
 			getRestaurant()

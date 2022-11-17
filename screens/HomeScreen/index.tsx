@@ -24,8 +24,15 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
 	const [popular, setPopular] = React.useState<Array<Object>>([])
+	const [melhores, setMelhores] = React.useState<Array<Object>>([])
 	const [isLoading, setLoading] = React.useState<boolean>(true)
 	const [refresh, setRefresh] = React.useState<boolean>(false)
+
+	React.useEffect(() => {
+		getRestaurant()
+		getPopular()
+		getMelhores()
+	}, [])
 
 	const getPopular = async () => {
 		try {
@@ -55,7 +62,35 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		}
 	}
 
-	const onPressPopular = (item: any) => {
+	const getMelhores = async () => {
+		try {
+			await fetch(
+				`${global.getApiUrl()}/api/getRestaurantesMelhoresAvaliados`,
+				{
+					method: 'post',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}),
+					body: JSON.stringify({
+						limite: 3
+					})
+				}
+			)
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					setMelhores(json.data)
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+			setRefresh(false)
+		}
+	}
+
+	const onPressRestaurant = (item: any) => {
 		console.log('got here', item)
 		let params = []
 
@@ -141,7 +176,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		)
 	}
 
-	const Popular = (...item: any[]): JSX.Element => {
+	const Component = (...item: any[]): JSX.Element => {
+		console.log(item[0].item)
+
 		return (
 			<View
 				style={{
@@ -150,7 +187,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					justifyContent: 'flex-start',
 					marginTop: '2.5%'
 				}}
-				onTouchStart={() => onPressPopular(item[0].item)}
+				onTouchStart={() => onPressRestaurant(item[0].item)}
 			>
 				<Stack
 					direction='horizontal'
@@ -174,10 +211,25 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							{item[0].item.nomeRestaurante}
 						</Text>
 						<br />
-						<Text style={styles.description}>
-							Total de reservas: {item[0].item.total}
-							<br />
-						</Text>
+						{(item[0].item.media !== null && (
+							<>
+								{item[0].item.total ? (
+									<Text style={styles.description}>
+										Total de reservas: {item[0].item.total}
+									</Text>
+								) : (
+									<Text style={styles.description}>
+										Total de avaliações:{' '}
+										{item[0].item.notas}
+									</Text>
+								)}
+							</>
+						)) || (
+							<Text style={styles.description}>
+								Total de avaliações: {item[0].item.notas}
+							</Text>
+						)}
+						<br />
 						{item[0].item.media !== null ? (
 							<>
 								<Text style={styles.description}>
@@ -198,14 +250,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return <Item {...item} />
 	}
 
-	const renderPopular = (item: any): JSX.Element => {
-		return <Popular {...item} />
+	const renderComponent = (item: any): JSX.Element => {
+		return <Component {...item} />
 	}
-
-	React.useEffect(() => {
-		getRestaurant()
-		getPopular()
-	}, [])
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -284,7 +331,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<Text style={[styles.subtitle]}>
-							Recomendados para você
+							Restaurantes mais populares
 						</Text>
 						<Text style={styles.description}>
 							Os restaurantes mais populares do nosso app
@@ -296,12 +343,63 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 								marginBottom: 10
 							}}
 							data={popular}
-							renderItem={renderPopular}
+							renderItem={renderComponent}
 							keyExtractor={(item: any) => item.idRestaurante}
 							refreshControl={
 								<RefreshControl
 									refreshing={refresh}
 									onRefresh={getPopular}
+								/>
+							}
+						/>
+					</View>
+				)) || (
+					<>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: 'center'
+								}
+							]}
+						>
+							Encontrando restaurantes...
+						</Text>
+						<br />
+						<ActivityIndicator
+							style={{
+								marginTop: '75%'
+							}}
+							size='large'
+							color='#ff0000'
+						/>
+					</>
+				)}
+				{(melhores.length > 0 && (
+					<View
+						style={{
+							marginTop: 15
+						}}
+					>
+						<Text style={[styles.subtitle]}>
+							Restaurante mais bem avaliados
+						</Text>
+						<Text style={styles.description}>
+							Os restaurantes mais bem avaliados do nosso app
+						</Text>
+						<br />
+						<FlatList
+							style={{
+								marginTop: -10,
+								marginBottom: 10
+							}}
+							data={melhores}
+							renderItem={renderComponent}
+							keyExtractor={(item: any) => item.idRestaurante}
+							refreshControl={
+								<RefreshControl
+									refreshing={refresh}
+									onRefresh={getMelhores}
 								/>
 							}
 						/>
