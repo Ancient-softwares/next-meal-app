@@ -18,21 +18,17 @@ const Ratings = ({ navigation, route }: any) => {
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
 	const [rating, setRating] = React.useState<string>('')
-	const restaurante = route.params.restaurante
+	const idRestaurante = route.params.idRestaurante
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
-		console.log('kkkkkk', route.params.restaurante)
-
-		const focusHandler = navigation.addListener('focus', () => {
+		navigation.addListener('focus', () => {
 			setTimeout(() => {
 				refreshScreen()
 			}, 250)
 		})
-
-		return focusHandler
-	}, [navigation, uniqueValue])
+	}, [navigation, global.idRestaurante])
 
 	const refreshScreen = (): void => {
 		setRefresh(true)
@@ -67,7 +63,7 @@ const Ratings = ({ navigation, route }: any) => {
 						'Content-Type': 'application/json'
 					}),
 					body: JSON.stringify({
-						idRestaurante: restaurante.idRestaurante,
+						idRestaurante: idRestaurante,
 						idCliente: global.user.id
 					})
 				}
@@ -98,7 +94,7 @@ const Ratings = ({ navigation, route }: any) => {
 						'Content-Type': 'application/json'
 					},
 					body: JSON.stringify({
-						idRestaurante: restaurante.idRestaurante
+						idRestaurante: idRestaurante
 					})
 				}
 			)
@@ -154,7 +150,7 @@ const Ratings = ({ navigation, route }: any) => {
 			}
 
 			const params = JSON.stringify({
-				idRestaurante: restaurante.idRestaurante,
+				idRestaurante: idRestaurante,
 				idCliente: global.user.id,
 				descAvaliacao: feedback,
 				notaAvaliacao: rating,

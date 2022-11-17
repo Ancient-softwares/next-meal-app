@@ -492,7 +492,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									}}
 									onClick={() =>
 										navigation.navigate('Ratings', {
-											restaurante: restaurante
+											idRestaurante: global.idRestaurante
 										})
 									}
 								>
