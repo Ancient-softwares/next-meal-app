@@ -15,6 +15,8 @@ import Restaurants from './screens/RestaurantScreen/Restaurants'
 
 const Tab: any = createBottomTabNavigator()
 
+
+
 const App = (): JSX.Element => {
 	return (
 		<NavigationContainer>

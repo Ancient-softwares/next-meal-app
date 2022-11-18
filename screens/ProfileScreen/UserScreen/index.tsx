@@ -90,9 +90,11 @@ const Account = ({ navigation }: any): JSX.Element => {
 		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
 			try {
 				if (response) {
-					// setPhoto(response.assets[0].uri.toString())
 
-					console.log(response)
+					// setar a foto do perfil
+					// setPhoto(response.assets[0].uri.toString()) passar pro bang do perfil
+					
+					console.table(response)
 					handleUploadUri(response)
 					// console.log(photo)
 				} else {

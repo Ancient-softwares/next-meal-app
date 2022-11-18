@@ -27,7 +27,7 @@ Notifications.setNotificationHandler({
 })
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
-	const exampleImage = require('../../assets/example.jpeg')
+	const exampleImage: string = require('../../assets/example.jpeg')
 	let DATA: Array<Object> = Array<any>()
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
@@ -50,8 +50,10 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			forceRemount()
 
 			try {
-				if (global.user.id != null) {
-					checkNotifications()
+				if (global.isLogged) {
+					if (global.user.id != null) {
+						checkNotifications()
+					}
 				}
 			} catch (err) {
 				console.log(err)
@@ -61,7 +63,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				handleNotification()
 			}
 		})
-	}, [navigation])
+	}, [navigation, global.isLogged])
 
 	const handleNotification = () => {
 		registerForPushNotificationsAsync().then((token: any) =>
@@ -327,7 +329,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View style={styles.spaceCategory}>
 				<img
-					src={exampleImage}
+					src={`${item[0].item.tipoRestaurante}.png`}
 					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
 					style={{

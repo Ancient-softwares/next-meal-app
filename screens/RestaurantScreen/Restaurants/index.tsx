@@ -220,7 +220,10 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<Button
 							variant='danger'
 							style={{
-								marginRight: 20
+								marginRight: 20,
+								background: 'red',
+								fontFamily: 'ionicons',
+								fontSize: 12
 							}}
 							onClick={() => {
 								filterByEverything(search)
