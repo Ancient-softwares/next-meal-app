@@ -18,26 +18,44 @@ const Ratings = ({ navigation, route }: any) => {
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
 	const [rating, setRating] = React.useState<string>('')
-	const idRestaurante = route.params.idRestaurante
+	let idRestaurante = route.params.idRestaurante
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
-			setTimeout(() => {
-				refreshScreen()
-			}, 500)
+			setLoading(true)
+
+			setTimeout((): void => {
+				if (route.params.idRestaurante != idRestaurante) {
+					forceRemount()
+					idRestaurante = route.params.idRestaurante
+					getRestaurant()
+				} else {
+					if (refreshScreen()) {
+						setLoading(false)
+
+						return
+					}
+				}
+			}, 1000)
 		})
 	}, [navigation, global.idRestaurante, uniqueValue])
 
-	const refreshScreen = (): void => {
-		setRefresh(true)
-		setRating('')
-		setFeedback('')
-		setMessage('')
-		fetchRatings()
-		forceRemount()
-		setRefresh(false)
+	const refreshScreen = (): boolean => {
+		try {
+			setRefresh(true)
+			setRating('')
+			setFeedback('')
+			setMessage('')
+			fetchRatings()
+			forceRemount()
+			setRefresh(false)
+
+			return true
+		} catch (err) {
+			return false
+		}
 	}
 
 	const wait = (timeout: number) => {

@@ -23,26 +23,37 @@ const Menu = ({ navigation, route }: any) => {
 
 	React.useEffect((): void => {
 		navigation.addListener('focus', async () => {
+			setLoading(true)
 			console.log(route.params)
 
-			setTimeout(() => {
-				refreshScreen()
-			}, 500)
+			setTimeout((): void => {
+				if (route.params.idRestaurante != idRestaurante) {
+					forceRemount()
+					idRestaurante = route.params.idRestaurante
+					getRestaurant()
+				} else {
+					if (refreshScreen()) {
+						setLoading(false)
+
+						return
+					}
+				}
+			}, 1000)
 		})
 	}, [navigation, global.idRestaurante])
 
-	const refreshScreen = (): void => {
-		setRefresh(true)
-		setUniqueValue(uniqueValue + 1)
-		fetchMenu()
-		setRefresh(false)
-		forceRemount()
-	}
+	const refreshScreen = (): boolean => {
+		try {
+			setRefresh(true)
+			setUniqueValue(uniqueValue + 1)
+			fetchMenu()
+			setRefresh(false)
+			forceRemount()
 
-	const handleRefresh = () => {
-		setRefresh(true)
-		setUniqueValue(uniqueValue + 1)
-		setRefresh(false)
+			return true
+		} catch (err) {
+			return false
+		}
 	}
 
 	const wait = (timeout: number) => {
