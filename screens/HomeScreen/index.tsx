@@ -1,9 +1,13 @@
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
 import React from 'react'
 import { Carousel, Stack } from 'react-bootstrap'
 import {
 	ActivityIndicator,
+	Alert,
 	Dimensions,
 	FlatList,
+	Platform,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -13,6 +17,14 @@ import {
 import 'react-native-gesture-handler'
 import '../../constants/globals'
 import styles from './style'
+
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false
+	})
+})
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const exampleImage = require('../../assets/example.jpeg')
@@ -27,13 +39,155 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [isLoading, setLoading] = React.useState<boolean>(true)
 	const [refresh, setRefresh] = React.useState<boolean>(false)
 	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
+	const [expoPushToken, setExpoPushToken] = React.useState('')
+	const [notification, setNotification] = React.useState(false)
+	const notificationListener = React.useRef<any>()
+	const responseListener = React.useRef<any>()
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
 			refreshScreen()
 			forceRemount()
+
+			try {
+				if (global.user.id != null) {
+					checkNotifications()
+				}
+			} catch (err) {
+				console.log(err)
+			}
+
+			if (Platform.OS === 'android' || Platform.OS === 'ios') {
+				handleNotification()
+			}
 		})
 	}, [navigation])
+
+	const handleNotification = () => {
+		registerForPushNotificationsAsync().then((token: any) =>
+			setExpoPushToken(token)
+		)
+
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener(
+				(notification: any) => {
+					setNotification(notification)
+				}
+			)
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener(
+				(response) => {
+					console.log(response)
+				}
+			)
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			)
+			Notifications.removeNotificationSubscription(
+				responseListener.current
+			)
+		}
+	}
+
+	// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
+	const sendPushNotification = async (expoPushToken: any): Promise<void> => {
+		const message = {
+			to: expoPushToken,
+			sound: 'default',
+			title: 'Original Title',
+			body: 'And here is the body!',
+			data: { someData: 'goes here' }
+		}
+
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(message)
+		})
+	}
+
+	const registerForPushNotificationsAsync = async (): Promise<void> => {
+		let token: any
+
+		if (Device.isDevice) {
+			const { status: existingStatus } =
+				await Notifications.getPermissionsAsync()
+			let finalStatus = existingStatus
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync()
+				finalStatus = status
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!')
+				return
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data
+			console.log(token)
+		} else {
+			alert('Must use physical device for Push Notifications')
+		}
+
+		if (Platform.OS === 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C'
+			})
+		}
+
+		return token
+	}
+
+	const checkNotifications = async (): Promise<void> => {
+		// sends a notification to the user
+		// await sendPushNotification(expoPushToken)
+
+		await fetch(`${global.getApiUrl()}/api/checkNotifications`, {
+			method: 'POST',
+			headers: new Headers({
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify({
+				idCliente: global.user.id
+			})
+		})
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.status) {
+					window.alert(json.message)
+
+					Alert.alert(
+						'Notificação',
+						json.message,
+						[
+							{
+								text: 'Ok',
+								onPress: () => {
+									console.log('OK Pressed')
+								}
+							}
+						],
+						{ cancelable: false }
+					)
+				} else {
+					console.log(json.message)
+				}
+			})
+			.catch((error) => {
+				console.error(error)
+			})
+	}
 
 	const refreshScreen = (): void => {
 		getRestaurant()
