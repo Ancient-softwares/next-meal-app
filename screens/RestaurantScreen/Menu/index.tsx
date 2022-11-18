@@ -161,7 +161,14 @@ const Menu = ({ navigation, route }: any) => {
 	return (
 		<>
 			{loading ? (
-				<View style={styles.container}>
+				<View
+					style={[
+						styles.container,
+						{
+							backgroundColor: '#fff'
+						}
+					]}
+				>
 					<ActivityIndicator
 						style={{
 							marginTop: '70%'

@@ -76,11 +76,11 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	) => {
 		event.preventDefault()
 
-		const packets = {
+		const packets = JSON.stringify({
 			date: date,
 			hour: hour,
 			people: people
-		}
+		})
 
 		if (schema.validate(packets)) {
 			try {
@@ -118,6 +118,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					'Você precisa estar logado para agendar uma reserva!'
 				)
 			}
+		} else {
+			setMessage('Preencha todos os campos!')
 		}
 	}
 

@@ -1,3 +1,4 @@
+import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import {
@@ -21,6 +22,7 @@ const Ratings = ({ navigation, route }: any) => {
 	let idRestaurante = route.params.idRestaurante
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
+	const [isSuccess, setIsSuccess] = React.useState(false)
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
@@ -160,6 +162,11 @@ const Ratings = ({ navigation, route }: any) => {
 		)
 	}
 
+	const schema: ObjectSchema<any> = Joi.object({
+		feedback: Joi.string().required(),
+		rating: Joi.string().required()
+	})
+
 	const submitRating = async (): Promise<any> => {
 		try {
 			if (!global.isLogged) {
@@ -175,34 +182,55 @@ const Ratings = ({ navigation, route }: any) => {
 				dtAvaliacao: new Date()
 			})
 
-			if (checkRatingPermission()) {
-				try {
-					await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
-						method: 'POST',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${global.getToken()}`
-						},
-						body: params
-					})
-						.then((response) => response.json())
-						.then((json) => {
-							setMessage('Avaliação criada com sucesso')
+			const packets = JSON.stringify({
+				feedback: feedback,
+				rating: rating
+			})
+
+			if (schema.validate(packets)) {
+				if (checkRatingPermission()) {
+					try {
+						await fetch(`${global.getApiUrl()}/api/postAvaliacao`, {
+							method: 'POST',
+							headers: {
+								Accept: 'application/json',
+								'Content-Type': 'application/json',
+								Authorization: `Bearer ${global.getToken()}`
+							},
+							body: params
 						})
-						.catch((error) => {
-							console.error(error)
-						})
-						.finally(() => {
-							setFeedback('')
-							setRating('')
-						})
-				} catch (error: unknown) {
-					console.log(error)
-				} finally {
-					setLoading(false)
-					forceRemount()
+							.then((response) => response.json())
+							.then((json) => {
+								if (
+									json.message ===
+									'Avaliação criada com sucesso!'
+								) {
+									refreshScreen()
+									setMessage('Avaliação criada com sucesso!')
+									setIsSuccess(true)
+								} else {
+									setMessage(json.message)
+									setIsSuccess(false)
+								}
+							})
+							.catch((error) => {
+								console.error(error)
+							})
+							.finally(() => {
+								setFeedback('')
+								setRating('')
+
+								forceRemount()
+							})
+					} catch (error: unknown) {
+						console.log(error)
+					} finally {
+						setLoading(false)
+						forceRemount()
+					}
 				}
+			} else {
+				setMessage('Preencha todos os campos!')
 			}
 		} catch (error: unknown) {
 			if (!global.isLogged) {
@@ -292,10 +320,11 @@ const Ratings = ({ navigation, route }: any) => {
 
 						<View
 							style={{
-								marginVertical: '5%'
+								marginVertical: '5%',
+								backgroundColor: '#fff'
 							}}
 						>
-							{message === 'Avaliação criada com sucesso' ? (
+							{isSuccess ? (
 								<Text
 									style={{
 										color: '#2ea621',
@@ -324,7 +353,8 @@ const Ratings = ({ navigation, route }: any) => {
 						style={{
 							marginLeft: '3%',
 							marginTop: '2.5%',
-							marginBottom: '5%'
+							marginBottom: '5%',
+							backgroundColor: '#fff'
 						}}
 					>
 						<FlatList

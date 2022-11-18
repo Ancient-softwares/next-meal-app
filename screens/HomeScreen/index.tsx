@@ -382,7 +382,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						<br />
 						<ActivityIndicator
 							style={{
-								marginTop: '75%'
+								marginTop: '5%'
 							}}
 							size='large'
 							color='#ff0000'
@@ -433,7 +433,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						<br />
 						<ActivityIndicator
 							style={{
-								marginTop: '75%'
+								marginTop: '5%'
 							}}
 							size='large'
 							color='#ff0000'
