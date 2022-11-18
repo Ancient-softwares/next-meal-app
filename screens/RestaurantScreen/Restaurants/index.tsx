@@ -23,8 +23,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	const [refresh, setRefresh] = React.useState<boolean>(false)
 	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
 
-	const getRestaurant = async () => {
-		await fetch('http://localhost:8000/api/restaurantes', {
+	const getRestaurant = async (): Promise<void> => {
+		await fetch(`${global.getApiUrl()}/api/restaurantes`, {
 			method: 'get',
 			headers: {
 				'Content-Type': 'application/json',
@@ -46,8 +46,10 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	React.useEffect(() => {
-		getRestaurant()
-	}, [])
+		navigation.addListener('focus', (): void => {
+			getRestaurant()
+		})
+	}, [uniqueValue, navigation, filteredDataSource])
 
 	const Item = (...item: any[]): JSX.Element => {
 		return (
@@ -107,7 +109,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		console.log('refresh')
 	}
 
-	const searchFilter = async (text: string) => {
+	const filterByEverything = async (text: string) => {
 		await fetch(`${global.getApiUrl()}/api/filterByMealsOrIngredients`, {
 			method: 'post',
 			headers: {
@@ -122,15 +124,13 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			.then((json: any) => {
 				console.log(json)
 
-				if (json.nomeRestaurante) {
+				if (json.length > 0) {
 					setFilteredDataSource([])
 
 					// Inserted text is not blank
 					// Filter the masterDataSource and update FilteredDataSource
 					setFilteredDataSource(json)
 					console.log(filteredDataSource)
-
-					forceRemount()
 				} else {
 					// Inserted text is blank
 					// Update FilteredDataSource with masterDataSource
@@ -139,8 +139,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			})
 			.catch((err: Error) => console.error(err))
 			.finally(() => {
-				setSearch('')
-				forceRemount()
+				// setSearch('')
+				// forceRemount()
+				console.log('finally')
 			})
 	}
 
@@ -209,7 +210,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 							placeholder='Pesquisar restaurantes...'
 							placeholderTextColor='gray'
 							onChangeText={(text) => {
-								searchFilterFunction(text)
+								// searchFilterFunction(text)
+								filterByEverything(text)
 
 								setSearch(text)
 							}}
@@ -221,7 +223,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 								marginRight: 20
 							}}
 							onClick={() => {
-								searchFilter(search)
+								filterByEverything(search)
+
+								setSearch('')
 							}}
 						>
 							Pesquisar
