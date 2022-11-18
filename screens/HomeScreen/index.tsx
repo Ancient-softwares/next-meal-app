@@ -12,7 +12,6 @@ import {
 } from 'react-native'
 import 'react-native-gesture-handler'
 import '../../constants/globals'
-import { TipoRestaurante } from '../../entities/TipoRestaurante'
 import styles from './style'
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
@@ -34,7 +33,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			refreshScreen()
 			forceRemount()
 		})
-	}, [navigation, global.tipoRestaurante])
+	}, [navigation])
 
 	const refreshScreen = (): void => {
 		getRestaurant()
@@ -150,6 +149,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				})
 
 				return
+			} else {
+				window.alert('Erro ao carregar o restaurante')
 			}
 		})
 	}
@@ -158,19 +159,12 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		if (item[0].item.tipoRestaurante === null) {
 			navigation.navigate('Restaurants')
 		} else {
-			TipoRestaurante.destroy()
-
-			const categoria = new TipoRestaurante({
-				id: item[0].item.tipoRestaurante.id,
-				categoria: item[0].item.tipoRestaurante
-			})
-
-			let params = {}
-			params = categoria
+			global.tipoRestaurante = item[0].item.tipoRestaurante
+			console.log(global.tipoRestaurante)
 
 			// first save the categoria
 			navigation.navigate('Category', {
-				tipoRestaurante: params
+				tipoRestaurante: global.tipoRestaurante
 			})
 		}
 	}

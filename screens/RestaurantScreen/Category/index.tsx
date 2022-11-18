@@ -43,26 +43,45 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 					DATA.push(json[key])
 				})
 
-				console.table(DATA)
-				setRefresh(false)
 				setFilteredDataSource(DATA)
 				setMasterDataSource(DATA)
-				setLoading(false)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
-			// refresh the screen
-			setRefresh(true)
+			setLoading(true)
+
+			console.log(global.tipoRestaurante)
+			setTimeout((): void => {
+				if (global.tipoRestaurante != tipoRestaurante) {
+					setKey(key + 1)
+					tipoRestaurante = global.tipoRestaurante
+					getRestaurant()
+				} else {
+					if (refreshScreen()) {
+						setLoading(false)
+
+						return
+					}
+				}
+			}, 1000)
+		})
+	}, [navigation, key, global.tipoRestaurante])
+
+	const refreshScreen = (): boolean => {
+		try {
 			DATA = []
 			getRestaurant()
-			forceRemount()
 			getRestaurant()
-			setRefresh(false)
-		})
-	}, [navigation, key])
+			forceRemount()
+
+			return true
+		} catch (error) {
+			return false
+		}
+	}
 
 	const forceRemount = (): void => {
 		setKey(key + 1)
