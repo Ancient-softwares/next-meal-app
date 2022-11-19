@@ -305,8 +305,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				})
 
 				return
-			} else {
-				window.alert('Erro ao carregar o restaurante')
 			}
 		})
 	}

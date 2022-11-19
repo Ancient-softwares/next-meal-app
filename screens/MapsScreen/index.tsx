@@ -5,7 +5,9 @@ import styles from './style'
 
 const MapsScreen = ({ navigation }: any): JSX.Element => {
 	const logo = require('../../assets/logoMarker.png')
-	const data: Array<Object> = Array()
+	const [markers, setMarkers] = React.useState<Array<Object>>(
+		new Array<Object>()
+	)
 	const [map, setMap] = React.useState<any>(null)
 	const center = {
 		lat: -23.552990263455296,
@@ -18,44 +20,91 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	})
 
 	React.useEffect(() => {
-		navigation.addListener('focus', () => {
+		navigation.addListener('focus', (): void => {
+			setMarkers([])
 			fetchRestaurants()
+
+			/* markers.forEach((item: any): void => {
+				console.log('item', item)
+
+				const marker = new window.google.maps.Marker({
+					position: item.position,
+					map,
+					title: item.title
+				})
+
+				marker.addListener('click', () => {
+					console.log('marker', marker)
+
+					navigation.navigate('About', {
+						restaurant: item
+					})
+				})
+			}) */
+
+			generateMarkers(markers)
 
 			navigator.geolocation.getCurrentPosition(
 				(position: GeolocationPosition) => {
-					let latRes = parseFloat(position.coords.latitude.toString())
-					let lngRes = parseFloat(
-						position.coords.longitude.toString()
-					)
-
-					center.lat = latRes
-					center.lng = lngRes
-
-					console.log(center)
+					adjustUserMarkerLocation(position)
 				}
 			)
 		})
 	}, [navigation])
 
-	const onLoad = React.useCallback(function callback(map: any) {
-		const bounds = new window.google.maps.LatLngBounds(center)
-		map.fitBounds(bounds)
-		setMap(map)
+	const adjustUserMarkerLocation = (position: GeolocationPosition): void => {
+		let latRes = parseFloat(position.coords.latitude.toString())
+		let lngRes = parseFloat(position.coords.longitude.toString())
 
-		data.forEach((item: any) => {
-			const marker = new window.google.maps.Marker({
-				position: item.position,
-				map,
-				title: item.title
-			})
+		center.lat = latRes
+		center.lng = lngRes
+
+		console.log('marker', center)
+	}
+
+	const generateMarkers = (restaurants: Array<Object>): void => {
+		console.log('restaurants', restaurants)
+
+		restaurants.forEach((item: any): void => {
+			console.log('item', item)
+
+			const marker = {
+				position: {
+					lat: item.latitude,
+					lng: item.longitude
+				},
+				title: item.nomeRestaurante,
+				restaurant: item
+			}
+
+			setMarkers((prev: any): any => [...prev, marker])
 		})
-	}, [])
+	}
 
-	const onUnmount = React.useCallback(function callback(map: any) {
+	const onLoad = React.useCallback(
+		function callback(map: any): void {
+			const bounds = new window.google.maps.LatLngBounds(center)
+			map.fitBounds(bounds)
+			setMap(map)
+
+			const listener = window.google.maps.event.addListener(
+				map,
+				'idle',
+				() => {
+					if (map.getZoom() > 16) map.setZoom(16)
+					else if (map.getZoom() < 10) map.setZoom(10)
+					window.google.maps.event.removeListener(listener)
+				}
+			)
+		},
+		[markers]
+	)
+
+	const onUnmount = React.useCallback((map: any): void => {
 		setMap(null)
 	}, [])
 
-	const fetchRestaurants = async () => {
+	const fetchRestaurants = async (): Promise<void> => {
 		await fetch(`${global.getApiUrl()}/api/restaurantes`, {
 			method: 'GET',
 			headers: {
@@ -76,7 +125,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 					console.log(location)
 
-					data.push({
+					markers.push({
 						id: json[key].idRestaurante,
 						name: json[key].nomeRestaurante,
 						cep: json[key].cepRestaurante,
@@ -88,17 +137,15 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						country: 'Brasil'
 					})
 				})
-
-				console.table('data', data)
 			})
 			.catch((error) => {
 				console.error(error)
 			})
 	}
 
-	const getLatLong = async (address: string): Promise<void> => {
+	const getLatitudeLongitudeByCep = async (cep: string): Promise<void> => {
 		const response = await fetch(
-			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
+			`https://maps.googleapis.com/maps/api/geocode/json?address=${cep}&key=${global.getMapsToken()}`
 		)
 		const result = await response.json()
 		const location = result.results[0].geometry.location
@@ -119,45 +166,14 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				zoom={10}
 				onLoad={onLoad}
 				onUnmount={onUnmount}
-				/* 
-				
-					onClick={(e) => {
-						console.log(e)
-
-						const marker = new global.google.maps.Marker({
-							position: e.latLng,
-							map: map,
-							title: 'Hello World!'
-						})
-
-						const infoWindow = new google.maps.InfoWindow()
-
-						// marker.addListener('click', ({ domEvent, latLng }) => {
-						// 	const { target } = domEvent
-
-						// 	infoWindow.close()
-						// 	infoWindow.setContent('Hello World!')
-						// 	infoWindow.open(map, marker)
-						// }) // Exibe o text do mark
-					}} 
-					
-				*/
-				{...data.map((item: any) => () => (
-					<Marker
-						key={item.id}
-						position={{
-							lat: item.latitude,
-							lng: item.longitude
-						}}
-					/>
-				))}
 			>
-				{/* Child components, such as markers, info windows, etc. */}
 				<>
 					<Marker
 						animation={google.maps.Animation.DROP}
 						position={center}
 						icon={logo}
+						label={'Sua localização'}
+						onClick={() => navigation.navigate('Profile')}
 					>
 						<View>
 							<Text></Text>
