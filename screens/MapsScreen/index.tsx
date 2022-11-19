@@ -21,7 +21,11 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
-			fetchRestaurants()
+			// checks if the markers array is empty
+			if (markers.length === 0) {
+				// if it is, it will get the restaurants from the API
+				fetchRestaurants()
+			}
 
 			// generateMarkers(markers)
 
@@ -106,6 +110,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	const fetchRestaurants = async (): Promise<void> => {
 		setMarkers([])
+		console.log('now', markers + ' - ' + markers.length)
 
 		try {
 			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
@@ -141,8 +146,10 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 						// adds onclick event to marker
 						marker.restaurant.onClick = () => {
+							let param: any = marker.restaurant
+
 							navigation.navigate('About', {
-								restaurant: marker.restaurant
+								...param
 							})
 						}
 
@@ -197,9 +204,11 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				{/* Looping through the array rendering all markers */}
 				{markers.map((marker: any, index: number) => (
 					<Marker
+						animation={google.maps.Animation.DROP}
 						key={index}
+						icon={logo}
 						position={marker.position}
-						title={marker.title}
+						label={marker.title}
 						onClick={marker.restaurant.onClick}
 					/>
 				))}
