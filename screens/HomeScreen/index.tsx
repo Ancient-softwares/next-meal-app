@@ -329,7 +329,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View style={styles.spaceCategory}>
 				<img
-					src={`${item[0].item.tipoRestaurante}.png`}
+					src={exampleImage}
 					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
 					style={{

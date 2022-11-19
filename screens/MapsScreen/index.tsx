@@ -1,21 +1,51 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 import React from 'react'
-import { ActivityIndicator, View, Image, Text } from 'react-native'
+import { ActivityIndicator, Text, View } from 'react-native'
 import styles from './style'
 
-export default function MapsScreen() {
-	const logo = require('../../assets/logoMarker.png');
+const MapsScreen = ({ navigation }: any): JSX.Element => {
+	const logo = require('../../assets/logoMarker.png')
 	const data: Array<Object> = Array()
-	const [map, setMap] = React.useState(null)
+	const [map, setMap] = React.useState<any>(null)
 	const center = {
 		lat: -23.552990263455296,
 		lng: -46.39968223122055
 	}
-	
+	const [latitude, setLatitude] = React.useState(0)
+	const [longitude, setLongitude] = React.useState(0)
+
 	const { isLoaded } = useJsApiLoader({
 		id: global.getMapsId(),
 		googleMapsApiKey: global.getMapsToken()
 	})
+
+	React.useEffect(() => {
+		navigation.addListener('focus', () => {
+			fetchRestaurants()
+
+			navigator.geolocation.getCurrentPosition(
+				(position: GeolocationPosition) => {
+					console.log(position.coords)
+					let lat = parseFloat(position.coords.latitude.toString())
+					let long = parseFloat(position.coords.longitude.toString())
+
+					setLatitude(lat)
+					setLongitude(long)
+
+					center.lat = lat
+					center.lng = long
+
+					console.log('Latitude: ' + latitude)
+					console.log('Longitude: ' + longitude)
+				}
+			)
+		})
+		// let res = getLatLong('08431040')
+		/* console.log([
+			getLatitudeRestaurante('08431040'),
+			getLongitudeRestaurante('08431040')
+		]) */
+	}, [navigation])
 
 	const onLoad = React.useCallback(function callback(map: any) {
 		const bounds = new window.google.maps.LatLngBounds(center)
@@ -45,14 +75,11 @@ export default function MapsScreen() {
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				const [latitude, setLatitude] = React.useState(0)
-				const [longitude, setLongitude] = React.useState(0)
-
 				Object.keys(json).forEach((key: string) => {
 					/* let latitude: any = getLatitudeRestaurante(json[key].cepRestaurante)
 					let longitude: any = getLongitudeRestaurante(json[key].cepRestaurante)
 					console.log(latitude, longitude) */
-					
+
 					data.push({
 						id: json[key].idRestaurante,
 						name: json[key].nomeRestaurante,
@@ -78,22 +105,23 @@ export default function MapsScreen() {
 
 	const getLatLong = async (address: string): Promise<void> => {
 		console.log(address)
-		
+
 		const response = await fetch(
 			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
 		)
 		const result = await response.json()
 		const location = result.results[0].geometry.location
-		console.log(location)
-		console.log("Latitude: "+ result.results[0].geometry.location.lat)
-		console.log("longititude : "+ result.results[0].geometry.location.lng)
 
-		
-		return result.results[0].geometry.location 
+		console.log(location)
+		console.log('Latitude: ' + result.results[0].geometry.location.lat)
+		console.log('longititude : ' + result.results[0].geometry.location.lng)
+
+		setLatitude(result.results[0].geometry.location.lat)
+		setLongitude(result.results[0].geometry.location.lng)
+
+		return result.results[0].geometry.location
 	}
 
-
-	
 	const getLatitudeRestaurante = async (address: string): Promise<string> => {
 		const response: Response = await fetch(
 			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
@@ -105,7 +133,9 @@ export default function MapsScreen() {
 		return latitude
 	}
 
-	const getLongitudeRestaurante = async(address: string): Promise<string> => {
+	const getLongitudeRestaurante = async (
+		address: string
+	): Promise<string> => {
 		const response: Response = await fetch(
 			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
 		)
@@ -115,15 +145,6 @@ export default function MapsScreen() {
 
 		return longitude
 	}
-
-	React.useEffect(() => {
-		fetchRestaurants()
-		// let res = getLatLong('08431040')
-		console.log([
-			getLatitudeRestaurante('08431040'),
-			getLongitudeRestaurante('08431040')
-		])
-	}, [])
 
 	return isLoaded ? (
 		<View style={styles.container}>
@@ -161,7 +182,6 @@ export default function MapsScreen() {
 				*/
 				{...data.map((item: any) => () => (
 					<Marker
-					
 						key={item.id}
 						position={{
 							lat: item.latitude,
@@ -172,7 +192,6 @@ export default function MapsScreen() {
 			>
 				{/* Child components, such as markers, info windows, etc. */}
 				<>
-			 
 					<Marker
 						animation={google.maps.Animation.DROP}
 						position={center}
@@ -181,10 +200,8 @@ export default function MapsScreen() {
 						<View>
 							<Text></Text>
 						</View>
-					</Marker>	
+					</Marker>
 				</>
-
-				
 			</GoogleMap>
 		</View>
 	) : (
@@ -197,3 +214,5 @@ export default function MapsScreen() {
 		/>
 	)
 }
+
+export default MapsScreen
