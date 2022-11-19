@@ -23,10 +23,12 @@ const Ratings = ({ navigation, route }: any) => {
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
 	const [isSuccess, setIsSuccess] = React.useState(false)
+	const [btnLabel, setBtnLabel] = React.useState<string>('Postar Avaliação')
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
 			setLoading(true)
+			checkIfClientHasAlreadyRated()
 
 			setTimeout((): void => {
 				if (route.params.idRestaurante != idRestaurante) {
@@ -43,6 +45,57 @@ const Ratings = ({ navigation, route }: any) => {
 			}, 1000)
 		})
 	}, [navigation, global.idRestaurante, uniqueValue])
+
+	const checkIfClientHasAlreadyRated = async (): Promise<void> => {
+		/* let hasRated = false
+
+		avaliacoes.forEach((item: any): void => {
+			if (item.idCliente == global.idCliente) {
+				setRating(item.notaAvaliacao)
+				setFeedback(item.descAvaliacao)
+				setBtnLabel('Atualizar Avaliação')
+
+				hasRated = true
+			}
+		})
+
+		return hasRated */
+		await fetch(
+			`${global.getApiUrl()}/api/findIfClientHasRatingByRestaurant`,
+			{
+				method: 'POST',
+				headers: new Headers({
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}),
+				body: JSON.stringify({
+					idCliente: global.user.id,
+					idRestaurante: idRestaurante
+				})
+			}
+		)
+			.then((response: Response): Promise<any> => response.json())
+			.then((json: any) => {
+				if (json !== null) {
+					Object.keys(json).forEach((key: any) => {
+						console.log(json)
+
+						if (json[key].idCliente == global.user.id) {
+							console.log('foi', json[key])
+
+							setRating(json[key].notaAvaliacao)
+							setFeedback(json[key].descAvaliacao)
+							setBtnLabel('Atualizar Avaliação')
+
+							console.log('true')
+						}
+					})
+				}
+			})
+			.catch((error: Error) => {
+				console.error(error)
+			})
+	}
 
 	const refreshScreen = (): boolean => {
 		try {
@@ -315,7 +368,7 @@ const Ratings = ({ navigation, route }: any) => {
 							}}
 							onClick={() => submitRating()}
 						>
-							Avaliar
+							{btnLabel}
 						</Button>
 
 						<View

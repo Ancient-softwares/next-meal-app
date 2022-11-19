@@ -21,36 +21,36 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
-			setMarkers([])
 			fetchRestaurants()
 
-			/* markers.forEach((item: any): void => {
-				console.log('item', item)
-
-				const marker = new window.google.maps.Marker({
-					position: item.position,
-					map,
-					title: item.title
-				})
-
-				marker.addListener('click', () => {
-					console.log('marker', marker)
-
-					navigation.navigate('About', {
-						restaurant: item
-					})
-				})
-			}) */
-
-			generateMarkers(markers)
+			// generateMarkers(markers)
 
 			navigator.geolocation.getCurrentPosition(
 				(position: GeolocationPosition) => {
-					adjustUserMarkerLocation(position)
+					// adjustUserMarkerLocation(position)
+					// console.log(position)
+				}
+			)
+
+			navigator.geolocation.watchPosition(
+				(position: GeolocationPosition) => {
+					// adjustUserMarkerLocation(position)
+					// console.log(position)
 				}
 			)
 		})
-	}, [navigation])
+	}, [navigation, markers])
+
+	const showLocation = (position: GeolocationPosition) => {
+		let latitude = position.coords.latitude
+		let longitude = position.coords.longitude
+
+		return { latitude, longitude }
+	}
+
+	const watchId = navigator.geolocation.watchPosition(
+		(position: GeolocationPosition) => console.log(position)
+	)
 
 	const adjustUserMarkerLocation = (position: GeolocationPosition): void => {
 		let latRes = parseFloat(position.coords.latitude.toString())
@@ -105,42 +105,69 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	}, [])
 
 	const fetchRestaurants = async (): Promise<void> => {
-		await fetch(`${global.getApiUrl()}/api/restaurantes`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Accept: 'application/json'
-			}
-		})
-			.then((response) => response.json())
-			.then((json) => {
-				Object.keys(json).forEach(async (key: string) => {
-					const response = await fetch(
-						`https://maps.googleapis.com/maps/api/geocode/json?address=${
-							json[key].cepRestaurante
-						}&key=${global.getMapsToken()}`
-					)
-					const result = await response.json()
-					const location = result.results[0].geometry.location
+		setMarkers([])
 
-					console.log(location)
+		try {
+			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			})
+				.then((response) => response.json())
+				.then((json) => {
+					Object.keys(json).forEach(async (key: string) => {
+						const response = await fetch(
+							`https://maps.googleapis.com/maps/api/geocode/json?address=${
+								json[key].cepRestaurante
+							}&key=${global.getMapsToken()}`
+						)
+						const result = await response.json()
+						const location = result.results[0].geometry.location
 
-					markers.push({
-						id: json[key].idRestaurante,
-						name: json[key].nomeRestaurante,
-						cep: json[key].cepRestaurante,
-						bairro: json[key].bairroRestaurante,
-						cidade: json[key].cidadeRestaurante,
-						estado: json[key].estadoRestaurante,
-						latitude: location.lat,
-						longitude: location.lng,
-						country: 'Brasil'
+						console.log(location)
+
+						const marker = {
+							position: {
+								lat: location.lat,
+								lng: location.lng
+							},
+							title: json[key].nomeRestaurante,
+							restaurant: json[key]
+						}
+
+						console.log(marker)
+
+						// adds onclick event to marker
+						marker.restaurant.onClick = () => {
+							navigation.navigate('About', {
+								restaurant: marker.restaurant
+							})
+						}
+
+						// renders marker
+						setMarkers((prev: any): any => [...prev, marker])
+
+						markers.push({
+							id: json[key].idRestaurante,
+							name: json[key].nomeRestaurante,
+							cep: json[key].cepRestaurante,
+							bairro: json[key].bairroRestaurante,
+							cidade: json[key].cidadeRestaurante,
+							estado: json[key].estadoRestaurante,
+							latitude: location.lat,
+							longitude: location.lng,
+							country: 'Brasil'
+						})
 					})
 				})
-			})
-			.catch((error) => {
-				console.error(error)
-			})
+				.catch((error) => {
+					console.error(error)
+				})
+		} catch (error) {
+			console.log(error)
+		}
 	}
 
 	const getLatitudeLongitudeByCep = async (cep: string): Promise<void> => {
@@ -167,6 +194,16 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				onLoad={onLoad}
 				onUnmount={onUnmount}
 			>
+				{/* Looping through the array rendering all markers */}
+				{markers.map((marker: any, index: number) => (
+					<Marker
+						key={index}
+						position={marker.position}
+						title={marker.title}
+						onClick={marker.restaurant.onClick}
+					/>
+				))}
+
 				<>
 					<Marker
 						animation={google.maps.Animation.DROP}
