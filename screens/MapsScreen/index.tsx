@@ -11,8 +11,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		lat: -23.552990263455296,
 		lng: -46.39968223122055
 	}
-	const [latitude, setLatitude] = React.useState(0)
-	const [longitude, setLongitude] = React.useState(0)
 
 	const { isLoaded } = useJsApiLoader({
 		id: global.getMapsId(),
@@ -25,26 +23,18 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 			navigator.geolocation.getCurrentPosition(
 				(position: GeolocationPosition) => {
-					console.log(position.coords)
-					let lat = parseFloat(position.coords.latitude.toString())
-					let long = parseFloat(position.coords.longitude.toString())
+					let latRes = parseFloat(position.coords.latitude.toString())
+					let lngRes = parseFloat(
+						position.coords.longitude.toString()
+					)
 
-					setLatitude(lat)
-					setLongitude(long)
+					center.lat = latRes
+					center.lng = lngRes
 
-					center.lat = lat
-					center.lng = long
-
-					console.log('Latitude: ' + latitude)
-					console.log('Longitude: ' + longitude)
+					console.log(center)
 				}
 			)
 		})
-		// let res = getLatLong('08431040')
-		/* console.log([
-			getLatitudeRestaurante('08431040'),
-			getLongitudeRestaurante('08431040')
-		]) */
 	}, [navigation])
 
 	const onLoad = React.useCallback(function callback(map: any) {
@@ -75,10 +65,16 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		})
 			.then((response) => response.json())
 			.then((json) => {
-				Object.keys(json).forEach((key: string) => {
-					/* let latitude: any = getLatitudeRestaurante(json[key].cepRestaurante)
-					let longitude: any = getLongitudeRestaurante(json[key].cepRestaurante)
-					console.log(latitude, longitude) */
+				Object.keys(json).forEach(async (key: string) => {
+					const response = await fetch(
+						`https://maps.googleapis.com/maps/api/geocode/json?address=${
+							json[key].cepRestaurante
+						}&key=${global.getMapsToken()}`
+					)
+					const result = await response.json()
+					const location = result.results[0].geometry.location
+
+					console.log(location)
 
 					data.push({
 						id: json[key].idRestaurante,
@@ -87,16 +83,13 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						bairro: json[key].bairroRestaurante,
 						cidade: json[key].cidadeRestaurante,
 						estado: json[key].estadoRestaurante,
-						/* latitude: latitude,
-						longitude: longitude, */
+						latitude: location.lat,
+						longitude: location.lng,
 						country: 'Brasil'
 					})
-
-					// console.log(json[key].cepRestaurante)
-					// getLatLong(json[key].cepRestaurante, json[key].idRestaurante)
 				})
 
-				console.table(data)
+				console.table('data', data)
 			})
 			.catch((error) => {
 				console.error(error)
@@ -104,8 +97,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const getLatLong = async (address: string): Promise<void> => {
-		console.log(address)
-
 		const response = await fetch(
 			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
 		)
@@ -113,37 +104,8 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		const location = result.results[0].geometry.location
 
 		console.log(location)
-		console.log('Latitude: ' + result.results[0].geometry.location.lat)
-		console.log('longititude : ' + result.results[0].geometry.location.lng)
-
-		setLatitude(result.results[0].geometry.location.lat)
-		setLongitude(result.results[0].geometry.location.lng)
 
 		return result.results[0].geometry.location
-	}
-
-	const getLatitudeRestaurante = async (address: string): Promise<string> => {
-		const response: Response = await fetch(
-			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
-		)
-		const result: any = await response.json()
-		const latitude: string = result.results[0].geometry.location.lat
-		console.log('Latitude: ' + latitude)
-
-		return latitude
-	}
-
-	const getLongitudeRestaurante = async (
-		address: string
-	): Promise<string> => {
-		const response: Response = await fetch(
-			`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${global.getMapsToken()}`
-		)
-		const result: any = await response.json()
-		const longitude: string = result.results[0].geometry.location.lng
-		console.log('Longitude: ' + longitude)
-
-		return longitude
 	}
 
 	return isLoaded ? (
