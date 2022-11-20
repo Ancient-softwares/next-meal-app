@@ -30,6 +30,7 @@
 		"expo-image-picker": "^14.0.1",
 		"expo-notifications": "^0.17.0",
 		"expo-status-bar": "~1.4.0",
+		"framer-motion": "^7.6.7",
 		"joi": "^17.6.1",
 		"material-icons": "^1.11.11",
 		"moment": "^2.29.4",
