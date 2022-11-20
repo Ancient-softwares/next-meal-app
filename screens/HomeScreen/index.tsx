@@ -133,7 +133,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				return
 			}
 			token = (await Notifications.getExpoPushTokenAsync()).data
-			console.log(token)
 		} else {
 			alert('Must use physical device for Push Notifications')
 		}
@@ -292,14 +291,12 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const onPressRestaurant = (item: any) => {
-		console.log('got here', item)
 		let params = []
 
 		filteredDataSource.forEach((element: any) => {
 			if (element.idRestaurante === item.idRestaurante) {
 				params = element
 
-				console.log(params)
 				navigation.navigate('About', {
 					...params
 				})
@@ -314,7 +311,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			navigation.navigate('Restaurants')
 		} else {
 			global.tipoRestaurante = item[0].item.tipoRestaurante
-			console.log(global.tipoRestaurante)
 
 			// first save the categoria
 			navigation.navigate('Category', {
@@ -345,8 +341,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	}
 
 	const Component = (...item: any[]): JSX.Element => {
-		console.log(item[0].item)
-
 		return (
 			<View
 				style={{

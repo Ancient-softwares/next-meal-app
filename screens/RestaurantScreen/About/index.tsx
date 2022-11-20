@@ -18,7 +18,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 			refreshScreen()
 			forceRemount()
 			global.idRestaurante = restaurante.idRestaurante
-			console.log(global.idRestaurante)
 		})
 	}, [navigation, restaurante.idRestaurante])
 
@@ -38,38 +37,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 		people: Joi.number().required().min(1).max(10).integer(),
 		hour: Joi.date().required().min('now')
 	})
-
-	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
-		event: React.FormEvent<HTMLFormElement>
-	): Promise<void> => {
-		event.preventDefault()
-
-		try {
-			await fetch(`${global.API_URL}/api/reserva`, {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer ${global.getToken()}`
-				},
-				body: JSON.stringify({
-					idCliente: global.user.id
-				})
-			})
-				.then((response) => response.json())
-				.then((json) => {
-					console.log(json)
-				})
-				.catch((error) => {
-					console.error(error)
-				})
-				.finally(() => {
-					setDate(new Date())
-					setHour(new Date())
-					setPeople(0)
-				})
-		} catch (error) {
-			console.log(error)
-		}
-	}
 
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>

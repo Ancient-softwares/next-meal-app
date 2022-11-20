@@ -1,4 +1,3 @@
-import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import {
@@ -6,9 +5,9 @@ import {
 	FlatList,
 	RefreshControl,
 	SafeAreaView,
-	TextInput,
 	View
 } from 'react-native'
+import { SearchBar } from 'react-native-elements'
 import styles from './style'
 
 const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
@@ -122,15 +121,12 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		})
 			.then((response: Response) => response.json())
 			.then((json: any) => {
-				console.log(json)
-
 				if (json.length > 0) {
 					setFilteredDataSource([])
 
 					// Inserted text is not blank
 					// Filter the masterDataSource and update FilteredDataSource
 					setFilteredDataSource(json)
-					console.log(filteredDataSource)
 				} else {
 					// Inserted text is blank
 					// Update FilteredDataSource with masterDataSource
@@ -138,102 +134,34 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				}
 			})
 			.catch((err: Error) => console.error(err))
-			.finally(() => {
-				// setSearch('')
-				// forceRemount()
-				console.log('finally')
-			})
 	}
 
 	const renderItem = (item: any): JSX.Element => {
 		return <Item {...item} />
 	}
 
-	const searchFilterFunction = (text: string) => {
-		// Check if searched text is not blank
-		if (text) {
-			// Inserted text is not blank
-			// Filter the masterDataSource and update FilteredDataSource
-			const newData = masterDataSource.filter((item: any) => {
-				// Applying filter for the inserted text in search bar
-				const itemData = item.nomeRestaurante
-					? item.nomeRestaurante.toUpperCase()
-					: ''.toUpperCase()
-
-				const textData = text.toUpperCase()
-
-				return itemData.indexOf(textData) > -1
-			})
-			setFilteredDataSource(newData)
-			setSearch(text)
-		} else {
-			// Inserted text is blank
-			// Update FilteredDataSource with masterDataSource
-			setFilteredDataSource(masterDataSource)
-			setSearch(text)
-		}
-	}
-
 	return (
 		<SafeAreaView style={styles.container} key={uniqueValue}>
 			{!isLoading ? (
 				<>
-					<View
-						style={{
-							display: 'flex',
-							flexDirection: 'row',
-							justifyContent: 'space-between',
-							alignItems: 'center',
-							width: '100%',
-							marginTop: 20,
-							marginBottom: 20
+					<SearchBar
+						placeholder='Pesquisar restaurantes...'
+						lightTheme
+						platform='android'
+						round
+						value={search}
+						onChangeText={(text: string): void => {
+							filterByEverything(text)
+
+							setSearch(text)
 						}}
-					>
-						<FontAwesome
-							style={{
-								marginLeft: 20
-							}}
-							name='search'
-							size={24}
-							color='grey'
-						/>
-						<TextInput
-							style={[
-								styles.searchBar,
-								{
-									width: '80%',
-									marginLeft: 20,
-									marginRight: 20,
-									height: 40
-								}
-							]}
-							placeholder='Pesquisar restaurantes...'
-							placeholderTextColor='gray'
-							onChangeText={(text) => {
-								// searchFilterFunction(text)
-								filterByEverything(text)
-
-								setSearch(text)
-							}}
-							value={search}
-						/>
-						<Button
-							variant='danger'
-							style={{
-								marginRight: 20,
-								background: 'red',
-								fontFamily: 'ionicons',
-								fontSize: 12
-							}}
-							onClick={() => {
-								filterByEverything(search)
-
-								setSearch('')
-							}}
-						>
-							Pesquisar
-						</Button>
-					</View>
+						autoCorrect={false}
+						blurOnSubmit={true}
+						autoFocus={true}
+						style={{
+							width: '72vw'
+						}}
+					/>
 					<FlatList
 						data={filteredDataSource}
 						renderItem={renderItem}

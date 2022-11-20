@@ -53,7 +53,6 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 		navigation.addListener('focus', () => {
 			setLoading(true)
 
-			console.log(global.tipoRestaurante)
 			setTimeout((): void => {
 				if (global.tipoRestaurante != tipoRestaurante) {
 					setKey(key + 1)

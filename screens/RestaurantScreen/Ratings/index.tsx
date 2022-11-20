@@ -78,16 +78,10 @@ const Ratings = ({ navigation, route }: any) => {
 			.then((json: any) => {
 				if (json !== null) {
 					Object.keys(json).forEach((key: any) => {
-						console.log(json)
-
 						if (json[key].idCliente == global.user.id) {
-							console.log('foi', json[key])
-
 							setRating(json[key].notaAvaliacao)
 							setFeedback(json[key].descAvaliacao)
 							setBtnLabel('Atualizar Avaliação')
-
-							console.log('true')
 						}
 					})
 				}
@@ -174,8 +168,6 @@ const Ratings = ({ navigation, route }: any) => {
 				.then((response: Response): Promise<JSON> => response.json())
 				.then((json: any): void => {
 					setAvaliacoes(json)
-
-					console.log(avaliacoes)
 				})
 				.catch((error: Error): void => {
 					console.error(error)

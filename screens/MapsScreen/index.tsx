@@ -55,11 +55,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	)
 
 	const generateMarkers = (restaurants: Array<Object>): void => {
-		console.log('restaurants', restaurants)
-
 		restaurants.forEach((item: any): void => {
-			console.log('item', item)
-
 			const marker = {
 				position: {
 					lat: item.latitude,
@@ -98,7 +94,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	const fetchRestaurants = async (): Promise<void> => {
 		setMarkers([])
-		console.log('now', markers + ' - ' + markers.length)
 
 		try {
 			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
@@ -134,8 +129,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							restaurant: json[key],
 							icon: markerIcon
 						}
-
-						console.log(marker)
 
 						// adds onclick event to marker
 						marker.restaurant.onClick = () => {
@@ -185,8 +178,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		)
 		const result = await response.json()
 		const location = result.results[0].geometry.location
-
-		console.log(location)
 
 		return result.results[0].geometry.location
 	}
