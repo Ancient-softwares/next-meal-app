@@ -9,10 +9,10 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		new Array<Object>()
 	)
 	const [map, setMap] = React.useState<any>(null)
-	const center = {
+	const [userLocation, setUserLocation] = React.useState<any>({
 		lat: -23.552990263455296,
 		lng: -46.39968223122055
-	}
+	})
 
 	const { isLoaded } = useJsApiLoader({
 		id: global.getMapsId(),
@@ -27,44 +27,32 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				fetchRestaurants()
 			}
 
-			// generateMarkers(markers)
-
 			navigator.geolocation.getCurrentPosition(
 				(position: GeolocationPosition) => {
-					// adjustUserMarkerLocation(position)
-					// console.log(position)
+					/* const userLocation = adjustUserMarkerLocation(position)
+					console.log('show', userLocation) */
 				}
 			)
 
 			navigator.geolocation.watchPosition(
 				(position: GeolocationPosition) => {
-					// adjustUserMarkerLocation(position)
-					// console.log(position)
+					/* const userLocation = adjustUserMarkerLocation(position)
+					console.log('show', userLocation) */
 				}
 			)
 		})
 	}, [navigation, markers])
 
-	const showLocation = (position: GeolocationPosition) => {
-		let latitude = position.coords.latitude
-		let longitude = position.coords.longitude
+	const adjustUserMarkerLocation = (position: GeolocationPosition) => {
+		let lat = position.coords.latitude
+		let lng = position.coords.longitude
 
-		return { latitude, longitude }
+		return { lat, lng }
 	}
 
 	const watchId = navigator.geolocation.watchPosition(
 		(position: GeolocationPosition) => console.log(position)
 	)
-
-	const adjustUserMarkerLocation = (position: GeolocationPosition): void => {
-		let latRes = parseFloat(position.coords.latitude.toString())
-		let lngRes = parseFloat(position.coords.longitude.toString())
-
-		center.lat = latRes
-		center.lng = lngRes
-
-		console.log('marker', center)
-	}
 
 	const generateMarkers = (restaurants: Array<Object>): void => {
 		console.log('restaurants', restaurants)
@@ -87,7 +75,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	const onLoad = React.useCallback(
 		function callback(map: any): void {
-			const bounds = new window.google.maps.LatLngBounds(center)
+			const bounds = new window.google.maps.LatLngBounds(userLocation)
 			map.fitBounds(bounds)
 			setMap(map)
 
@@ -131,15 +119,20 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						const result = await response.json()
 						const location = result.results[0].geometry.location
 
-						console.log(location)
+						const markerIcon = {
+							url: logo,
+							origin: new window.google.maps.Point(0, 0),
+							labelOrigin: new window.google.maps.Point(10, -15)
+						}
 
 						const marker = {
 							position: {
 								lat: location.lat,
 								lng: location.lng
 							},
-							title: json[key].nomeRestaurante,
-							restaurant: json[key]
+							label: json[key].nomeRestaurante,
+							restaurant: json[key],
+							icon: markerIcon
 						}
 
 						console.log(marker)
@@ -151,6 +144,15 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							navigation.navigate('About', {
 								...param
 							})
+						}
+
+						marker.label = {
+							text: marker.restaurant.nomeRestaurante,
+							color: '#963333',
+							fontSize: '18px',
+							fontWeight: 'bold',
+							fontFamily: 'Roboto',
+							backgroundColor: '#fff'
 						}
 
 						// renders marker
@@ -196,7 +198,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 					width: '100%',
 					height: '100%'
 				}}
-				center={center}
+				center={userLocation}
 				zoom={10}
 				onLoad={onLoad}
 				onUnmount={onUnmount}
@@ -206,9 +208,9 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 					<Marker
 						animation={google.maps.Animation.DROP}
 						key={index}
-						icon={logo}
+						icon={marker.icon}
 						position={marker.position}
-						label={marker.title}
+						label={marker.label}
 						onClick={marker.restaurant.onClick}
 					/>
 				))}
@@ -216,9 +218,19 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				<>
 					<Marker
 						animation={google.maps.Animation.DROP}
-						position={center}
-						icon={logo}
-						label={'Sua localização'}
+						position={userLocation}
+						icon={{
+							url: logo,
+							origin: new window.google.maps.Point(0, 0),
+							labelOrigin: new window.google.maps.Point(10, -15)
+						}}
+						label={{
+							text: 'Você está aqui',
+							color: '#963333',
+							fontSize: '18px',
+							fontWeight: 'bold',
+							fontFamily: 'Roboto'
+						}}
 						onClick={() => navigation.navigate('Profile')}
 					>
 						<View>
