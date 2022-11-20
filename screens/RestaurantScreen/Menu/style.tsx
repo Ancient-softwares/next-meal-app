@@ -129,6 +129,16 @@ const styles = StyleSheet.create({
 	},
 	spaceCategory: {
 		width: 120
+	},
+	listTitle: {
+		fontSize: 24,
+		textAlign: 'center'
+	},
+	row: {
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'flex-start'
 	}
 })
 

@@ -5,6 +5,7 @@ import {
 	FlatList,
 	RefreshControl,
 	SafeAreaView,
+	Text,
 	View
 } from 'react-native'
 import { SearchBar } from 'react-native-elements'
@@ -69,22 +70,52 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<hr style={styles.LineCard} />
 						<View style={styles.textCardPosition}>
 							<Card.Title>
-								{item[0].item.nomeRestaurante ||
-									'Nome do restaurante'}
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											fontSize: 20,
+											fontWeight: 'bold',
+											fontStyle: 'italic'
+										}
+									]}
+								>
+									{item[0].item.nomeRestaurante ||
+										'Nome do restaurante'}
+								</Text>
 							</Card.Title>
 							<Card.Text>
-								Tipo de cozinha:{' '}
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000'
+										}
+									]}
+								>
+									Tipo de cozinha:{' '}
+								</Text>
 								{item[0].item.tipoRestaurante ||
 									'Não informado'}
 							</Card.Text>
 							<Card.Text>
-								Nota: {item[0].item.notaAvaliacao || 0} / 5.0
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000'
+										}
+									]}
+								>
+									Nota:{' '}
+								</Text>
+								{item[0].item.notaAvaliacao || 0} / 5.0
 							</Card.Text>
 						</View>
 						<View>
 							<Button
 								style={styles.buttonReserv}
-								variant='primary'
+								variant='danger'
 								onClick={() => {
 									navigation.navigate('About', {
 										...item[0].item
