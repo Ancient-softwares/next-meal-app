@@ -1,5 +1,6 @@
 import { Dimensions, StyleSheet } from 'react-native'
 
+
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -32,7 +33,8 @@ const styles = StyleSheet.create({
 		height: 20,
 		backgroundColor: 'rgba(242, 60, 53, 0.4)',
 		marginBottom: 40,
-		borderRadius: 10
+		borderRadius: 10,
+		
 	},
 
 	progressBarDiv: {

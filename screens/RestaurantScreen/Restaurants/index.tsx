@@ -55,11 +55,16 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View>
 				<Card style={styles.card}>
+					<View style={{
+						width: 400,
+						height: 200
+					}}>
 					<Card.Img
 						variant='top'
 						style={styles.cardImg}
 						src={require('../../../assets/example.jpeg')}
 					/>
+					</View>
 					<Card.Body
 						style={{
 							flex: 1,

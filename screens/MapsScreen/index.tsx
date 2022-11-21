@@ -10,8 +10,8 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	)
 	const [map, setMap] = React.useState<any>(null)
 	const [userLocation, setUserLocation] = React.useState<any>({
-		lat: -23.552990263455296,
-		lng: -46.39968223122055
+		lat: -23.5698143,
+		lng: -46.4203087
 	})
 
 	const { isLoaded } = useJsApiLoader({

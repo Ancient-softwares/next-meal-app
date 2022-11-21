@@ -505,6 +505,7 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 													page === 0
 														? '25%'
 														: page === 1
+
 														? '50%'
 														: page === 2
 														? '75%'

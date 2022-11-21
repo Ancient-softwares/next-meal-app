@@ -18,7 +18,9 @@ export default StyleSheet.create({
 	},
 	cardImg: {
 		flex: 1,
-		borderRadius: 49
+		borderRadius: '17%',
+		width: '100%',
+		height: '100%'
 	},
 	card: {
 		width: '22em',
