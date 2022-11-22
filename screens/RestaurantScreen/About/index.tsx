@@ -137,6 +137,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							</Text>
 						</div>
 					</Stack>
+				<hr style={styles.LineCard} />
 				</View>
 
 				<View

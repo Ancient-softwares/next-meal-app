@@ -20,42 +20,67 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
+			setUserActualLocation()
 			// checks if the markers array is empty
 			if (markers.length === 0) {
 				// if it is, it will get the restaurants from the API
 				fetchRestaurants()
 			}
 
+			navigator.geolocation.watchPosition(
+				//console.log(position.coords.latitude) loc do user
+				(position: GeolocationPosition) => {
+					/* setUserLocation({
+						lat: position.coords.latitude,
+						lng: position.coords.longitude
+					}) */
+				}
+			)
+
+			
 		})
 	}, [navigation, markers]);
 
-	(position: GeolocationPosition) => {
-			const userLocation = position.coords.latitude
-
-		}
-
-
-	const adjustUserMarkerLocation = (position: GeolocationPosition) => {
-		let lat = position.coords.latitude
-		let lng = position.coords.longitude
-
-		return { lat, lng }
-	}
-
-	const generateMarkers = (restaurants: Array<Object>): void => {
-		restaurants.forEach((item: any): void => {
-			const marker = {
-				position: {
-					lat: item.latitude,
-					lng: item.longitude
-				},
-				title: item.nomeRestaurante,
-				restaurant: item
-			}
-
-			setMarkers((prev: any): any => [...prev, marker])
+	const setUserActualLocation = (): void => {
+		const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${global.getMapsToken()}`
+		
+		fetch(url, {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: JSON.stringify({
+				considerIp: true,
+				homeMobileCountryCode: 724,
+				homeMobileNetworkCode: 310,
+				radioType: 'lte',
+				cellTowers: [
+					{
+						cellId: 42,
+						locationAreaCode: 415,
+						mobileCountryCode: 724,
+						mobileNetworkCode: 310,
+						age: 0,
+						signalStrength: -60,
+						ta: 15
+					}
+				],
+			})	
 		})
+			.then((response: any): Promise<JSON> => response.json())
+			.then((data: any): void => {
+				console.log(data)
+				
+				setUserLocation({
+					lat: data.location.lat,
+					lng: data.location.lng
+				})
+			}
+		)
+				
 	}
+
 	const onLoad = React.useCallback(
 		function callback(map: any): void {
 			const bounds = new window.google.maps.LatLngBounds(userLocation)
@@ -204,7 +229,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							labelOrigin: new window.google.maps.Point(10, -15)
 						}}
 						label={{
-							text: 'Você está aqui //estatico',
+							text: 'Você está aqui',
 							color: '#963333',
 							fontSize: '18px',
 							fontWeight: 'bold',

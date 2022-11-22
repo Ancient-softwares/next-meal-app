@@ -56,8 +56,6 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			<View>
 				<Card style={styles.card}>
 					<View style={{
-						width: 400,
-						height: 200
 					}}>
 					<Card.Img
 						variant='top'
@@ -94,7 +92,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 									style={[
 										styles.subtitle,
 										{
-											color: '#000'
+											color: '#000',
+											fontFamily:'math',
+											fontSize:18
 										}
 									]}
 								>
@@ -108,7 +108,9 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 									style={[
 										styles.subtitle,
 										{
-											color: '#000'
+											color: '#000',
+											fontFamily:'math',
+											fontSize:18
 										}
 									]}
 								>
