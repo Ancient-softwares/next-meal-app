@@ -13,7 +13,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		lat: -23.5698143,
 		lng: -46.4203087
 	})
-
 	const { isLoaded } = useJsApiLoader({
 		id: global.getMapsId(),
 		googleMapsApiKey: global.getMapsToken()
@@ -27,21 +26,14 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				fetchRestaurants()
 			}
 
-			navigator.geolocation.getCurrentPosition(
-				(position: GeolocationPosition) => {
-					/* const userLocation = adjustUserMarkerLocation(position)
-					console.log('show', userLocation) */
-				}
-			)
-
-			navigator.geolocation.watchPosition(
-				(position: GeolocationPosition) => {
-					/* const userLocation = adjustUserMarkerLocation(position)
-					console.log('show', userLocation) */
-				}
-			)
 		})
-	}, [navigation, markers])
+	}, [navigation, markers]);
+
+	(position: GeolocationPosition) => {
+			const userLocation = position.coords.latitude
+
+		}
+
 
 	const adjustUserMarkerLocation = (position: GeolocationPosition) => {
 		let lat = position.coords.latitude
@@ -49,10 +41,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 		return { lat, lng }
 	}
-
-	const watchId = navigator.geolocation.watchPosition(
-		(position: GeolocationPosition) => console.log(position)
-	)
 
 	const generateMarkers = (restaurants: Array<Object>): void => {
 		restaurants.forEach((item: any): void => {
@@ -68,7 +56,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 			setMarkers((prev: any): any => [...prev, marker])
 		})
 	}
-
 	const onLoad = React.useCallback(
 		function callback(map: any): void {
 			const bounds = new window.google.maps.LatLngBounds(userLocation)
@@ -87,6 +74,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		},
 		[markers]
 	)
+	
 
 	const onUnmount = React.useCallback((map: any): void => {
 		setMap(null)
@@ -216,7 +204,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							labelOrigin: new window.google.maps.Point(10, -15)
 						}}
 						label={{
-							text: 'Você está aqui',
+							text: 'Você está aqui //estatico',
 							color: '#963333',
 							fontSize: '18px',
 							fontWeight: 'bold',
@@ -228,6 +216,26 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							<Text></Text>
 						</View>
 					</Marker>
+
+				{
+					navigator.geolocation.watchPosition(
+						//console.log(position.coords.latitude) loc do user
+						(position: GeolocationPosition) => {
+							<Marker
+							icon={{
+								url: logo,
+								origin: new window.google.maps.Point(0, 0),
+								labelOrigin: new window.google.maps.Point(10, -15)
+							}}
+							position={{
+								lat:position.coords.latitude,
+								lng:position.coords.longitude,
+							}}
+							/>
+						}
+					
+					)
+				}
 				</>
 			</GoogleMap>
 		</View>
