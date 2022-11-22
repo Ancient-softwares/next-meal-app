@@ -1,6 +1,7 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 import React from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
+import GetLocation from 'react-native-get-location'
 import styles from './style'
 
 const MapsScreen = ({ navigation }: any): JSX.Element => {
@@ -20,30 +21,48 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
-			setUserActualLocation()
+			// setUserActualLocation()
 			// checks if the markers array is empty
 			if (markers.length === 0) {
 				// if it is, it will get the restaurants from the API
 				fetchRestaurants()
 			}
 
-			navigator.geolocation.watchPosition(
+			/* navigator.geolocation.watchPosition(
 				//console.log(position.coords.latitude) loc do user
 				(position: GeolocationPosition) => {
-					/* setUserLocation({
+					setUserLocation({
 						lat: position.coords.latitude,
 						lng: position.coords.longitude
-					}) */
+					})
 				}
-			)
+			) */
 
-			
+			// gets user location with navigator and sets it to the userLocation state
+			setLocation()
 		})
-	}, [navigation, markers]);
+	}, [navigation, markers])
+
+	const setLocation = (): void => {
+		GetLocation.getCurrentPosition({
+			enableHighAccuracy: true,
+			timeout: 15000
+		})
+			.then((location: any) => {
+				setUserLocation({
+					lat: location.latitude,
+					lng: location.longitude
+				})
+			})
+			.catch((error: any) => {
+				const { code, message } = error
+				console.warn(code, message)
+			})
+	}
 
 	const setUserActualLocation = (): void => {
 		const url = `https://www.googleapis.com/geolocation/v1/geolocate?key=${global.getMapsToken()}`
-		
+
 		fetch(url, {
 			method: 'post',
 			headers: {
@@ -65,20 +84,18 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						signalStrength: -60,
 						ta: 15
 					}
-				],
-			})	
+				]
+			})
 		})
 			.then((response: any): Promise<JSON> => response.json())
 			.then((data: any): void => {
 				console.log(data)
-				
+
 				setUserLocation({
 					lat: data.location.lat,
 					lng: data.location.lng
 				})
-			}
-		)
-				
+			})
 	}
 
 	const onLoad = React.useCallback(
@@ -99,7 +116,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 		},
 		[markers]
 	)
-	
 
 	const onUnmount = React.useCallback((map: any): void => {
 		setMap(null)
@@ -242,25 +258,25 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						</View>
 					</Marker>
 
-				{
-					navigator.geolocation.watchPosition(
+					{navigator.geolocation.watchPosition(
 						//console.log(position.coords.latitude) loc do user
 						(position: GeolocationPosition) => {
-							<Marker
-							icon={{
-								url: logo,
-								origin: new window.google.maps.Point(0, 0),
-								labelOrigin: new window.google.maps.Point(10, -15)
-							}}
-							position={{
-								lat:position.coords.latitude,
-								lng:position.coords.longitude,
-							}}
+							;<Marker
+								icon={{
+									url: logo,
+									origin: new window.google.maps.Point(0, 0),
+									labelOrigin: new window.google.maps.Point(
+										10,
+										-15
+									)
+								}}
+								position={{
+									lat: position.coords.latitude,
+									lng: position.coords.longitude
+								}}
 							/>
 						}
-					
-					)
-				}
+					)}
 				</>
 			</GoogleMap>
 		</View>

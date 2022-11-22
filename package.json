@@ -42,6 +42,7 @@
 		"react-native-document-picker": "^8.1.2",
 		"react-native-elements": "^3.4.2",
 		"react-native-gesture-handler": "~2.5.0",
+		"react-native-get-location": "^2.2.1",
 		"react-native-image-picker": "^4.10.0",
 		"react-native-mask-input": "^1.2.1",
 		"react-native-reanimated": "~2.9.1",

@@ -32,8 +32,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const carousel02 = require('../../assets/Carousel/Carroca02.jpg')
 	const carousel03 = require('../../assets/Carousel/Carroca03.jpg')
 
-	const categoria01 = require('../../assets/categoria/bistro.jpg')
-	const categoria02 = require('../../assets/categoria/Fast food.jpg')
+	const categoria01 = require('../../assets/Categoria/bistro.jpg')
+	const categoria02 = require('../../assets/Categoria/Fast food.jpg')
 
 	let DATA: Array<Object> = Array<any>()
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
@@ -394,10 +394,10 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 								)}
 							</>
 						)) || (
-								<Text style={styles.description}>
-									Total de avaliações: {item[0].item.notas}
-								</Text>
-							)}
+							<Text style={styles.description}>
+								Total de avaliações: {item[0].item.notas}
+							</Text>
+						)}
 						<br />
 						{item[0].item.media !== null ? (
 							<>
@@ -523,27 +523,27 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						/>
 					</View>
 				)) || (
-						<>
-							<Text
-								style={[
-									styles.subtitle,
-									{
-										textAlign: 'center'
-									}
-								]}
-							>
-								Encontrando restaurantes...
-							</Text>
-							<br />
-							<ActivityIndicator
-								style={{
-									marginTop: '5%'
-								}}
-								size='large'
-								color='#ff0000'
-							/>
-						</>
-					)}
+					<>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: 'center'
+								}
+							]}
+						>
+							Encontrando restaurantes...
+						</Text>
+						<br />
+						<ActivityIndicator
+							style={{
+								marginTop: '5%'
+							}}
+							size='large'
+							color='#ff0000'
+						/>
+					</>
+				)}
 				{(melhores.length > 0 && (
 					<View
 						style={{
@@ -574,27 +574,27 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						/>
 					</View>
 				)) || (
-						<>
-							<Text
-								style={[
-									styles.subtitle,
-									{
-										textAlign: 'center'
-									}
-								]}
-							>
-								Encontrando restaurantes...
-							</Text>
-							<br />
-							<ActivityIndicator
-								style={{
-									marginTop: '5%'
-								}}
-								size='large'
-								color='#ff0000'
-							/>
-						</>
-					)}
+					<>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: 'center'
+								}
+							]}
+						>
+							Encontrando restaurantes...
+						</Text>
+						<br />
+						<ActivityIndicator
+							style={{
+								marginTop: '5%'
+							}}
+							size='large'
+							color='#ff0000'
+						/>
+					</>
+				)}
 			</ScrollView>
 		</SafeAreaView>
 	)
