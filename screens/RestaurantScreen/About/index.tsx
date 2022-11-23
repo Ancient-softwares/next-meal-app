@@ -286,16 +286,25 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						marginHorizontal: '10%'
 					}}
 				>
-					<Text style={styles.subtitle}>Cardápio</Text>
+					<Text style=
+					{{
+						marginLeft: 'auto',
+						marginBottom: 5,
+						fontSize: 22,
+						color: '#963333',
+						fontFamily: 'ionicons',
+						marginRight:'auto',
+					}}>Cardápio</Text>
 					<Button
 						variant='danger'
 						type='submit'
 						style={{
 							marginTop: '5%',
 							marginBottom: '5%',
-							marginLeft: '5%',
-							width: Dimensions.get('window').width * 0.4,
-							borderRadius: 10
+							marginLeft: 'auto',
+							marginRight: 'auto',
+							width: Dimensions.get('window').width * 0.6,
+							borderRadius: 10,
 						}}
 						onClick={() => {
 							navigation.navigate('Menu', {
@@ -320,7 +329,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						style={{
 							flex: 1,
 							alignItems: 'flex-start',
-							justifyContent: 'flex-start'
+							justifyContent: 'flex-start',
+							marginTop:-48
 						}}
 					>
 						<Text
@@ -447,7 +457,15 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									marginLeft: '-2.5%'
 								}}
 							>
-								<Text style={styles.subtitle}>
+								<Text style=
+								{{
+									marginLeft: 'auto',
+									marginRight: 'auto',
+									marginBottom: 5,
+									fontSize: 22,
+									color: '#963333',
+									fontFamily: 'ionicons'
+								}}>
 									Avaliações e comentários
 								</Text>
 								<Button
@@ -455,10 +473,12 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									style={{
 										marginTop: '5%',
 										marginBottom: '5%',
-										marginLeft: '5%',
+										marginLeft: 'auto',
+										marginRight: 'auto',
+										
 										width:
 											Dimensions.get('window').width *
-											0.4,
+											0.6,
 										borderRadius: 10
 									}}
 									onClick={() =>
