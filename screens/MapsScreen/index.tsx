@@ -1,11 +1,14 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
 import React from 'react'
-import { ActivityIndicator, Text, View } from 'react-native'
+import { ActivityIndicator, Platform, Text, View } from 'react-native'
 import GetLocation from 'react-native-get-location'
+import Geolocation from 'react-native-geolocation-service'
+import * as Location from 'expo-location';
 import styles from './style'
 
 const MapsScreen = ({ navigation }: any): JSX.Element => {
 	const logo = require('../../assets/logoMarker.png')
+	const userLogo = require('../../assets/user-marker.png')
 	const [markers, setMarkers] = React.useState<Array<Object>>(
 		new Array<Object>()
 	)
@@ -20,6 +23,26 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	})
 
 	React.useEffect(() => {
+		(async () => {
+			if (Platform.OS !== "web") {
+			   const { status } = await Location.requestForegroundPermissionsAsync();
+			   
+			   if (status !== "granted") {
+				 window.alert("Insufficient permissions!")
+				 return;
+			   }
+			 }
+	   
+			 let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0});
+			 console.log(location)
+			 setUserLocation({
+				lat: location.coords.latitude,
+				lng: location.coords.longitude
+			 });
+			 console.log(userLocation)
+		   })();
+
+
 		navigation.addListener('focus', (): void => {
 			// setUserActualLocation()
 			// checks if the markers array is empty
@@ -38,8 +61,22 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				}
 			) */
 
+			/* Geolocation.getCurrentPosition(
+				(position) => {
+				  const currentLatitude = JSON.stringify(position.coords.latitude);
+				  const currentLongitude = JSON.stringify(position.coords.longitude);
+				 
+				  setUserLocation({
+					lat: currentLatitude,
+					lng: currentLongitude
+				  })
+				},
+				(error) => alert(error.message),
+				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+			  ); */
+
 			// gets user location with navigator and sets it to the userLocation state
-			setLocation()
+			// setLocation()
 		})
 	}, [navigation, markers])
 
@@ -240,12 +277,12 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						animation={google.maps.Animation.DROP}
 						position={userLocation}
 						icon={{
-							url: logo,
+							url: userLogo,
 							origin: new window.google.maps.Point(0, 0),
 							labelOrigin: new window.google.maps.Point(10, -15)
 						}}
 						label={{
-							text: 'Você está aqui',
+							text: 'Sua localização',
 							color: '#963333',
 							fontSize: '18px',
 							fontWeight: 'bold',

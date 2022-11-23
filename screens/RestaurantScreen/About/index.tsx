@@ -99,10 +99,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 			>
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginTop: '5%'
+						marginTop: '5%', 
+						margin:16
 					}}
 				>
 					<Stack
@@ -137,12 +137,16 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							</Text>
 						</div>
 					</Stack>
-				<hr style={styles.LineCard} />
 				</View>
+
+				
+				
+				<hr style={styles.LineCard} />
+
+				<View/>
 
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
@@ -167,7 +171,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
@@ -225,11 +228,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginVertical: '5%'
+						marginVertical: '10%'
 					}}
 				>
 					<Text style={styles.subtitle}>Horários do restaurante</Text>
@@ -281,7 +283,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 				<View
 					style={{
 						flex: 1,
-						marginTop: '15%',
 						marginHorizontal: '10%'
 					}}
 				>
