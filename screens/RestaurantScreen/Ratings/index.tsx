@@ -47,48 +47,37 @@ const Ratings = ({ navigation, route }: any) => {
 	}, [navigation, global.idRestaurante, uniqueValue])
 
 	const checkIfClientHasAlreadyRated = async (): Promise<void> => {
-		/* let hasRated = false
-
-		avaliacoes.forEach((item: any): void => {
-			if (item.idCliente == global.idCliente) {
-				setRating(item.notaAvaliacao)
-				setFeedback(item.descAvaliacao)
-				setBtnLabel('Atualizar Avaliação')
-
-				hasRated = true
-			}
-		})
-
-		return hasRated */
-		await fetch(
-			`${global.getApiUrl()}/api/findIfClientHasRatingByRestaurant`,
-			{
-				method: 'POST',
-				headers: new Headers({
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}),
-				body: JSON.stringify({
-					idCliente: global.user.id,
-					idRestaurante: idRestaurante
-				})
-			}
-		)
-			.then((response: Response): Promise<any> => response.json())
-			.then((json: any) => {
-				if (json !== null) {
-					Object.keys(json).forEach((key: any) => {
-						if (json[key].idCliente == global.user.id) {
-							setRating(json[key].notaAvaliacao)
-							setFeedback(json[key].descAvaliacao)
-							setBtnLabel('Atualizar Avaliação')
-						}
+		if (global.isLogged) {
+			await fetch(
+				`${global.getApiUrl()}/api/findIfClientHasRatingByRestaurant`,
+				{
+					method: 'POST',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}),
+					body: JSON.stringify({
+						idCliente: global.user.id,
+						idRestaurante: idRestaurante
 					})
 				}
-			})
-			.catch((error: Error) => {
-				console.error(error)
-			})
+			)
+				.then((response: Response): Promise<any> => response.json())
+				.then((json: any) => {
+					if (json !== null) {
+						Object.keys(json).forEach((key: any) => {
+							if (json[key].idCliente == global.user.id) {
+								setRating(json[key].notaAvaliacao)
+								setFeedback(json[key].descAvaliacao)
+								setBtnLabel('Atualizar Avaliação')
+							}
+						})
+					}
+				})
+				.catch((error: Error) => {
+					console.error(error)
+				})
+		}
 	}
 
 	const refreshScreen = (): boolean => {
