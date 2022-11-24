@@ -27,7 +27,6 @@ Notifications.setNotificationHandler({
 })
 
 const HomeScreen = ({ navigation }: any): JSX.Element => {
-	const exampleImage: string = require('../../assets/example.jpeg')
 	const carousel01 = require('../../assets/Carousel/Carroca01.jpg')
 	const carousel02 = require('../../assets/Carousel/Carroca02.jpg')
 	const carousel03 = require('../../assets/Carousel/Carroca03.jpg')
@@ -227,6 +226,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 
 					setFilteredDataSource(DATA)
 					setMasterDataSource(DATA)
+					global.restaurantes = DATA
+					global.restaurantesFiltrados = DATA
 				})
 				.catch((err: Error): void => console.error(err))
 		} catch (error: unknown) {

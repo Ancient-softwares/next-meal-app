@@ -111,10 +111,11 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					>
 						<div style={styles.PositionImgRestaurant}>
 							<img
-								src={require(`../../../assets/Categoria/${
+								src={require(`../../../assets/Restaurante/${
 									global.indexes[
 										Math.floor(Math.random() * 5)
 									]
+									// restaurante.fotoRestaurante
 								}.png`)}
 								className='rounded-circle'
 								style={{

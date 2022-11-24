@@ -174,6 +174,37 @@ const Ratings = ({ navigation, route }: any) => {
 	}
 
 	const renderAvaliacoes = (item: any): JSX.Element => {
+		const letters = [
+			['a', 'b', 'c', 'd'],
+			['e', 'f', 'g', 'h'],
+			['i', 'j', 'k', 'l'],
+			['m', 'n', 'o', 'p'],
+			['q', 'r', 's', 't'],
+			['u', 'v', 'w', 'x', 'y', 'z']
+		]
+
+		const getFirstLetter = (name: string): string => {
+			return name.charAt(0).toLowerCase()
+		}
+
+		const getLetterIndex = (letter: string): number => {
+			let index = 0
+			letters.forEach((array: string[], i: number) => {
+				if (array.includes(letter)) {
+					if (typeof i === 'number') {
+						index = i
+					}
+				}
+			})
+			return index
+		}
+
+		const getLetter = (name: string): string => {
+			return letters[getLetterIndex(getFirstLetter(name))][0]
+		}
+
+		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomeCliente))
+
 		return (
 			<View key={uniqueValue}>
 				<Card
@@ -191,9 +222,10 @@ const Ratings = ({ navigation, route }: any) => {
 									borderRadius: '50%'
 								}}
 								src={require(`../../../assets/Usuario/${
-									global.indexes[
+									/* global.indexes[
 										Math.floor(Math.random() * 5)
-									]
+									] */
+									firstLetter
 								}.png`)}
 							/>
 							<View style={{ marginLeft: 10 }}>
@@ -377,7 +409,7 @@ const Ratings = ({ navigation, route }: any) => {
 							}}
 							onClick={() => submitRating()}
 						>
-							{btnLabel}
+							Avaliar
 						</Button>
 
 						<View

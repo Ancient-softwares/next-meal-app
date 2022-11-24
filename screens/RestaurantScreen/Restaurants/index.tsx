@@ -35,6 +35,13 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 			.then((json: any): void => {
 				Object.keys(json).forEach((key: string) => {
 					DATA.push(json[key])
+					// appends a photo property to each object
+					DATA[
+						DATA.length - 1
+					].fotoRestaurante = `../../../assets/Restaurante/${
+						// picks a random image from the array skipping duplicates
+						global.indexes[Math.floor(Math.random() * 5)]
+					}.png`
 				})
 
 				setRefresh(false)
@@ -52,6 +59,39 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 	}, [uniqueValue, navigation, filteredDataSource])
 
 	const Item = (...item: any[]): JSX.Element => {
+		const letters = [
+			['a', 'b', 'c', 'd'],
+			['e', 'f', 'g', 'h'],
+			['i', 'j', 'k', 'l'],
+			['m', 'n', 'o', 'p'],
+			['q', 'r', 's', 't'],
+			['u', 'v', 'w', 'x', 'y', 'z']
+		]
+
+		const getFirstLetter = (name: string): string => {
+			return name.charAt(0).toLowerCase()
+		}
+
+		const getLetterIndex = (letter: string): number => {
+			let index = 0
+			letters.forEach((array: string[], i: number) => {
+				if (array.includes(letter)) {
+					if (typeof i === 'number') {
+						index = i
+					}
+				}
+			})
+			return index
+		}
+
+		const getLetter = (name: string): string => {
+			return letters[getLetterIndex(getFirstLetter(name))][0]
+		}
+
+		let firstLetter = getLetterIndex(
+			getFirstLetter(item[0].item.nomeRestaurante)
+		)
+
 		return (
 			<View>
 				<Card style={styles.card}>
@@ -59,9 +99,10 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						<Card.Img
 							variant='top'
 							style={styles.cardImg}
-							src={require(`../../../assets/Categoria/${
+							src={require(`../../../assets/Restaurante/${
 								// picks a random image from the array skipping duplicates
-								global.indexes[Math.floor(Math.random() * 5)]
+								// global.indexes[Math.floor(Math.random() * 5)]
+								firstLetter
 							}.png`)}
 						/>
 					</View>
