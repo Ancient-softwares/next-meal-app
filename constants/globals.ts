@@ -17,6 +17,7 @@ declare global {
 	var idRestaurante: string
 	var tipoRestaurante: string
 	var indexes: number[]
+	var restaurantes: any[]
 
 	// getters
 	function getToken(): string
