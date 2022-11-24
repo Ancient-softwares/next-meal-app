@@ -16,6 +16,7 @@ declare global {
 	var color: string
 	var idRestaurante: string
 	var tipoRestaurante: string
+	var indexes: number[]
 
 	// getters
 	function getToken(): string
@@ -90,6 +91,7 @@ global.restaurant = {
 
 global.defaultImage = '../assets/example.jpeg'
 global.color = '#963333'
+global.indexes = [0, 1, 2, 3, 4, 5]
 
 // getters
 global.getToken = () => global.TOKEN

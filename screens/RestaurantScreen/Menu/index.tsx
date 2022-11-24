@@ -1,8 +1,7 @@
 import React from 'react'
-import { Button, ListGroup, Card } from 'react-bootstrap'
+import { Button, Card, ListGroup } from 'react-bootstrap'
 import {
 	ActivityIndicator,
-	Dimensions,
 	FlatList,
 	Modal,
 	RefreshControl,
@@ -109,17 +108,16 @@ const Menu = ({ navigation, route }: any) => {
 
 	const renderCardapio = (item: any): JSX.Element => {
 		return (
-			<View
-			style={{width:'100%'}}
-			>
+			<View style={{ width: '100%' }}>
 				<Card style={styles.card}>
-					<View style={{
-					}}>
-					<Card.Img
-						variant='top'
-						style={styles.cardImg}
-						src={require('../../../assets/example.jpeg')}
-					/>
+					<View style={{}}>
+						<Card.Img
+							variant='top'
+							style={styles.cardImg}
+							src={require(`../../../assets/Cardapio/${
+								global.indexes[Math.floor(Math.random() * 5)]
+							}.png`)}
+						/>
 					</View>
 					<Card.Body
 						style={{
@@ -141,7 +139,7 @@ const Menu = ({ navigation, route }: any) => {
 										}
 									]}
 								>
-										{item.item.nomePrato}
+									{item.item.nomePrato}
 								</Text>
 							</Card.Title>
 							<Card.Text>
@@ -150,8 +148,8 @@ const Menu = ({ navigation, route }: any) => {
 										styles.subtitle,
 										{
 											color: '#000',
-											fontFamily:'math',
-											fontSize:18
+											fontFamily: 'math',
+											fontSize: 18
 										}
 									]}
 								>
@@ -164,8 +162,8 @@ const Menu = ({ navigation, route }: any) => {
 										styles.subtitle,
 										{
 											color: '#000',
-											fontFamily:'math',
-											fontSize:18
+											fontFamily: 'math',
+											fontSize: 18
 										}
 									]}
 								>
@@ -175,24 +173,19 @@ const Menu = ({ navigation, route }: any) => {
 						</View>
 						<View>
 							<Button
-								style=
-								{{
-
+								style={{
 									padding: 10,
 									marginTop: 20
 								}}
 								variant='danger'
-								onClick=
-								{
-									(): void => {
-										setInfoPrato(item.item)
-										setIngredientesPrato(
-											item.item.ingredientesPrato.split(',')
-										)
-										console.log(ingredientesPrato)
-										setModalVisible(true)
-									}
-								}
+								onClick={(): void => {
+									setInfoPrato(item.item)
+									setIngredientesPrato(
+										item.item.ingredientesPrato.split(',')
+									)
+									console.log(ingredientesPrato)
+									setModalVisible(true)
+								}}
 							>
 								Ver Mais
 							</Button>
@@ -303,9 +296,7 @@ const Menu = ({ navigation, route }: any) => {
 	return (
 		<>
 			{loading ? (
-				<View
-					style={{margin:-8}}
-				>
+				<View style={{ margin: -8 }}>
 					<ActivityIndicator
 						style={{
 							marginTop: '70%'

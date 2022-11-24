@@ -55,13 +55,15 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View>
 				<Card style={styles.card}>
-					<View style={{
-					}}>
-					<Card.Img
-						variant='top'
-						style={styles.cardImg}
-						src={require('../../../assets/example.jpeg')}
-					/>
+					<View style={{}}>
+						<Card.Img
+							variant='top'
+							style={styles.cardImg}
+							src={require(`../../../assets/Categoria/${
+								// picks a random image from the array skipping duplicates
+								global.indexes[Math.floor(Math.random() * 5)]
+							}.png`)}
+						/>
 					</View>
 					<Card.Body
 						style={{
@@ -93,8 +95,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 										styles.subtitle,
 										{
 											color: '#000',
-											fontFamily:'math',
-											fontSize:18
+											fontFamily: 'math',
+											fontSize: 18
 										}
 									]}
 								>
@@ -109,8 +111,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 										styles.subtitle,
 										{
 											color: '#000',
-											fontFamily:'math',
-											fontSize:18
+											fontFamily: 'math',
+											fontSize: 18
 										}
 									]}
 								>

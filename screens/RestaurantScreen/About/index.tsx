@@ -5,7 +5,6 @@ import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
 import styles from './style'
 
 const AboutScreen = ({ navigation, route }: any): JSX.Element => {
-	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
@@ -101,8 +100,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					style={{
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginTop: '5%', 
-						margin:16
+						marginTop: '5%',
+						margin: 16
 					}}
 				>
 					<Stack
@@ -112,7 +111,11 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					>
 						<div style={styles.PositionImgRestaurant}>
 							<img
-								src={exampleImage}
+								src={require(`../../../assets/Categoria/${
+									global.indexes[
+										Math.floor(Math.random() * 5)
+									]
+								}.png`)}
 								className='rounded-circle'
 								style={{
 									width: 100,
@@ -139,11 +142,9 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					</Stack>
 				</View>
 
-				
-				
 				<hr style={styles.LineCard} />
 
-				<View/>
+				<View />
 
 				<View
 					style={{
@@ -279,29 +280,34 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						<br />
 					</Text>
 				</View>
-				<hr style={{
-								color: 'red',
-								marginLeft: 60,
-								marginRight: 47,
-								opacity: 1,
-								padding:10,
-								marginTop:-19
-							}}/>
+				<hr
+					style={{
+						color: 'red',
+						marginLeft: 60,
+						marginRight: 47,
+						opacity: 1,
+						padding: 10,
+						marginTop: -19
+					}}
+				/>
 				<View
 					style={{
 						flex: 1,
 						marginHorizontal: '10%'
 					}}
 				>
-					<Text style=
-					{{
-						marginLeft:'40%',
-						marginBottom: 5,
-						fontSize: 22,
-						color: '#963333',
-						fontFamily: 'ionicons',
-						marginRight:'auto',
-					}}>Cardápio</Text>
+					<Text
+						style={{
+							marginLeft: '40%',
+							marginBottom: 5,
+							fontSize: 22,
+							color: '#963333',
+							fontFamily: 'ionicons',
+							marginRight: 'auto'
+						}}
+					>
+						Cardápio
+					</Text>
 					<Button
 						variant='danger'
 						type='submit'
@@ -311,7 +317,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							marginLeft: '19%',
 							marginRight: 'auto',
 							width: Dimensions.get('window').width * 0.6,
-							borderRadius: 10,
+							borderRadius: 10
 						}}
 						onClick={() => {
 							navigation.navigate('Menu', {
@@ -319,17 +325,19 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							})
 						}}
 					>
-						<Text style={{ color: '#fff'}}>Ver cardápio</Text>
+						<Text style={{ color: '#fff' }}>Ver cardápio</Text>
 					</Button>
 				</View>
-				<hr style={{
-								color: 'red',
-								marginLeft: 60,
-								marginRight: 47,
-								opacity: 1,
-								padding:60,
-								marginTop:-144
-							}}/>
+				<hr
+					style={{
+						color: 'red',
+						marginLeft: 60,
+						marginRight: 47,
+						opacity: 1,
+						padding: 60,
+						marginTop: -144
+					}}
+				/>
 				<View
 					style={{
 						flex: 1,
@@ -344,7 +352,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							flex: 1,
 							alignItems: 'flex-start',
 							justifyContent: 'flex-start',
-							marginTop:-48
+							marginTop: -48
 						}}
 					>
 						<Text
@@ -416,8 +424,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 										marginBottom: '5%',
 										marginLeft: '10%',
 										width:
-										Dimensions.get('window').width *
-										0.6,
+											Dimensions.get('window').width *
+											0.6,
 										borderRadius: 10
 									}}
 								>
@@ -465,15 +473,16 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 								</Form.Group>
 							</View>
 
-							<hr style=
-							{{
-								color: 'red',
-								marginLeft: 2,
-								marginRight: -38,
-								opacity: 1,
-								padding:30,
-								marginTop:-40
-							}} />
+							<hr
+								style={{
+									color: 'red',
+									marginLeft: 2,
+									marginRight: -38,
+									opacity: 1,
+									padding: 30,
+									marginTop: -40
+								}}
+							/>
 
 							<View
 								style={{
@@ -481,15 +490,16 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									marginLeft: '10%'
 								}}
 							>
-								<Text style=
-								{{
-									marginLeft: 'auto',
-									marginRight: 'auto',
-									marginBottom: 5,
-									fontSize: 22,
-									color: '#963333',
-									fontFamily: 'ionicons'
-								}}>
+								<Text
+									style={{
+										marginLeft: 'auto',
+										marginRight: 'auto',
+										marginBottom: 5,
+										fontSize: 22,
+										color: '#963333',
+										fontFamily: 'ionicons'
+									}}
+								>
 									Avaliações e Comentários
 								</Text>
 								<Button
@@ -499,7 +509,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 										marginBottom: '5%',
 										marginLeft: 'auto',
 										marginRight: 'auto',
-										
+
 										width:
 											Dimensions.get('window').width *
 											0.6,

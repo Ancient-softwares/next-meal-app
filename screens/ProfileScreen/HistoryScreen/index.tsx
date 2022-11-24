@@ -61,7 +61,9 @@ const HistoryScreen = ({ navigation }: any) => {
 				>
 					<div style={styles.PositionImgRestaurant}>
 						<img
-							src={require('../../../assets/example.jpeg')}
+							src={require(`../../../assets/Restaurante/${
+								global.indexes[Math.floor(Math.random() * 5)]
+							}.png`)}
 							className='rounded-circle'
 							style={{
 								width: 100,

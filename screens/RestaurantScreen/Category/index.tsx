@@ -93,7 +93,9 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 					<Card.Img
 						variant='top'
 						style={styles.cardImg}
-						src={require('../../../assets/example.jpeg')}
+						src={require(`../../../assets/Restaurante/${
+							global.indexes[Math.floor(Math.random() * 5)]
+						}.png`)}
 					/>
 					<Card.Body
 						style={{

@@ -32,8 +32,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const carousel02 = require('../../assets/Carousel/Carroca02.jpg')
 	const carousel03 = require('../../assets/Carousel/Carroca03.jpg')
 
-	const categoria01 = require('../../assets/Categoria/bistro.jpg')
-	const categoria02 = require('../../assets/Categoria/Fast food.jpg')
+	const path = '../../assets/'
 
 	let DATA: Array<Object> = Array<any>()
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
@@ -330,7 +329,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View style={styles.spaceCategory}>
 				<img
-					src={categoria01}
+					src={require(`../../assets/Categoria/${
+						global.indexes[Math.floor(Math.random() * 5)]
+					}.png`)}
 					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
 					style={{
@@ -365,7 +366,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				>
 					<div style={styles.PositionImgRestaurant}>
 						<img
-							src={exampleImage}
+							src={require(`../../assets/Restaurante/${
+								global.indexes[Math.floor(Math.random() * 5)]
+							}.png`)}
 							className='rounded-circle'
 							style={{
 								width: 100,
