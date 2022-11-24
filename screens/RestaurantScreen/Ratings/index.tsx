@@ -183,12 +183,39 @@ const Ratings = ({ navigation, route }: any) => {
 					}}
 				>
 					<Card.Body>
-						<Card.Title>
-							{item.item.nomeCliente} - {item.item.notaAvaliacao}
-						</Card.Title>
-						<Card.Subtitle className='mb-2 text-muted'>
-							{item.item.dtAvaliacao}
-						</Card.Subtitle>
+						<View style={{ flexDirection: 'row' }}>
+							<Card.Img
+								style={{
+									width: 75,
+									height: 75,
+									borderRadius: '50%'
+								}}
+								src={require(`../../../assets/Usuario/${
+									global.indexes[
+										Math.floor(Math.random() * 5)
+									]
+								}.png`)}
+							/>
+							<View style={{ marginLeft: 10 }}>
+								<Card.Title
+									style={{ marginLeft: 10, color: '#963333' }}
+								>
+									{item.item.nomeCliente}
+								</Card.Title>
+								<Card.Subtitle
+									style={{ marginLeft: 10 }}
+									className='mb-2 text-muted'
+								>
+									Nota: {item.item.notaAvaliacao}
+								</Card.Subtitle>
+								<Card.Subtitle
+									style={{ marginLeft: 10 }}
+									className='mb-2 text-muted'
+								>
+									{item.item.dtAvaliacao}
+								</Card.Subtitle>
+							</View>
+						</View>
 						<Card.Text>{item.item.descAvaliacao}</Card.Text>
 					</Card.Body>
 				</Card>
@@ -307,13 +334,13 @@ const Ratings = ({ navigation, route }: any) => {
 							multiline={true}
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 80,
+								width: Dimensions.get('window').width - 40,
 								height: 100,
 								borderColor: 'gray',
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '5%'
+								marginLeft: '10%'
 							}}
 							placeholder='Escreva sua avaliação'
 							onChangeText={(text: any) => setFeedback(text)}
@@ -327,13 +354,13 @@ const Ratings = ({ navigation, route }: any) => {
 							keyboardType='numeric'
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 80,
+								width: Dimensions.get('window').width - 40,
 								height: 50,
 								borderColor: 'gray',
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '5%'
+								marginLeft: '10%'
 							}}
 							placeholder='Nota'
 							onChangeText={(text: any) => setRating(text)}
