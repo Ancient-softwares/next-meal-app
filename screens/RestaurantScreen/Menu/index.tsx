@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, ListGroup } from 'react-bootstrap'
+import { Button, ListGroup, Card } from 'react-bootstrap'
 import {
 	ActivityIndicator,
 	Dimensions,
@@ -110,77 +110,95 @@ const Menu = ({ navigation, route }: any) => {
 	const renderCardapio = (item: any): JSX.Element => {
 		return (
 			<View
-				style={[
-					styles.spaceCategory,
-					{
-						width: '100%'
-					}
-				]}
+			style={{width:'100%'}}
 			>
-				<img
-					src={exampleImage}
-					style={{
-						width: Dimensions.get('window').width * 0.8,
-						height: Dimensions.get('window').height * 0.2,
-						borderRadius: '7.5%',
-						marginLeft: '-5%'
-					}}
-				/>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 5,
-							fontWeight: 'bold',
-							fontSize: 18,
-							color: '#963333',
-							marginTop: 5
-						}
-					]}
-				>
-					{item.item.nomePrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 5,
-							fontWeight: 'bold',
-							marginBottom: 10
-						}
-					]}
-				>
-					Categoria: {item.item.tipoPrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 5,
-							marginBottom: 12.5
-						}
-					]}
-				>
-					Valor: {item.item.valorPrato}
-				</Text>
-				<Button
-					variant='danger'
-					onClick={(): void => {
-						setInfoPrato(item.item)
-						setIngredientesPrato(
-							item.item.ingredientesPrato.split(',')
-						)
-						console.log(ingredientesPrato)
-						setModalVisible(true)
-					}}
-					style={{
-						marginLeft: 5,
-						marginBottom: 12.5,
-						width: '90%'
-					}}
-				>
-					Ver mais
-				</Button>
+				<Card style={styles.card}>
+					<View style={{
+					}}>
+					<Card.Img
+						variant='top'
+						style={styles.cardImg}
+						src={require('../../../assets/example.jpeg')}
+					/>
+					</View>
+					<Card.Body
+						style={{
+							flex: 1,
+							alignItems: 'flex-start',
+							justifyContent: 'flex-start'
+						}}
+					>
+						<hr style={styles.LineCard} />
+						<View style={styles.textCardPosition}>
+							<Card.Title>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											fontSize: 20,
+											fontWeight: 'bold',
+											fontStyle: 'italic'
+										}
+									]}
+								>
+										{item.item.nomePrato}
+								</Text>
+							</Card.Title>
+							<Card.Text>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000',
+											fontFamily:'math',
+											fontSize:18
+										}
+									]}
+								>
+									Categoria: {item.item.tipoPrato}
+								</Text>
+							</Card.Text>
+							<Card.Text>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000',
+											fontFamily:'math',
+											fontSize:18
+										}
+									]}
+								>
+									Valor: {item.item.valorPrato}
+								</Text>
+							</Card.Text>
+						</View>
+						<View>
+							<Button
+								style=
+								{{
+
+									padding: 10,
+									marginTop: 20
+								}}
+								variant='danger'
+								onClick=
+								{
+									(): void => {
+										setInfoPrato(item.item)
+										setIngredientesPrato(
+											item.item.ingredientesPrato.split(',')
+										)
+										console.log(ingredientesPrato)
+										setModalVisible(true)
+									}
+								}
+							>
+								Ver Mais
+							</Button>
+						</View>
+					</Card.Body>
+				</Card>
 
 				<Modal
 					animationType='slide'
@@ -286,12 +304,7 @@ const Menu = ({ navigation, route }: any) => {
 		<>
 			{loading ? (
 				<View
-					style={[
-						styles.container,
-						{
-							backgroundColor: '#fff'
-						}
-					]}
+					style={{margin:-8}}
 				>
 					<ActivityIndicator
 						style={{

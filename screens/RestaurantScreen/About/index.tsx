@@ -234,7 +234,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						marginVertical: '10%'
 					}}
 				>
-					<Text style={styles.subtitle}>Horários do restaurante</Text>
+					<Text style={styles.subtitle}>Horários do Restaurante</Text>
 
 					<Text
 						style={[
@@ -279,7 +279,14 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						<br />
 					</Text>
 				</View>
-
+				<hr style={{
+								color: 'red',
+								marginLeft: 60,
+								marginRight: 47,
+								opacity: 1,
+								padding:10,
+								marginTop:-19
+							}}/>
 				<View
 					style={{
 						flex: 1,
@@ -288,7 +295,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 				>
 					<Text style=
 					{{
-						marginLeft: 'auto',
+						marginLeft:'40%',
 						marginBottom: 5,
 						fontSize: 22,
 						color: '#963333',
@@ -301,7 +308,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						style={{
 							marginTop: '5%',
 							marginBottom: '5%',
-							marginLeft: 'auto',
+							marginLeft: '19%',
 							marginRight: 'auto',
 							width: Dimensions.get('window').width * 0.6,
 							borderRadius: 10,
@@ -312,10 +319,17 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							})
 						}}
 					>
-						<Text style={{ color: '#fff' }}>Ver cardápio</Text>
+						<Text style={{ color: '#fff'}}>Ver cardápio</Text>
 					</Button>
 				</View>
-
+				<hr style={{
+								color: 'red',
+								marginLeft: 60,
+								marginRight: 47,
+								opacity: 1,
+								padding:60,
+								marginTop:-144
+							}}/>
 				<View
 					style={{
 						flex: 1,
@@ -341,7 +355,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 								}
 							]}
 						>
-							Agendar reserva
+							Agendar Reserva
 						</Text>
 
 						<Form onSubmit={handleSubmit} style={styles.formsStyle}>
@@ -400,10 +414,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									style={{
 										marginTop: '5%',
 										marginBottom: '5%',
-										marginLeft: '5%',
+										marginLeft: '10%',
 										width:
-											Dimensions.get('window').width *
-											0.4,
+										Dimensions.get('window').width *
+										0.6,
 										borderRadius: 10
 									}}
 								>
@@ -451,10 +465,20 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 								</Form.Group>
 							</View>
 
+							<hr style=
+							{{
+								color: 'red',
+								marginLeft: 2,
+								marginRight: -38,
+								opacity: 1,
+								padding:30,
+								marginTop:-40
+							}} />
+
 							<View
 								style={{
-									marginTop: '10%',
-									marginLeft: '-2.5%'
+									marginTop: '-18%',
+									marginLeft: '10%'
 								}}
 							>
 								<Text style=
@@ -466,7 +490,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									color: '#963333',
 									fontFamily: 'ionicons'
 								}}>
-									Avaliações e comentários
+									Avaliações e Comentários
 								</Text>
 								<Button
 									variant='danger'

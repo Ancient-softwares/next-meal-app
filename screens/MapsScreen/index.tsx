@@ -291,7 +291,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						onClick={() => navigation.navigate('Profile')}
 					>
 						<View>
-							<Text></Text>
+							<Text>a</Text>
 						</View>
 					</Marker>
 

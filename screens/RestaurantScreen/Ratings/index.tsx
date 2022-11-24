@@ -318,7 +318,7 @@ const Ratings = ({ navigation, route }: any) => {
 							multiline={true}
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 40,
+								width: Dimensions.get('window').width - 80,
 								height: 100,
 								borderColor: 'gray',
 								borderWidth: 1,
@@ -338,7 +338,7 @@ const Ratings = ({ navigation, route }: any) => {
 							keyboardType='numeric'
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 40,
+								width: Dimensions.get('window').width - 80,
 								height: 50,
 								borderColor: 'gray',
 								borderWidth: 1,
@@ -356,7 +356,8 @@ const Ratings = ({ navigation, route }: any) => {
 							variant='danger'
 							style={{
 								width: Dimensions.get('window').width - 40,
-								marginLeft: '5%'
+								marginLeft: '25%',
+								marginRight: '15%'
 							}}
 							onClick={() => submitRating()}
 						>
