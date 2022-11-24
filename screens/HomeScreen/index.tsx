@@ -48,6 +48,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const [notification, setNotification] = React.useState(false)
 	const notificationListener = React.useRef<any>()
 	const responseListener = React.useRef<any>()
+	const [hasAlreadyNotified, setHasAlreadyNotified] =
+		React.useState<boolean>(true)
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
@@ -56,8 +58,10 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 
 			try {
 				if (global.isLogged) {
-					if (global.user.id != null) {
-						checkNotifications()
+					if (global.user.id != null && global.user.id != undefined) {
+						if (hasAlreadyNotified!) {
+							checkNotifications()
+						}
 					}
 				}
 			} catch (err) {
@@ -186,12 +190,18 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						],
 						{ cancelable: false }
 					)
+
+					setHasAlreadyNotified(true)
 				} else {
 					console.log(json.message)
+
+					setHasAlreadyNotified(false)
 				}
 			})
 			.catch((error) => {
 				console.error(error)
+
+				setHasAlreadyNotified(false)
 			})
 	}
 
