@@ -206,14 +206,28 @@ const Ratings = ({ navigation, route }: any) => {
 		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomeCliente))
 
 		return (
-			<View key={uniqueValue}>
-				<Card
+					<View key={uniqueValue}>
+						<Card
 					style={{
 						width: Dimensions.get('window').width * 0.9,
-						border: 'none'
+						border: 'none',
+						marginLeft:'2%',
+						padding:8
 					}}
 				>
-					<Card.Body>
+					<Card.Body
+					style=
+					{
+					{
+						border:1,
+						borderStyle:'double',
+						borderColor:'#b21414',
+						padding:11,
+						marginTop: '7%',
+						borderRadius:26
+					}	
+					}
+					>
 						<View style={{ flexDirection: 'row' }}>
 							<Card.Img
 								style={{
@@ -250,8 +264,9 @@ const Ratings = ({ navigation, route }: any) => {
 						</View>
 						<Card.Text>{item.item.descAvaliacao}</Card.Text>
 					</Card.Body>
-				</Card>
-			</View>
+						</Card>
+					</View>
+
 		)
 	}
 
@@ -351,7 +366,7 @@ const Ratings = ({ navigation, route }: any) => {
 					style={{
 						backgroundColor: '#fff',
 						alignItems: 'flex-start',
-						justifyContent: 'flex-start'
+						justifyContent: 'flex-start',
 					}}
 					key={uniqueValue}
 				>
@@ -366,13 +381,13 @@ const Ratings = ({ navigation, route }: any) => {
 							multiline={true}
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 40,
+								width: Dimensions.get('window').width - 60,
 								height: 100,
 								borderColor: 'gray',
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '10%'
+								marginLeft: '20%'
 							}}
 							placeholder='Escreva sua avaliação'
 							onChangeText={(text: any) => setFeedback(text)}
@@ -386,13 +401,13 @@ const Ratings = ({ navigation, route }: any) => {
 							keyboardType='numeric'
 							style={{
 								padding: 10,
-								width: Dimensions.get('window').width - 40,
+								width: Dimensions.get('window').width - 60,
 								height: 50,
 								borderColor: 'gray',
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '10%'
+								marginLeft: '20%'
 							}}
 							placeholder='Nota'
 							onChangeText={(text: any) => setRating(text)}
@@ -403,9 +418,9 @@ const Ratings = ({ navigation, route }: any) => {
 						<Button
 							variant='danger'
 							style={{
-								width: Dimensions.get('window').width - 40,
-								marginLeft: '25%',
-								marginRight: '15%'
+								width: Dimensions.get('window').width - 85,
+								marginLeft: '48%',
+								marginRight: '29%'
 							}}
 							onClick={() => submitRating()}
 						>
