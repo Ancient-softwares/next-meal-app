@@ -2,27 +2,37 @@ import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { getFirstLetter, getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const AboutScreen = ({ navigation, route }: any): JSX.Element => {
-	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
 	const restaurante: any = route.params
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
+	let firstLetter = getLetterIndex(
+		getFirstLetter(restaurante.nomeRestaurante)
+	)
 
-	React.useEffect(() => {
-		const focusHandler = navigation.addListener('focus', () => {
-			console.log('Refreshed')
+	React.useEffect((): void => {
+		navigation.addListener('focus', () => {
+			refreshScreen()
+			forceRemount()
+			global.idRestaurante = restaurante.idRestaurante
 		})
-
-		return focusHandler
-	}, [navigation, uniqueValue])
+	}, [navigation, restaurante.idRestaurante])
 
 	const forceRemount = (): void => {
 		setUniqueValue(uniqueValue + 1)
+	}
+
+	const refreshScreen = (): void => {
+		setMessage('')
+		setDate(new Date())
+		setHour(new Date())
+		setPeople(0)
 	}
 
 	const schema: ObjectSchema<any> = Joi.object({
@@ -31,48 +41,16 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 		hour: Joi.date().required().min('now')
 	})
 
-	const bearerTokenTest: React.FormEventHandler<HTMLFormElement> = async (
-		event: React.FormEvent<HTMLFormElement>
-	): Promise<void> => {
-		event.preventDefault()
-
-		try {
-			await fetch(`${global.API_URL}/api/reserva`, {
-				method: 'POST',
-				headers: {
-					Authorization: `Bearer ${global.getToken()}`
-				},
-				body: JSON.stringify({
-					idCliente: global.user.id
-				})
-			})
-				.then((response) => response.json())
-				.then((json) => {
-					console.log(json)
-				})
-				.catch((error) => {
-					console.error(error)
-				})
-				.finally(() => {
-					setDate(new Date())
-					setHour(new Date())
-					setPeople(0)
-				})
-		} catch (error) {
-			console.log(error)
-		}
-	}
-
 	const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (
 		event: React.FormEvent<HTMLFormElement>
 	) => {
 		event.preventDefault()
 
-		const packets = {
+		const packets = JSON.stringify({
 			date: date,
 			hour: hour,
 			people: people
-		}
+		})
 
 		if (schema.validate(packets)) {
 			try {
@@ -97,17 +75,21 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						console.log(json)
 
 						if (json.status === 200) {
-							window.alert(json.message)
+							setMessage(json.message)
 						} else {
-							window.alert(json.message)
+							setMessage(json.message)
 						}
 					})
 					.catch((error) => {
-						console.error(error)
+						setMessage(error.message)
 					})
 			} catch (error: unknown) {
-				setMessage('Você precisa estar logado para avaliar!')
+				setMessage(
+					'Você precisa estar logado para agendar uma reserva!'
+				)
 			}
+		} else {
+			setMessage('Preencha todos os campos!')
 		}
 	}
 
@@ -120,10 +102,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 			>
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
-						marginTop: '5%'
+						marginTop: '5%',
+						margin: 16
 					}}
 				>
 					<Stack
@@ -133,7 +115,12 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					>
 						<div style={styles.PositionImgRestaurant}>
 							<img
-								src={exampleImage}
+								src={require(`../../../assets/Restaurante/${
+									// Math.floor(Math.random() * 5)
+									// global.indexes[firstLetter]
+									getLetterIndex(restaurante.nomeRestaurante)
+									// restaurante.fotoRestaurante
+								}.png`)}
 								className='rounded-circle'
 								style={{
 									width: 100,
@@ -160,9 +147,12 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 					</Stack>
 				</View>
 
+				<hr style={styles.LineCard} />
+
+				<View />
+
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
@@ -187,7 +177,6 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
@@ -245,14 +234,13 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 
 				<View
 					style={{
-						flex: 1,
 						alignItems: 'flex-start',
 						justifyContent: 'flex-start',
 						marginHorizontal: '10%',
-						marginVertical: '5%'
+						marginVertical: '10%'
 					}}
 				>
-					<Text style={styles.subtitle}>Horários do restaurante</Text>
+					<Text style={styles.subtitle}>Horários do Restaurante</Text>
 
 					<Text
 						style={[
@@ -297,35 +285,64 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						<br />
 					</Text>
 				</View>
-
+				<hr
+					style={{
+						color: 'red',
+						marginLeft: 60,
+						marginRight: 47,
+						opacity: 1,
+						padding: 10,
+						marginTop: -19
+					}}
+				/>
 				<View
 					style={{
 						flex: 1,
-						marginTop: '15%',
 						marginHorizontal: '10%'
 					}}
 				>
-					<Text style={styles.subtitle}>Cardápio</Text>
+					<Text
+						style={{
+							marginLeft: '40%',
+							marginBottom: 5,
+							fontSize: 22,
+							color: '#963333',
+							fontFamily: 'ionicons',
+							marginRight: 'auto'
+						}}
+					>
+						Cardápio
+					</Text>
 					<Button
 						variant='danger'
 						type='submit'
 						style={{
 							marginTop: '5%',
 							marginBottom: '5%',
-							marginLeft: '5%',
-							width: Dimensions.get('window').width * 0.4,
+							marginLeft: '19%',
+							marginRight: 'auto',
+							width: Dimensions.get('window').width * 0.6,
 							borderRadius: 10
 						}}
 						onClick={() => {
 							navigation.navigate('Menu', {
-								restaurante: restaurante
+								idRestaurante: global.idRestaurante
 							})
 						}}
 					>
 						<Text style={{ color: '#fff' }}>Ver cardápio</Text>
 					</Button>
 				</View>
-
+				<hr
+					style={{
+						color: 'red',
+						marginLeft: 60,
+						marginRight: 47,
+						opacity: 1,
+						padding: 60,
+						marginTop: -144
+					}}
+				/>
 				<View
 					style={{
 						flex: 1,
@@ -339,7 +356,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						style={{
 							flex: 1,
 							alignItems: 'flex-start',
-							justifyContent: 'flex-start'
+							justifyContent: 'flex-start',
+							marginTop: -48
 						}}
 					>
 						<Text
@@ -350,7 +368,7 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 								}
 							]}
 						>
-							Agendar reserva
+							Agendar Reserva
 						</Text>
 
 						<Form onSubmit={handleSubmit} style={styles.formsStyle}>
@@ -409,10 +427,10 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									style={{
 										marginTop: '5%',
 										marginBottom: '5%',
-										marginLeft: '5%',
+										marginLeft: '10%',
 										width:
 											Dimensions.get('window').width *
-											0.4,
+											0.6,
 										borderRadius: 10
 									}}
 								>
@@ -431,41 +449,80 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									className='mb-3'
 									controlId='formBasicFeedback'
 								>
-									<Text
-										style={{
-											color: '#963333',
-											fontSize: 16,
-											fontWeight: 'bold'
-										}}
-									>
-										{message}
-									</Text>
+									<View style={styles.container}>
+										{message ===
+										'Reserva realizada com sucesso' ? (
+											<Text
+												style={{
+													color: '#2ea621',
+													fontSize: 16,
+													fontWeight: 'bold',
+													textAlign: 'center'
+												}}
+											>
+												{message}
+											</Text>
+										) : (
+											<Text
+												style={{
+													color: '#963333',
+													fontSize: 16,
+													fontWeight: 'bold',
+													textAlign: 'center'
+												}}
+											>
+												{message}
+											</Text>
+										)}
+									</View>
 								</Form.Group>
 							</View>
 
+							<hr
+								style={{
+									color: 'red',
+									marginLeft: 2,
+									marginRight: -38,
+									opacity: 1,
+									padding: 30,
+									marginTop: -40
+								}}
+							/>
+
 							<View
 								style={{
-									marginTop: '10%',
-									marginLeft: '-2.5%'
+									marginTop: '-18%',
+									marginLeft: '10%'
 								}}
 							>
-								<Text style={styles.subtitle}>
-									Avaliações e comentários
+								<Text
+									style={{
+										marginLeft: 'auto',
+										marginRight: 'auto',
+										marginBottom: 5,
+										fontSize: 22,
+										color: '#963333',
+										fontFamily: 'ionicons'
+									}}
+								>
+									Avaliações e Comentários
 								</Text>
 								<Button
 									variant='danger'
 									style={{
 										marginTop: '5%',
 										marginBottom: '5%',
-										marginLeft: '5%',
+										marginLeft: 'auto',
+										marginRight: 'auto',
+
 										width:
 											Dimensions.get('window').width *
-											0.4,
+											0.6,
 										borderRadius: 10
 									}}
 									onClick={() =>
 										navigation.navigate('Ratings', {
-											restaurante: restaurante
+											idRestaurante: global.idRestaurante
 										})
 									}
 								>

@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		marginVertical: 10
 	},
+	
 	title: {
 		fontSize: 20,
 		fontWeight: 'bold',
@@ -93,13 +94,13 @@ const styles = StyleSheet.create({
 	},
 	modalText: {
 		marginBottom: 15,
-		textAlign: 'center'
+		textAlign: 'left',
 	},
 	rowList: {
 		flex: 1,
 		alignItems: 'flex-start',
 		justifyContent: 'flex-start',
-		marginHorizontal: '10%',
+		marginHorizontal: '-5%',
 		marginTop: '15%',
 		marginBottom: '10%'
 	},
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
 		padding: 19,
 		fontFamily: 'ionicons'
 	},
+	
 	LineCard: {
 		color: 'red',
 		marginLeft: -100,
@@ -129,6 +131,16 @@ const styles = StyleSheet.create({
 	},
 	spaceCategory: {
 		width: 120
+	},
+	listTitle: {
+		fontSize: 24,
+		textAlign: 'center'
+	},
+	row: {
+		flexWrap: 'wrap',
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		alignItems: 'flex-start'
 	}
 })
 

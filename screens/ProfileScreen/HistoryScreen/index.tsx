@@ -9,34 +9,10 @@ import {
 } from 'react-native'
 import styles from './style'
 
-const HistoryScreen = () => {
-	const [data, setData] = React.useState([])
-	const [isLoading, setIsLoading] = React.useState(true)
-
-	const bearerTokenTest: any = async (): Promise<void> => {
-		try {
-			await fetch(`${global.API_URL}/api/bearerTokenVerify`, {
-				method: 'POST',
-				mode: 'no-cors',
-				headers: {
-					Authorization: `Bearer ${global.getToken()}`
-				},
-				body: JSON.stringify({
-					idCliente: global.user.id,
-					idStatusReserva: 1
-				})
-			})
-				.then((response) => response.json())
-				.then((json) => {
-					console.log(json)
-				})
-				.catch((error) => {
-					console.error(error)
-				})
-		} catch (error) {
-			console.log(error)
-		}
-	}
+const HistoryScreen = ({ navigation }: any) => {
+	const [data, setData] = React.useState<Array<Object>>([])
+	const [isLoading, setIsLoading] = React.useState<boolean>(true)
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
 
 	const getReservas = async () => {
 		try {
@@ -53,8 +29,6 @@ const HistoryScreen = () => {
 			})
 				.then((response: Response): Promise<JSON> => response.json())
 				.then((json: any): void => {
-					console.log(json)
-
 					json.data.map((item: any) => {
 						data.push(item)
 					})
@@ -87,7 +61,9 @@ const HistoryScreen = () => {
 				>
 					<div style={styles.PositionImgRestaurant}>
 						<img
-							src={require('../../../assets/example.jpeg')}
+							src={require(`../../../assets/Restaurante/${
+								global.indexes[Math.floor(Math.random() * 5)]
+							}.png`)}
 							className='rounded-circle'
 							style={{
 								width: 100,
@@ -122,9 +98,24 @@ const HistoryScreen = () => {
 	}
 
 	React.useEffect(() => {
-		console.log(global.getToken())
-		getReservas()
-	}, [])
+		navigation.addListener('focus', (): void => {
+			forceRemount()
+
+			try {
+				if (global.isLogged) {
+					if (global.user.id != null) {
+						getReservas()
+					}
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		})
+	}, [navigation, global.user.id])
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+	}
 
 	return (
 		<SafeAreaView
@@ -133,6 +124,7 @@ const HistoryScreen = () => {
 				height: '100%',
 				backgroundColor: '#fff'
 			}}
+			key={uniqueValue}
 		>
 			{data.length > 0 ? (
 				<>

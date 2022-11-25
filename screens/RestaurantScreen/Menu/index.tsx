@@ -1,9 +1,9 @@
 import React from 'react'
-import { ListGroup } from 'react-bootstrap'
+import { Button, Card, ListGroup } from 'react-bootstrap'
 import {
 	ActivityIndicator,
-	Dimensions,
 	FlatList,
+	Modal,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -13,34 +13,55 @@ import {
 import styles from './style'
 
 const Menu = ({ navigation, route }: any) => {
-	const [message, setMessage] = React.useState('')
-	const [uniqueValue, setUniqueValue] = React.useState(1)
-	let restaurante = Object.assign({}, route.params.restaurante)
+	const [message, setMessage] = React.useState<string>('')
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
+	let idRestaurante = route.params.idRestaurante
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
-	const [refresh, setRefresh] = React.useState(false)
-	const [loading, setLoading] = React.useState(true)
+	const [refresh, setRefresh] = React.useState<boolean>(false)
+	const [loading, setLoading] = React.useState<boolean>(true)
+	const [modalVisible, setModalVisible] = React.useState<boolean>(false)
+	const [infoPrato, setInfoPrato] = React.useState<any>({
+		nomePrato: '',
+		tipoPrato: '',
+		valorPrato: ''
+	})
+	const [ingredientesPrato, setIngredientesPrato] = React.useState<string[]>(
+		[]
+	)
 
-	React.useEffect(() => {
+	React.useEffect((): void => {
 		navigation.addListener('focus', async () => {
-			setTimeout(() => {
-				refreshScreen()
-			}, 250)
+			setLoading(true)
+
+			setTimeout((): void => {
+				if (route.params.idRestaurante != idRestaurante) {
+					forceRemount()
+					idRestaurante = route.params.idRestaurante
+					getRestaurant()
+				} else {
+					if (refreshScreen()) {
+						setLoading(false)
+
+						return
+					}
+				}
+			}, 1000)
 		})
-	}, [navigation, uniqueValue])
+	}, [navigation, global.idRestaurante])
 
-	const refreshScreen = (): void => {
-		setRefresh(true)
-		setUniqueValue(uniqueValue + 1)
-		fetchMenu()
-		setRefresh(false)
-		forceRemount()
-	}
+	const refreshScreen = (): boolean => {
+		try {
+			setRefresh(true)
+			setUniqueValue(uniqueValue + 1)
+			fetchMenu()
+			setRefresh(false)
+			forceRemount()
 
-	const handleRefresh = () => {
-		setRefresh(true)
-		setUniqueValue(uniqueValue + 1)
-		setRefresh(false)
+			return true
+		} catch (err) {
+			return false
+		}
 	}
 
 	const wait = (timeout: number) => {
@@ -64,21 +85,18 @@ const Menu = ({ navigation, route }: any) => {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify({
-					idRestaurante: restaurante.idRestaurante
+					idRestaurante: idRestaurante
 				})
 			})
 				.then((response: any): Promise<JSON> => response.json())
 				.then((json: any): void => {
+					console.log(json)
+
 					if (cardapio) {
+						setRefresh(true)
 						setCardapio(json)
 						setRefresh(false)
 					}
-
-					/* json.forEach((element: any) => {
-						cardapio.push(element)
-					}) */
-
-					console.log(cardapio)
 				})
 				.catch((err: Error): void => console.error(err))
 		} catch (error: unknown) {
@@ -89,61 +107,220 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	const renderCardapio = (item: any): JSX.Element => {
-		return (
-			<View
-				style={[
-					styles.spaceCategory,
-					{
-						width: '100%'
+		const letters = [
+			['a', 'b', 'c', 'd'],
+			['e', 'f', 'g', 'h'],
+			['i', 'j', 'k', 'l'],
+			['m', 'n', 'o', 'p'],
+			['q', 'r', 's', 't'],
+			['u', 'v', 'w', 'x', 'y', 'z']
+		]
+
+		const getFirstLetter = (name: string): string => {
+			return name.charAt(0).toLowerCase()
+		}
+
+		const getLetterIndex = (letter: string): number => {
+			let index = 0
+			letters.forEach((array: string[], i: number) => {
+				if (array.includes(letter)) {
+					if (typeof i === 'number') {
+						index = i
 					}
-				]}
-			>
-				<img
-					src={exampleImage}
-					onClick={() => window.alert('AAAA')}
-					style={{
-						width: Dimensions.get('window').width * 0.8,
-						height: Dimensions.get('window').height * 0.2,
-						borderRadius: '7.5%',
-						marginLeft: '-5%'
+				}
+			})
+			return index
+		}
+
+		const getLetter = (name: string): string => {
+			return letters[getLetterIndex(getFirstLetter(name))][0]
+		}
+
+		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomePrato))
+
+		return (
+			<View style={{ width: '100%' }}>
+				<Card style={styles.card}>
+					<View style={{}}>
+						<Card.Img
+							variant='top'
+							style={styles.cardImg}
+							src={require(`../../../assets/Cardapio/${
+								// global.indexes[Math.floor(Math.random() * 5)]
+								firstLetter
+							}.png`)}
+						/>
+					</View>
+					<Card.Body
+						style={{
+							flex: 1,
+							alignItems: 'flex-start',
+							justifyContent: 'flex-start'
+						}}
+					>
+						<hr style={styles.LineCard} />
+						<View style={styles.textCardPosition}>
+							<Card.Title>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											fontSize: 20,
+											fontWeight: 'bold',
+											fontStyle: 'italic'
+										}
+									]}
+								>
+									{item.item.nomePrato}
+								</Text>
+							</Card.Title>
+							<Card.Text>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000',
+											fontFamily: 'math',
+											fontSize: 18
+										}
+									]}
+								>
+									Categoria: {item.item.tipoPrato}
+								</Text>
+							</Card.Text>
+							<Card.Text>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											color: '#000',
+											fontFamily: 'math',
+											fontSize: 18
+										}
+									]}
+								>
+									Valor: {item.item.valorPrato}
+								</Text>
+							</Card.Text>
+						</View>
+						<View>
+							<Button
+								style={{
+									padding: 10,
+									marginTop: 20
+								}}
+								variant='danger'
+								onClick={(): void => {
+									setInfoPrato(item.item)
+									setIngredientesPrato(
+										item.item.ingredientesPrato.split(',')
+									)
+									console.log(ingredientesPrato)
+									setModalVisible(true)
+								}}
+							>
+								Ver Mais
+							</Button>
+						</View>
+					</Card.Body>
+				</Card>
+
+				<Modal
+					animationType='slide'
+					transparent={true}
+					visible={modalVisible}
+					onRequestClose={() => {
+						setModalVisible(!modalVisible)
 					}}
-				/>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5,
-							fontWeight: 'bold',
-							fontSize: 18,
-							color: '#963333'
-						}
-					]}
 				>
-					{item.item.nomePrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5,
-							fontWeight: 'bold',
-							marginBottom: 10
-						}
-					]}
-				>
-					Categoria: {item.item.tipoPrato}
-				</Text>
-				<Text
-					style={[
-						styles.nameCategory,
-						{
-							marginLeft: 12.5,
-							marginBottom: 12.5
-						}
-					]}
-				>
-					Valor: {item.item.valorPrato}
-				</Text>
+					<ScrollView>
+						<View style={styles.centeredView}>
+							<View style={styles.modalView}>
+								<Text
+									style={[
+										styles.listTitle,
+										{
+											fontSize: 20,
+											fontWeight: 'bold',
+											fontStyle: 'italic',
+											color: '#963333'
+										}
+									]}
+								>
+									Informações sobre o prato
+								</Text>
+								<br />
+								<br />
+
+								<View
+									style={{
+										alignItems: 'flex-start'
+									}}
+								>
+									<Text style={styles.modalText}>
+										<strong>Nome do prato: </strong>
+										{infoPrato.nomePrato}
+									</Text>
+									<Text style={styles.modalText}>
+										<strong>Tipo de refeição: </strong>
+										{infoPrato.tipoPrato}
+									</Text>
+									<Text style={styles.modalText}>
+										<strong>Ingredientes: </strong>
+									</Text>
+									<FlatList
+										data={ingredientesPrato}
+										renderItem={(item: any) => {
+											return (
+												<Text
+													style={[
+														styles.modalText,
+														{
+															marginLeft: 10
+														}
+													]}
+												>
+													{item.index + 1}){' '}
+													{item.item}
+												</Text>
+											)
+										}}
+										keyExtractor={(
+											item: string,
+											index: number
+										) => index.toString()}
+									/>
+									<Text style={styles.modalText}>
+										<strong>Valor: </strong>
+										R$ {infoPrato.valorPrato}
+									</Text>
+								</View>
+								<View style={[styles.row, { marginBottom: 5 }]}>
+									<Button
+										variant='danger'
+										onClick={(): void =>
+											setModalVisible(false)
+										}
+										style={{
+											marginTop: 15,
+											marginBottom: 5,
+											width: '100%'
+										}}
+									>
+										<Text
+											style={{
+												paddingHorizontal: 30,
+												color: '#fff'
+											}}
+										>
+											Fechar
+										</Text>
+									</Button>
+								</View>
+							</View>
+						</View>
+					</ScrollView>
+				</Modal>
 			</View>
 		)
 	}
@@ -151,7 +328,7 @@ const Menu = ({ navigation, route }: any) => {
 	return (
 		<>
 			{loading ? (
-				<View style={styles.container}>
+				<View style={{ margin: -8 }}>
 					<ActivityIndicator
 						style={{
 							marginTop: '70%'

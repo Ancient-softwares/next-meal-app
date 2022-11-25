@@ -1,9 +1,13 @@
+import * as Device from 'expo-device'
+import * as Notifications from 'expo-notifications'
 import React from 'react'
 import { Carousel, Stack } from 'react-bootstrap'
 import {
 	ActivityIndicator,
+	Alert,
 	Dimensions,
 	FlatList,
+	Platform,
 	RefreshControl,
 	SafeAreaView,
 	ScrollView,
@@ -12,22 +16,241 @@ import {
 } from 'react-native'
 import 'react-native-gesture-handler'
 import '../../constants/globals'
-import { TipoRestaurante } from '../../entities/TipoRestaurante'
+import { getLetterIndex } from '../../constants/modules'
 import styles from './style'
 
+Notifications.setNotificationHandler({
+	handleNotification: async () => ({
+		shouldShowAlert: true,
+		shouldPlaySound: false,
+		shouldSetBadge: false
+	})
+})
+
 const HomeScreen = ({ navigation }: any): JSX.Element => {
-	const exampleImage = require('../../assets/example.jpeg')
-	const DATA: Array<Object> = Array<any>()
+	const carousel01 = require('../../assets/Carousel/Carroca01.jpg')
+	const carousel02 = require('../../assets/Carousel/Carroca02.jpg')
+	const carousel03 = require('../../assets/Carousel/Carroca03.jpg')
+
+	const path = '../../assets/'
+
+	let DATA: Array<Object> = Array<any>()
 	const [filteredDataSource, setFilteredDataSource] = React.useState<
 		Array<Object>
 	>([])
 	const [masterDataSource, setMasterDataSource] =
 		React.useState<Array<Object>>(DATA)
 	const [popular, setPopular] = React.useState<Array<Object>>([])
+	const [melhores, setMelhores] = React.useState<Array<Object>>([])
 	const [isLoading, setLoading] = React.useState<boolean>(true)
 	const [refresh, setRefresh] = React.useState<boolean>(false)
+	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
+	const [expoPushToken, setExpoPushToken] = React.useState('')
+	const [notification, setNotification] = React.useState(false)
+	const notificationListener = React.useRef<any>()
+	const responseListener = React.useRef<any>()
+	const [hasAlreadyNotified, setHasAlreadyNotified] =
+		React.useState<boolean>(true)
+
+	React.useEffect(() => {
+		navigation.addListener('focus', (): void => {
+			refreshScreen()
+			forceRemount()
+
+			try {
+				if (global.isLogged) {
+					if (global.user.id != null && global.user.id != undefined) {
+						if (hasAlreadyNotified!) {
+							checkNotifications()
+						}
+					}
+				}
+			} catch (err) {
+				console.log(err)
+			}
+
+			if (Platform.OS === 'android' || Platform.OS === 'ios') {
+				handleNotification()
+			}
+		})
+	}, [navigation, global.isLogged])
+
+	const handleNotification = () => {
+		registerForPushNotificationsAsync().then((token: any) =>
+			setExpoPushToken(token)
+		)
+
+		// This listener is fired whenever a notification is received while the app is foregrounded
+		notificationListener.current =
+			Notifications.addNotificationReceivedListener(
+				(notification: any) => {
+					setNotification(notification)
+				}
+			)
+
+		// This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+		responseListener.current =
+			Notifications.addNotificationResponseReceivedListener(
+				(response) => {
+					console.log(response)
+				}
+			)
+
+		return () => {
+			Notifications.removeNotificationSubscription(
+				notificationListener.current
+			)
+			Notifications.removeNotificationSubscription(
+				responseListener.current
+			)
+		}
+	}
+
+	// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
+	const sendPushNotification = async (expoPushToken: any): Promise<void> => {
+		const message = {
+			to: expoPushToken,
+			sound: 'default',
+			title: 'Original Title',
+			body: 'And here is the body!',
+			data: { someData: 'goes here' }
+		}
+
+		await fetch('https://exp.host/--/api/v2/push/send', {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Accept-encoding': 'gzip, deflate',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(message)
+		})
+	}
+
+	const registerForPushNotificationsAsync = async (): Promise<void> => {
+		let token: any
+
+		if (Device.isDevice) {
+			const { status: existingStatus } =
+				await Notifications.getPermissionsAsync()
+			let finalStatus = existingStatus
+			if (existingStatus !== 'granted') {
+				const { status } = await Notifications.requestPermissionsAsync()
+				finalStatus = status
+			}
+			if (finalStatus !== 'granted') {
+				alert('Failed to get push token for push notification!')
+				return
+			}
+			token = (await Notifications.getExpoPushTokenAsync()).data
+		} else {
+			alert('Must use physical device for Push Notifications')
+		}
+
+		if (Platform.OS === 'android') {
+			Notifications.setNotificationChannelAsync('default', {
+				name: 'default',
+				importance: Notifications.AndroidImportance.MAX,
+				vibrationPattern: [0, 250, 250, 250],
+				lightColor: '#FF231F7C'
+			})
+		}
+
+		return token
+	}
+
+	const checkNotifications = async (): Promise<void> => {
+		// sends a notification to the user
+		// await sendPushNotification(expoPushToken)
+
+		await fetch(`${global.getApiUrl()}/api/checkNotifications`, {
+			method: 'POST',
+			headers: new Headers({
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}),
+			body: JSON.stringify({
+				idCliente: global.user.id
+			})
+		})
+			.then((response) => response.json())
+			.then((json) => {
+				if (json.status) {
+					window.alert(json.message)
+
+					Alert.alert(
+						'Notificação',
+						json.message,
+						[
+							{
+								text: 'Ok',
+								onPress: () => {
+									console.log('OK Pressed')
+								}
+							}
+						],
+						{ cancelable: false }
+					)
+
+					setHasAlreadyNotified(true)
+				} else {
+					console.log(json.message)
+
+					setHasAlreadyNotified(false)
+				}
+			})
+			.catch((error) => {
+				console.error(error)
+
+				setHasAlreadyNotified(false)
+			})
+	}
+
+	const refreshScreen = (): void => {
+		getRestaurant()
+		getPopular()
+		getMelhores()
+	}
+
+	const forceRemount = (): void => {
+		setUniqueValue(uniqueValue + 1)
+	}
+
+	const getRestaurant = async () => {
+		setFilteredDataSource([])
+		setMasterDataSource([])
+		DATA = []
+
+		try {
+			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
+				method: 'get',
+				headers: {
+					'Content-Type': 'application/json',
+					Accept: 'application/json'
+				}
+			})
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					Object.keys(json).forEach((key: string) => {
+						DATA.push(json[key])
+					})
+
+					setFilteredDataSource(DATA)
+					setMasterDataSource(DATA)
+					global.restaurantes = DATA
+					global.restaurantesFiltrados = DATA
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+		}
+	}
 
 	const getPopular = async () => {
+		setPopular([])
+
 		try {
 			await fetch(
 				`${global.getApiUrl()}/api/getRestaurantesMaisReservados`,
@@ -55,15 +278,43 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		}
 	}
 
-	const onPressPopular = (item: any) => {
-		console.log('got here', item)
+	const getMelhores = async () => {
+		setMelhores([])
+
+		try {
+			await fetch(
+				`${global.getApiUrl()}/api/getRestaurantesMelhoresAvaliados`,
+				{
+					method: 'post',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+						Accept: 'application/json'
+					}),
+					body: JSON.stringify({
+						limite: 3
+					})
+				}
+			)
+				.then((response: any): Promise<JSON> => response.json())
+				.then((json: any): void => {
+					setMelhores(json.data)
+				})
+				.catch((err: Error): void => console.error(err))
+		} catch (error: unknown) {
+			console.error(error)
+		} finally {
+			setLoading(false)
+			setRefresh(false)
+		}
+	}
+
+	const onPressRestaurant = (item: any) => {
 		let params = []
 
 		filteredDataSource.forEach((element: any) => {
 			if (element.idRestaurante === item.idRestaurante) {
 				params = element
 
-				console.log(params)
 				navigation.navigate('About', {
 					...params
 				})
@@ -77,46 +328,12 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		if (item[0].item.tipoRestaurante === null) {
 			navigation.navigate('Restaurants')
 		} else {
-			TipoRestaurante.destroy()
-
-			const categoria = new TipoRestaurante({
-				id: item[0].item.tipoRestaurante.id,
-				categoria: item[0].item.tipoRestaurante
-			})
-
-			let params = {}
-			params = categoria
+			global.tipoRestaurante = item[0].item.tipoRestaurante
 
 			// first save the categoria
 			navigation.navigate('Category', {
-				tipoRestaurante: params
+				tipoRestaurante: global.tipoRestaurante
 			})
-		}
-	}
-
-	const getRestaurant = async () => {
-		try {
-			await fetch(`${global.getApiUrl()}/api/restaurantes`, {
-				method: 'get',
-				headers: {
-					'Content-Type': 'application/json',
-					Accept: 'application/json'
-				}
-			})
-				.then((response: any): Promise<JSON> => response.json())
-				.then((json: any): void => {
-					Object.keys(json).forEach((key: string) => {
-						DATA.push(json[key])
-					})
-
-					setFilteredDataSource(DATA)
-					setMasterDataSource(DATA)
-				})
-				.catch((err: Error): void => console.error(err))
-		} catch (error: unknown) {
-			console.error(error)
-		} finally {
-			setLoading(false)
 		}
 	}
 
@@ -124,7 +341,11 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return (
 			<View style={styles.spaceCategory}>
 				<img
-					src={exampleImage}
+					src={require(`../../assets/Categoria/${
+						// global.indexes[Math.floor(Math.random() * 5)]
+						// firstLetter
+						getLetterIndex(item[0].item.tipoRestaurante)
+					}.png`)}
 					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
 					style={{
@@ -141,7 +362,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		)
 	}
 
-	const Popular = (...item: any[]): JSX.Element => {
+	const Component = (...item: any[]): JSX.Element => {
 		return (
 			<View
 				style={{
@@ -150,7 +371,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					justifyContent: 'flex-start',
 					marginTop: '2.5%'
 				}}
-				onTouchStart={() => onPressPopular(item[0].item)}
+				onTouchStart={() => onPressRestaurant(item[0].item)}
 			>
 				<Stack
 					direction='horizontal'
@@ -159,7 +380,11 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				>
 					<div style={styles.PositionImgRestaurant}>
 						<img
-							src={exampleImage}
+							src={require(`../../assets/Restaurante/${
+								// global.indexes[Math.floor(Math.random() * 5)]
+								// firstLetter
+								getLetterIndex(item[0].item.nomeRestaurante)
+							}.png`)}
 							className='rounded-circle'
 							style={{
 								width: 100,
@@ -174,10 +399,25 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 							{item[0].item.nomeRestaurante}
 						</Text>
 						<br />
-						<Text style={styles.description}>
-							Total de reservas: {item[0].item.total}
-							<br />
-						</Text>
+						{(item[0].item.media !== null && (
+							<>
+								{item[0].item.total ? (
+									<Text style={styles.description}>
+										Total de reservas: {item[0].item.total}
+									</Text>
+								) : (
+									<Text style={styles.description}>
+										Total de avaliações:{' '}
+										{item[0].item.notas}
+									</Text>
+								)}
+							</>
+						)) || (
+							<Text style={styles.description}>
+								Total de avaliações: {item[0].item.notas}
+							</Text>
+						)}
+						<br />
 						{item[0].item.media !== null ? (
 							<>
 								<Text style={styles.description}>
@@ -198,24 +438,19 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 		return <Item {...item} />
 	}
 
-	const renderPopular = (item: any): JSX.Element => {
-		return <Popular {...item} />
+	const renderComponent = (item: any): JSX.Element => {
+		return <Component {...item} />
 	}
 
-	React.useEffect(() => {
-		getRestaurant()
-		getPopular()
-	}, [])
-
 	return (
-		<SafeAreaView style={styles.container}>
+		<SafeAreaView style={styles.container} key={uniqueValue}>
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<View style={styles.carousel}>
 					<Carousel>
 						<Carousel.Item interval={6000}>
 							<img
 								className='d-block w-100'
-								src={exampleImage}
+								src={carousel01}
 								alt='First slide'
 								style={styles.carousel}
 							/>
@@ -226,7 +461,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						<Carousel.Item interval={6000}>
 							<img
 								className='d-block w-100'
-								src={exampleImage}
+								src={carousel02}
 								alt='Second slide'
 								style={styles.carousel}
 							/>
@@ -238,7 +473,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						<Carousel.Item interval={6000}>
 							<img
 								className='d-block w-100'
-								src={exampleImage}
+								src={carousel03}
 								alt='Third slide'
 								style={styles.carousel}
 							/>
@@ -284,7 +519,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						}}
 					>
 						<Text style={[styles.subtitle]}>
-							Recomendados para você
+							Restaurantes mais populares
 						</Text>
 						<Text style={styles.description}>
 							Os restaurantes mais populares do nosso app
@@ -296,7 +531,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 								marginBottom: 10
 							}}
 							data={popular}
-							renderItem={renderPopular}
+							renderItem={renderComponent}
 							keyExtractor={(item: any) => item.idRestaurante}
 							refreshControl={
 								<RefreshControl
@@ -321,7 +556,58 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 						<br />
 						<ActivityIndicator
 							style={{
-								marginTop: '75%'
+								marginTop: '5%'
+							}}
+							size='large'
+							color='#ff0000'
+						/>
+					</>
+				)}
+				{(melhores.length > 0 && (
+					<View
+						style={{
+							marginTop: 15
+						}}
+					>
+						<Text style={[styles.subtitle]}>
+							Restaurante mais bem avaliados
+						</Text>
+						<Text style={styles.description}>
+							Os restaurantes mais bem avaliados do nosso app
+						</Text>
+						<br />
+						<FlatList
+							style={{
+								marginTop: -10,
+								marginBottom: 10
+							}}
+							data={melhores}
+							renderItem={renderComponent}
+							keyExtractor={(item: any) => item.idRestaurante}
+							refreshControl={
+								<RefreshControl
+									refreshing={refresh}
+									onRefresh={getMelhores}
+								/>
+							}
+						/>
+					</View>
+				)) || (
+					<>
+						<Text
+							style={[
+								styles.subtitle,
+								{
+									textAlign: 'center'
+								}
+							]}
+						>
+							Encontrando restaurantes...
+						</Text>
+						<br />
+						<ActivityIndicator
+							style={{
+								marginTop: '5%'
 							}}
 							size='large'
 							color='#ff0000'

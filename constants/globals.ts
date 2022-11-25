@@ -14,6 +14,11 @@ declare global {
 	var defaultImage: string
 	var isLogged: boolean
 	var color: string
+	var idRestaurante: string
+	var tipoRestaurante: string
+	var indexes: number[]
+	var restaurantes: any[]
+	var restaurantesFiltrados: any[]
 
 	// getters
 	function getToken(): string
@@ -21,6 +26,9 @@ declare global {
 	function getMapsToken(): string
 	function getApiUrl(): string
 	function getIsLogged(): boolean
+	function getCredentials(): any
+	function getRestaurant(): any
+	function getUser(): any
 
 	// setters
 	function setToken(token: string): void
@@ -28,15 +36,12 @@ declare global {
 	function setMapsToken(token: string): void
 	function setApiUrl(url: string): void
 	function setIsLogged(isLogged: boolean): void
+	function setRestaurant(restaurant: any): void
+	function setCredentials(credentials: any): void
+	function setUser(user: any): void
 
 	// functions
 	function init(): void
-	function getCredentials(): any
-	function setCredentials(credentials: any): void
-	function getUser(): any
-	function setUser(user: any): void
-	function getRestaurant(): any
-	function setRestaurant(restaurant: any): void
 	function logout(): void
 
 	// interfaces
@@ -88,6 +93,7 @@ global.restaurant = {
 
 global.defaultImage = '../assets/example.jpeg'
 global.color = '#963333'
+global.indexes = [0, 1, 2, 3, 4, 5]
 
 // getters
 global.getToken = () => global.TOKEN

@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
 	},
 	LineCard: {
 		color: 'red',
-		marginLeft: -100,
-		marginRight: -100,
-		opacity: 1
+		marginLeft: 61,
+		marginRight: 44,
+		opacity: 1,
+		padding:30
 	},
 	textCardPosition: {
 		marginLeft: -94

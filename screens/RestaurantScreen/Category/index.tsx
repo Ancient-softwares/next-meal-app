@@ -9,6 +9,7 @@ import {
 	View
 } from 'react-native'
 import { SearchBar } from 'react-native-elements'
+import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
@@ -43,27 +44,44 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 					DATA.push(json[key])
 				})
 
-				console.table(DATA)
-				setRefresh(false)
 				setFilteredDataSource(DATA)
 				setMasterDataSource(DATA)
-				setLoading(false)
 			})
 			.catch((err: Error): void => console.error(err))
 	}
 
 	React.useEffect(() => {
 		navigation.addListener('focus', () => {
-			// refresh the screen
-			setRefresh(true)
+			setLoading(true)
+
+			setTimeout((): void => {
+				if (global.tipoRestaurante != tipoRestaurante) {
+					setKey(key + 1)
+					tipoRestaurante = global.tipoRestaurante
+					getRestaurant()
+				} else {
+					if (refreshScreen()) {
+						setLoading(false)
+
+						return
+					}
+				}
+			}, 1000)
+		})
+	}, [navigation, key, global.tipoRestaurante])
+
+	const refreshScreen = (): boolean => {
+		try {
 			DATA = []
-			tipoRestaurante = route.params.tipoRestaurante
+			getRestaurant()
 			getRestaurant()
 			forceRemount()
-			getRestaurant()
-			setRefresh(false)
-		})
-	}, [navigation, key])
+
+			return true
+		} catch (error) {
+			return false
+		}
+	}
 
 	const forceRemount = (): void => {
 		setKey(key + 1)
@@ -76,7 +94,11 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 					<Card.Img
 						variant='top'
 						style={styles.cardImg}
-						src={require('../../../assets/example.jpeg')}
+						src={require(`../../../assets/Restaurante/${
+							// global.indexes[Math.floor(Math.random() * 5)]
+							// firstLetter
+							getLetterIndex(item[0].item.nomeRestaurante)
+						}.png`)}
 					/>
 					<Card.Body
 						style={{

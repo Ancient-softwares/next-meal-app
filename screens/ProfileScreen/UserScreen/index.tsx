@@ -90,9 +90,10 @@ const Account = ({ navigation }: any): JSX.Element => {
 		await launchImageLibrary({ mediaType: 'photo' }, (response: any) => {
 			try {
 				if (response) {
-					// setPhoto(response.assets[0].uri.toString())
+					// setar a foto do perfil
+					// setPhoto(response.assets[0].uri.toString()) passar pro bang do perfil
 
-					console.log(response)
+					console.table(response)
 					handleUploadUri(response)
 					// console.log(photo)
 				} else {
@@ -106,7 +107,7 @@ const Account = ({ navigation }: any): JSX.Element => {
 
 	const handleUploadPhoto = async (): Promise<void> => {
 		console.log('we here')
-		
+
 		await fetch(`${global.getApiUrl()}/api/uploadImage`, {
 			method: 'POST',
 			headers: new Headers({
@@ -417,11 +418,19 @@ const Account = ({ navigation }: any): JSX.Element => {
 											<MaterialCommunityIcons
 												name='logout'
 												size={24}
-												color='black'
+												color='#963333'
 											/>
 											<div className='ms-2 me-auto'>
 												<div className='fw-bold'>
-													Sair
+													<Text
+														style={{
+															color: '#963333',
+															fontSize: 16,
+															fontWeight: 'bold'
+														}}
+													>
+														Sair
+													</Text>
 												</div>
 											</div>
 										</View>
