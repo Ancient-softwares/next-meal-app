@@ -24,6 +24,8 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	const [refresh, setRefresh] = React.useState<boolean>(false)
 	let tipoRestaurante = route.params.tipoRestaurante
 	const [key, setKey] = React.useState<number>(0)
+	const [hasAlreadyFetched, setHasAlreadyFetched] =
+		React.useState<boolean>(false)
 
 	const getRestaurant = async () => {
 		await fetch(`${global.getApiUrl()}/api/getRestaurantsByType`, {
@@ -58,7 +60,11 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 				if (global.tipoRestaurante != tipoRestaurante) {
 					setKey(key + 1)
 					tipoRestaurante = global.tipoRestaurante
-					getRestaurant()
+					if (hasAlreadyFetched === false) {
+						getRestaurant()
+
+						setHasAlreadyFetched(!hasAlreadyFetched)
+					}
 				} else {
 					if (refreshScreen()) {
 						setLoading(false)

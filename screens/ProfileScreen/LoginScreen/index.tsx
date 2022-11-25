@@ -123,6 +123,20 @@ function LoginScreen({ navigation }: { navigation: any }) {
 							className='mb-3'
 							controlId='formBasicCheckbox'
 						>
+							<View style={{ marginVertical: 10 }}>
+								<Text
+									style={{
+										color: '#963333',
+										fontSize: 16,
+										fontWeight: 'bold'
+									}}
+								>
+									{message}
+								</Text>
+							</View>
+
+							<br />
+
 							<Text
 								style={{
 									color: '#000000'

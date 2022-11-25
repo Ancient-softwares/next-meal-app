@@ -50,17 +50,25 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	const notificationListener = React.useRef<any>()
 	const responseListener = React.useRef<any>()
 	const [hasAlreadyNotified, setHasAlreadyNotified] =
-		React.useState<boolean>(true)
+		React.useState<boolean>(false)
+	const [hasAlreadyFetched, setHasAlreadyFetched] =
+		React.useState<boolean>(false)
 
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
-			refreshScreen()
+			if (hasAlreadyFetched === false) {
+				refreshScreen()
+
+				setHasAlreadyFetched(!hasAlreadyFetched)
+			}
 
 			try {
 				if (global.isLogged) {
 					if (global.user.id != null && global.user.id != undefined) {
-						if (hasAlreadyNotified!) {
+						if (hasAlreadyNotified === false) {
 							checkNotifications()
+
+							setHasAlreadyNotified(!hasAlreadyFetched)
 						}
 					}
 				}
@@ -72,7 +80,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				handleNotification()
 			}
 		})
-	}, [navigation, global.isLogged, masterDataSource, DATA])
+	}, [navigation, global.isLogged])
 
 	const handleNotification = () => {
 		registerForPushNotificationsAsync().then((token: any) =>
