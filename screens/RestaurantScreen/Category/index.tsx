@@ -9,6 +9,7 @@ import {
 	View
 } from 'react-native'
 import { SearchBar } from 'react-native-elements'
+import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
@@ -94,7 +95,9 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 						variant='top'
 						style={styles.cardImg}
 						src={require(`../../../assets/Restaurante/${
-							global.indexes[Math.floor(Math.random() * 5)]
+							// global.indexes[Math.floor(Math.random() * 5)]
+							// firstLetter
+							getLetterIndex(item[0].item.nomeRestaurante)
 						}.png`)}
 					/>
 					<Card.Body

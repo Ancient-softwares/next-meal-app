@@ -107,6 +107,37 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	const renderCardapio = (item: any): JSX.Element => {
+		const letters = [
+			['a', 'b', 'c', 'd'],
+			['e', 'f', 'g', 'h'],
+			['i', 'j', 'k', 'l'],
+			['m', 'n', 'o', 'p'],
+			['q', 'r', 's', 't'],
+			['u', 'v', 'w', 'x', 'y', 'z']
+		]
+
+		const getFirstLetter = (name: string): string => {
+			return name.charAt(0).toLowerCase()
+		}
+
+		const getLetterIndex = (letter: string): number => {
+			let index = 0
+			letters.forEach((array: string[], i: number) => {
+				if (array.includes(letter)) {
+					if (typeof i === 'number') {
+						index = i
+					}
+				}
+			})
+			return index
+		}
+
+		const getLetter = (name: string): string => {
+			return letters[getLetterIndex(getFirstLetter(name))][0]
+		}
+
+		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomePrato))
+
 		return (
 			<View style={{ width: '100%' }}>
 				<Card style={styles.card}>
@@ -115,7 +146,8 @@ const Menu = ({ navigation, route }: any) => {
 							variant='top'
 							style={styles.cardImg}
 							src={require(`../../../assets/Cardapio/${
-								global.indexes[Math.floor(Math.random() * 5)]
+								// global.indexes[Math.floor(Math.random() * 5)]
+								firstLetter
 							}.png`)}
 						/>
 					</View>

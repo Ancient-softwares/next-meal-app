@@ -16,6 +16,7 @@ import {
 } from 'react-native'
 import 'react-native-gesture-handler'
 import '../../constants/globals'
+import { getLetterIndex } from '../../constants/modules'
 import styles from './style'
 
 Notifications.setNotificationHandler({
@@ -341,7 +342,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 			<View style={styles.spaceCategory}>
 				<img
 					src={require(`../../assets/Categoria/${
-						global.indexes[Math.floor(Math.random() * 5)]
+						// global.indexes[Math.floor(Math.random() * 5)]
+						// firstLetter
+						getLetterIndex(item[0].item.tipoRestaurante)
 					}.png`)}
 					onClick={() => onPressCategory(item)}
 					className='rounded-circle'
@@ -378,7 +381,9 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 					<div style={styles.PositionImgRestaurant}>
 						<img
 							src={require(`../../assets/Restaurante/${
-								global.indexes[Math.floor(Math.random() * 5)]
+								// global.indexes[Math.floor(Math.random() * 5)]
+								// firstLetter
+								getLetterIndex(item[0].item.nomeRestaurante)
 							}.png`)}
 							className='rounded-circle'
 							style={{

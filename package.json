@@ -8,8 +8,9 @@
 		"android": "expo start --android",
 		"ios": "expo start --ios",
 		"web": "expo start --web",
-		"linux": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
-		"windows": "set NODE_OPTIONS=--openssl-legacy-provider && npx expo start --web"
+		"bash": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
+		"cmd": "set NODE_OPTIONS=--openssl-legacy-provider npx expo start --web",
+		"powershell": "$env:NODE_OPTIONS=--openssl-legacy-provider; expo start --web"
 	},
 	"dependencies": {
 		"@expo/vector-icons": "^13.0.0",

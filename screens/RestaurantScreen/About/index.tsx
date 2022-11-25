@@ -2,6 +2,7 @@ import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { getFirstLetter, getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const AboutScreen = ({ navigation, route }: any): JSX.Element => {
@@ -11,6 +12,9 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const restaurante: any = route.params
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
+	let firstLetter = getLetterIndex(
+		getFirstLetter(restaurante.nomeRestaurante)
+	)
 
 	React.useEffect((): void => {
 		navigation.addListener('focus', () => {
@@ -112,9 +116,9 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						<div style={styles.PositionImgRestaurant}>
 							<img
 								src={require(`../../../assets/Restaurante/${
-									global.indexes[
-										Math.floor(Math.random() * 5)
-									]
+									// Math.floor(Math.random() * 5)
+									// global.indexes[firstLetter]
+									getLetterIndex(restaurante.nomeRestaurante)
 									// restaurante.fotoRestaurante
 								}.png`)}
 								className='rounded-circle'

@@ -225,7 +225,8 @@ const Ratings = ({ navigation, route }: any) => {
 									/* global.indexes[
 										Math.floor(Math.random() * 5)
 									] */
-									firstLetter
+									// firstLetter
+									getLetterIndex(item.item.nomeCliente)
 								}.png`)}
 							/>
 							<View style={{ marginLeft: 10 }}>
