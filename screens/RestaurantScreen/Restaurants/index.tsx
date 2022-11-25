@@ -1,3 +1,4 @@
+import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
 import { Button, Card } from 'react-bootstrap'
 import {
@@ -6,9 +7,9 @@ import {
 	RefreshControl,
 	SafeAreaView,
 	Text,
+	TextInput,
 	View
 } from 'react-native'
-import { SearchBar } from 'react-native-elements'
 import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
@@ -167,12 +168,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 				if (json.length > 0) {
 					setFilteredDataSource([])
 
-					// Inserted text is not blank
-					// Filter the masterDataSource and update FilteredDataSource
 					setFilteredDataSource(json)
 				} else {
-					// Inserted text is blank
-					// Update FilteredDataSource with masterDataSource
 					setFilteredDataSource(masterDataSource)
 				}
 			})
@@ -187,24 +184,54 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 		<SafeAreaView style={styles.container} key={uniqueValue}>
 			{!isLoading ? (
 				<>
-					<SearchBar
-						placeholder='Pesquisar restaurantes...'
-						lightTheme
-						platform='android'
-						round
-						value={search}
-						onChangeText={(text: string): void => {
-							filterByEverything(text)
-
-							setSearch(text)
-						}}
-						autoCorrect={false}
-						blurOnSubmit={true}
-						autoFocus={true}
+					<View
 						style={{
-							width: '72vw'
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							width: '100%',
+							marginTop: 20,
+							marginBottom: 20
 						}}
-					/>
+					>
+						<FontAwesome
+							style={{
+								marginLeft: 20
+							}}
+							name='search'
+							size={24}
+							color='grey'
+						/>
+						<TextInput
+							style={[
+								styles.searchBar,
+								{
+									width: '80%',
+									marginLeft: 20,
+									marginRight: 20,
+									height: 40
+								}
+							]}
+							placeholder='Pesquisar restaurantes...'
+							placeholderTextColor='gray'
+							onChangeText={(text: string): void =>
+								setSearch(text)
+							}
+							value={search}
+						/>
+						<Button
+							variant='danger'
+							style={{
+								marginRight: 20
+							}}
+							onClick={(): Promise<void> =>
+								filterByEverything(search)
+							}
+						>
+							Pesquisar
+						</Button>
+					</View>
 					<FlatList
 						data={filteredDataSource}
 						renderItem={renderItem}

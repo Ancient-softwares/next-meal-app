@@ -1,9 +1,8 @@
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api'
+import * as Location from 'expo-location'
 import React from 'react'
-import { ActivityIndicator, Platform, Text, View } from 'react-native'
+import { ActivityIndicator, Platform, View } from 'react-native'
 import GetLocation from 'react-native-get-location'
-import Geolocation from 'react-native-geolocation-service'
-import * as Location from 'expo-location';
 import styles from './style'
 
 const MapsScreen = ({ navigation }: any): JSX.Element => {
@@ -23,25 +22,29 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 	})
 
 	React.useEffect(() => {
-		(async () => {
-			if (Platform.OS !== "web") {
-			   const { status } = await Location.requestForegroundPermissionsAsync();
-			   
-			   if (status !== "granted") {
-				 window.alert("Insufficient permissions!")
-				 return;
-			   }
-			 }
-	   
-			 let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, timeInterval: 2000, distanceInterval: 0});
-			 console.log(location)
-			 setUserLocation({
+		;(async () => {
+			if (Platform.OS !== 'web') {
+				const { status } =
+					await Location.requestForegroundPermissionsAsync()
+
+				if (status !== 'granted') {
+					window.alert('Insufficient permissions!')
+					return
+				}
+			}
+
+			let location = await Location.getCurrentPositionAsync({
+				accuracy: Location.Accuracy.Highest,
+				timeInterval: 1000,
+				distanceInterval: 0
+			})
+			console.log(location)
+			setUserLocation({
 				lat: location.coords.latitude,
 				lng: location.coords.longitude
-			 });
-			 console.log(userLocation)
-		   })();
-
+			})
+			console.log(userLocation)
+		})()
 
 		navigation.addListener('focus', (): void => {
 			// setUserActualLocation()
@@ -289,11 +292,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							fontFamily: 'Roboto'
 						}}
 						onClick={() => navigation.navigate('Profile')}
-					>
-						<View>
-							<Text>a</Text>
-						</View>
-					</Marker>
+					></Marker>
 
 					{navigator.geolocation.watchPosition(
 						//console.log(position.coords.latitude) loc do user

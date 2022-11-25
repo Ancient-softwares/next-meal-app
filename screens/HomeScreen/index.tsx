@@ -55,7 +55,6 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 	React.useEffect(() => {
 		navigation.addListener('focus', (): void => {
 			refreshScreen()
-			forceRemount()
 
 			try {
 				if (global.isLogged) {
@@ -73,7 +72,7 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				handleNotification()
 			}
 		})
-	}, [navigation, global.isLogged])
+	}, [navigation, global.isLogged, masterDataSource, DATA])
 
 	const handleNotification = () => {
 		registerForPushNotificationsAsync().then((token: any) =>
