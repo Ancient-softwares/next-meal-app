@@ -11,6 +11,7 @@ import {
 	TextInput,
 	View
 } from 'react-native'
+import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const Ratings = ({ navigation, route }: any) => {
@@ -174,59 +175,25 @@ const Ratings = ({ navigation, route }: any) => {
 	}
 
 	const renderAvaliacoes = (item: any): JSX.Element => {
-		const letters = [
-			['a', 'b', 'c', 'd'],
-			['e', 'f', 'g', 'h'],
-			['i', 'j', 'k', 'l'],
-			['m', 'n', 'o', 'p'],
-			['q', 'r', 's', 't'],
-			['u', 'v', 'w', 'x', 'y', 'z']
-		]
-
-		const getFirstLetter = (name: string): string => {
-			return name.charAt(0).toLowerCase()
-		}
-
-		const getLetterIndex = (letter: string): number => {
-			let index = 0
-			letters.forEach((array: string[], i: number) => {
-				if (array.includes(letter)) {
-					if (typeof i === 'number') {
-						index = i
-					}
-				}
-			})
-			return index
-		}
-
-		const getLetter = (name: string): string => {
-			return letters[getLetterIndex(getFirstLetter(name))][0]
-		}
-
-		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomeCliente))
-
 		return (
-					<View key={uniqueValue}>
-						<Card
+			<View key={uniqueValue}>
+				<Card
 					style={{
 						width: Dimensions.get('window').width * 0.9,
 						border: 'none',
-						marginLeft:'2%',
-						padding:8
+						marginLeft: '2%',
+						padding: 8
 					}}
 				>
 					<Card.Body
-					style=
-					{
-					{
-						border:1,
-						borderStyle:'double',
-						borderColor:'#b21414',
-						padding:11,
-						marginTop: '7%',
-						borderRadius:26
-					}	
-					}
+						style={{
+							border: 1,
+							borderStyle: 'double',
+							borderColor: '#b21414',
+							padding: 11,
+							marginTop: '7%',
+							borderRadius: 26
+						}}
 					>
 						<View style={{ flexDirection: 'row' }}>
 							<Card.Img
@@ -265,9 +232,8 @@ const Ratings = ({ navigation, route }: any) => {
 						</View>
 						<Card.Text>{item.item.descAvaliacao}</Card.Text>
 					</Card.Body>
-						</Card>
-					</View>
-
+				</Card>
+			</View>
 		)
 	}
 
@@ -367,7 +333,7 @@ const Ratings = ({ navigation, route }: any) => {
 					style={{
 						backgroundColor: '#fff',
 						alignItems: 'flex-start',
-						justifyContent: 'flex-start',
+						justifyContent: 'flex-start'
 					}}
 					key={uniqueValue}
 				>
