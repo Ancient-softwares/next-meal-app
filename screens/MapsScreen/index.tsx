@@ -33,7 +33,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 			   }
 			 }
 	   
-			 let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, timeInterval: 1000, distanceInterval: 0});
+			 let location = await Location.getCurrentPositionAsync({accuracy: Location.Accuracy.Highest, timeInterval: 2000, distanceInterval: 0});
 			 console.log(location)
 			 setUserLocation({
 				lat: location.coords.latitude,
