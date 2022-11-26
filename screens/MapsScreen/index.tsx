@@ -179,7 +179,8 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 							let param: any = marker.restaurant
 
 							navigation.navigate('About', {
-								...param
+								restaurante: param,
+								previousPage: 'Maps'
 							})
 						}
 
