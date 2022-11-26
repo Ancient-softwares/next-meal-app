@@ -12,7 +12,7 @@ import {
 	View
 } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { getLetterIndex } from '../../../constants/modules'
+import { getLetterIndex, getRestaurantById } from '../../../constants/modules'
 import styles from './style'
 
 const Ratings = ({ navigation, route }: any) => {
@@ -407,36 +407,14 @@ const Ratings = ({ navigation, route }: any) => {
 									borderRadius: 5
 								}}
 								onClick={async (): Promise<void> => {
-									await fetch(
-										`${global.getApiUrl()}/api/restauranteById`,
-										{
-											method: 'POST',
-											headers: new Headers({
-												'Content-Type':
-													'application/json',
-												Accept: 'application/json'
-											}),
-											body: JSON.stringify({
-												idRestaurante: idRestaurante
-											})
-										}
+									const restaurante = await getRestaurantById(
+										idRestaurante
 									)
-										.then(
-											(
-												response: Response
-											): Promise<JSON> => response.json()
-										)
-										.then((json: JSON): void => {
-											console.log(json[0])
 
-											navigation.navigate('About', {
-												restaurante: json[0],
-												previousPage: 'Ratings'
-											})
-										})
-										.catch((error: Error): void => {
-											console.log(error)
-										})
+									navigation.navigate('About', {
+										restaurante: restaurante,
+										previousPage: 'Ratings'
+									})
 								}}
 							>
 								<View
@@ -505,19 +483,39 @@ const Ratings = ({ navigation, route }: any) => {
 							backgroundColor: '#fff'
 						}}
 					>
-						<FlatList
-							data={avaliacoes}
-							showsVerticalScrollIndicator={false}
-							renderItem={renderAvaliacoes}
-							scrollEnabled={true}
-							keyExtractor={(item): any => item.idAvaliacao}
-							refreshControl={
-								<RefreshControl
-									refreshing={refresh}
-									onRefresh={onRefresh}
+						{avaliacoes.length > 0 ? (
+							<>
+								<FlatList
+									data={avaliacoes}
+									showsVerticalScrollIndicator={false}
+									renderItem={renderAvaliacoes}
+									scrollEnabled={true}
+									keyExtractor={(item): any =>
+										item.idAvaliacao
+									}
+									refreshControl={
+										<RefreshControl
+											refreshing={refresh}
+											onRefresh={onRefresh}
+										/>
+									}
 								/>
-							}
-						/>
+							</>
+						) : (
+							<>
+								<Text
+									style={[
+										styles.subtitle,
+										{
+											textAlign: 'center',
+											fontStyle: 'italic'
+										}
+									]}
+								>
+									Seja o primeiro a avaliar este restaurante!
+								</Text>
+							</>
+						)}
 					</View>
 				</SafeAreaView>
 			)}
