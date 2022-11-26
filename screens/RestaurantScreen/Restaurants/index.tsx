@@ -100,11 +100,12 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 										{
 											color: '#000',
 											fontFamily: 'math',
-											fontSize: 18
+											fontSize: 18,
+											textAlign: 'left'
 										}
 									]}
 								>
-									Tipo de culinária:{' '}
+									Categoria:{' '}
 								</Text>
 								{item[0].item.tipoRestaurante ||
 									'Não informado'}
@@ -127,8 +128,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 						</View>
 						<View>
 							<Button
-								style={styles.buttonReserv}
 								variant='danger'
+								style={styles.buttonReserv}
 								onClick={() => {
 									navigation.navigate('About', {
 										restaurante: item[0].item,
