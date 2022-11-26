@@ -43,8 +43,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				lat: location.coords.latitude,
 				lng: location.coords.longitude
 			})
-
-			console.log(userLocation)
 		})()
 
 		navigation.addListener('focus', (): void => {
@@ -155,7 +153,13 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 								json[key].cepRestaurante
 							}&key=${global.getMapsToken()}`
 						)
+
 						const result = await response.json()
+						console.log(json[key].nomeRestaurante)
+						console.log(
+							'result',
+							result.results[0].geometry.location
+						)
 						const location = result.results[0].geometry.location
 
 						const markerIcon = {
@@ -271,7 +275,6 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 					></Marker>
 
 					{navigator.geolocation.watchPosition(
-						//console.log(position.coords.latitude) loc do user
 						(position: GeolocationPosition) => {
 							;<Marker
 								icon={{

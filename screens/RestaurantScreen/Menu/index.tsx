@@ -12,7 +12,7 @@ import {
 	View
 } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { getLetterIndex } from '../../../constants/modules'
+import { getLetterIndex, getRestaurantById } from '../../../constants/modules'
 import styles from './style'
 
 const Menu = ({ navigation, route }: any) => {
@@ -372,7 +372,17 @@ const Menu = ({ navigation, route }: any) => {
 									}
 								]}
 							>
-								Pratos disponíveis para {getWeekDay(new Date())}
+								{cardapio.length > 0 ? (
+									<>
+										Pratos disponíveis para{' '}
+										{getWeekDay(new Date())}
+									</>
+								) : (
+									<>
+										Não há pratos disponíveis para{' '}
+										{getWeekDay(new Date())}
+									</>
+								)}
 							</Text>
 						</View>
 
@@ -386,34 +396,14 @@ const Menu = ({ navigation, route }: any) => {
 								borderRadius: 5
 							}}
 							onClick={async (): Promise<void> => {
-								await fetch(
-									`${global.getApiUrl()}/api/restauranteById`,
-									{
-										method: 'POST',
-										headers: new Headers({
-											'Content-Type': 'application/json',
-											Accept: 'application/json'
-										}),
-										body: JSON.stringify({
-											idRestaurante: idRestaurante
-										})
-									}
+								const restaurante = await getRestaurantById(
+									idRestaurante
 								)
-									.then(
-										(response: Response): Promise<JSON> =>
-											response.json()
-									)
-									.then((json: JSON): void => {
-										console.log(json[0])
 
-										navigation.navigate('About', {
-											restaurante: json[0],
-											previousPage: 'Ratings'
-										})
-									})
-									.catch((error: Error): void => {
-										console.log(error)
-									})
+								navigation.navigate('About', {
+									restaurante: restaurante,
+									previousPage: 'Menu'
+								})
 							}}
 						>
 							<View
