@@ -19,6 +19,7 @@ declare global {
 	var indexes: number[]
 	var restaurantes: any[]
 	var restaurantesFiltrados: any[]
+	var updateUserScreen: boolean
 
 	// getters
 	function getToken(): string
@@ -106,6 +107,7 @@ global.setToken = (token: string) => (global.TOKEN = token)
 global.setMapsId = (id: string) => (global.MAPS_ID = id)
 global.setMapsToken = (token: string) => (global.GOOGLE_MAPS_APIKEY = token)
 global.setApiUrl = (url: string) => (global.API_URL = url)
+global.updateUserScreen = false
 
 // set global variables
 global.setApiUrl('http://127.0.0.1:8000')

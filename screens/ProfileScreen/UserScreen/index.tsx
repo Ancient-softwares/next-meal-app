@@ -229,6 +229,22 @@ const Account = ({ navigation }: any): JSX.Element => {
 								<Text style={styles.title}>
 									Olá, {global.user.name}!
 								</Text>
+								<Button
+									variant='outline-danger'
+									style={{
+										width: '8em',
+										marginTop: 15,
+										marginBottom: 15,
+										marginRight: 5
+									}}
+									onClick={() =>
+										navigation.navigate('Register', {
+											gottaUpdate: true
+										})
+									}
+								>
+									Editar perfil
+								</Button>
 							</>
 						)}
 

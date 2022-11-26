@@ -9,7 +9,7 @@ import MaskInput from 'react-native-mask-input'
 import '../../../constants/globals'
 import styles from './style'
 
-function RegisterScreen({ navigation }: any): JSX.Element {
+function RegisterScreen({ navigation, route }: any): JSX.Element {
 	const [name, setName] = React.useState<string>('')
 	const [cpff, setCpf] = React.useState<string>('')
 	const [cel, setCellphone] = React.useState<string>('')
@@ -23,6 +23,9 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 	const [estado, setEstado] = React.useState<string>('')
 	const [message, setMessage] = React.useState<string>('')
 	const [page, setPage] = React.useState<number>(0)
+	const [gottaUpdate, setGottaUpdate] = React.useState<boolean>(
+		route.params.gottaUpdate || false
+	)
 
 	const schema: Joi.ObjectSchema<any> = Joi.object({
 		nomeCliente: Joi.string().alphanum().min(3).max(30).required(),
@@ -325,6 +328,43 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 		})
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
+			if (gottaUpdate) {
+				await fetch(`${API_URL}/api/updateCliente`, {
+					method: 'PATCH',
+					headers: new Headers({
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${global.TOKEN}`,
+						Accept: 'application/json'
+					}),
+					body: packets
+				})
+					.then(
+						(response: Response): Promise<void> => response.json()
+					)
+					.then((json: any): void => {
+						window.alert(json.message)
+						console.log(json.data)
+
+						global.setUser({
+							id: json.data.idCliente,
+							name: json.data.nomeCliente,
+							email: json.data.emailCliente,
+							phone: json.data.telefoneCliente,
+							photo: json.data.fotoCliente,
+							cep: json.data.cepCliente,
+							number: json.data.numCasa,
+							neighborhood: json.data.bairroCliente,
+							city: json.data.cidadeCliente,
+							state: json.data.estadoCliente
+						})
+
+						navigation.navigate('Main', {
+							nomeCliente: json.data.nomeCliente
+						})
+					})
+					.catch((error: Error): void => console.error(error))
+			}
+
 			await fetch(`${API_URL}/api/cadastroCliente`, {
 				method: 'POST',
 				headers: {
@@ -505,7 +545,6 @@ function RegisterScreen({ navigation }: any): JSX.Element {
 													page === 0
 														? '25%'
 														: page === 1
-
 														? '50%'
 														: page === 2
 														? '75%'

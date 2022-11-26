@@ -59,7 +59,9 @@ const Menu = ({ navigation, route }: any) => {
 		try {
 			setRefresh(true)
 			setUniqueValue(uniqueValue + 1)
-			fetchMenu()
+			if (idRestaurante !== undefined && idRestaurante !== null) {
+				fetchMenu()
+			}
 			setRefresh(false)
 			forceRemount()
 
