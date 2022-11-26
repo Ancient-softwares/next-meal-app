@@ -38,20 +38,22 @@ const Menu = ({ navigation, route }: any) => {
 			setLoading(true)
 
 			setTimeout((): void => {
-				if (route.params.idRestaurante != idRestaurante) {
-					forceRemount()
-					idRestaurante = route.params.idRestaurante
-					getRestaurant()
-				} else {
-					if (refreshScreen()) {
-						setLoading(false)
+				if (idRestaurante !== undefined && idRestaurante !== null) {
+					if (route.params.idRestaurante != idRestaurante) {
+						forceRemount()
+						idRestaurante = route.params.idRestaurante
+						getRestaurant()
+					} else {
+						if (refreshScreen()) {
+							setLoading(false)
 
-						return
+							return
+						}
 					}
-				}
+				} else idRestaurante = 1
 			}, 1000)
 		})
-	}, [navigation, global.idRestaurante])
+	}, [navigation, route.params.idRestaurante])
 
 	const refreshScreen = (): boolean => {
 		try {
