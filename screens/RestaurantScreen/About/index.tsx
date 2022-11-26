@@ -2,6 +2,7 @@ import Joi, { ObjectSchema } from 'joi'
 import React from 'react'
 import { Button, Form, Stack } from 'react-bootstrap'
 import { Dimensions, SafeAreaView, ScrollView, Text, View } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { getFirstLetter, getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
@@ -9,7 +10,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
-	const restaurante: any = route.params
+	const restaurante: any = route.params.restaurante
+	const previousPage = route.params.previousPage
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	let firstLetter = getLetterIndex(
@@ -145,6 +147,49 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 							</Text>
 						</div>
 					</Stack>
+				</View>
+
+				<View style={{ marginLeft: '10%' }}>
+					<Button
+						variant='danger'
+						style={{
+							marginTop: '5%',
+							marginBottom: '5%',
+							marginLeft: '5%',
+							marginRight: 'auto',
+
+							width: Dimensions.get('window').width * 0.6,
+							borderRadius: 10
+						}}
+						onClick={(): void =>
+							navigation.navigate(previousPage.toString())
+						}
+					>
+						<View
+							style={{
+								flexDirection: 'row',
+								padding: 5,
+								paddingLeft: '25%'
+							}}
+						>
+							<Icon
+								name='arrow-back'
+								tvParallaxProperties={undefined}
+								color='#fff'
+							/>
+							<Text
+								style={{
+									color: '#fff',
+									marginLeft: 15,
+									marginTop: 5,
+									fontWeight: 'bold',
+									fontSize: 16
+								}}
+							>
+								Voltar
+							</Text>
+						</View>
+					</Button>
 				</View>
 
 				<hr style={styles.LineCard} />

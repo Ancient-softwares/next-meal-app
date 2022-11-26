@@ -38,48 +38,23 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 				timeInterval: 1000,
 				distanceInterval: 0
 			})
-			console.log(location)
+
 			setUserLocation({
 				lat: location.coords.latitude,
 				lng: location.coords.longitude
 			})
+
 			console.log(userLocation)
 		})()
 
 		navigation.addListener('focus', (): void => {
-			// setUserActualLocation()
-			// checks if the markers array is empty
 			if (markers.length === 0) {
-				// if it is, it will get the restaurants from the API
 				fetchRestaurants()
 			}
 
-			/* navigator.geolocation.watchPosition(
-				//console.log(position.coords.latitude) loc do user
-				(position: GeolocationPosition) => {
-					setUserLocation({
-						lat: position.coords.latitude,
-						lng: position.coords.longitude
-					})
-				}
-			) */
-
-			/* Geolocation.getCurrentPosition(
-				(position) => {
-				  const currentLatitude = JSON.stringify(position.coords.latitude);
-				  const currentLongitude = JSON.stringify(position.coords.longitude);
-				 
-				  setUserLocation({
-					lat: currentLatitude,
-					lng: currentLongitude
-				  })
-				},
-				(error) => alert(error.message),
-				{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-			  ); */
-
-			// gets user location with navigator and sets it to the userLocation state
-			// setLocation()
+			if (map !== null) {
+				map.panTo(userLocation)
+			}
 		})
 	}, [navigation, markers])
 
@@ -286,7 +261,7 @@ const MapsScreen = ({ navigation }: any): JSX.Element => {
 						}}
 						label={{
 							text: 'Sua localização',
-							color: '#963333',
+							color: '#077594',
 							fontSize: '18px',
 							fontWeight: 'bold',
 							fontFamily: 'Roboto'

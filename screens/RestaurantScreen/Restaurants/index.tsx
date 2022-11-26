@@ -104,7 +104,7 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 										}
 									]}
 								>
-									Tipo de cozinha:{' '}
+									Tipo de culinária:{' '}
 								</Text>
 								{item[0].item.tipoRestaurante ||
 									'Não informado'}
@@ -131,7 +131,8 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 								variant='danger'
 								onClick={() => {
 									navigation.navigate('About', {
-										...item[0].item
+										restaurante: item[0].item,
+										previousPage: 'Restaurants'
 									})
 								}}
 							>

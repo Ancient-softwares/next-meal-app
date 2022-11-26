@@ -323,7 +323,8 @@ const HomeScreen = ({ navigation }: any): JSX.Element => {
 				params = element
 
 				navigation.navigate('About', {
-					...params
+					restaurante: params,
+					previousPage: 'Home'
 				})
 
 				return

@@ -11,6 +11,7 @@ import {
 	TextInput,
 	View
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
@@ -354,7 +355,7 @@ const Ratings = ({ navigation, route }: any) => {
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '20%'
+								marginLeft: '10%'
 							}}
 							placeholder='Escreva sua avaliação'
 							onChangeText={(text: any) => setFeedback(text)}
@@ -374,7 +375,7 @@ const Ratings = ({ navigation, route }: any) => {
 								borderWidth: 1,
 								borderRadius: 10,
 								marginBottom: 10,
-								marginLeft: '20%'
+								marginLeft: '10%'
 							}}
 							placeholder='Nota'
 							onChangeText={(text: any) => setRating(text)}
@@ -382,17 +383,88 @@ const Ratings = ({ navigation, route }: any) => {
 							value={rating}
 						/>
 
-						<Button
-							variant='danger'
-							style={{
-								width: Dimensions.get('window').width - 85,
-								marginLeft: '48%',
-								marginRight: '29%'
-							}}
-							onClick={() => submitRating()}
-						>
-							Avaliar
-						</Button>
+						<View style={{ flexDirection: 'row', marginTop: '5%' }}>
+							<Button
+								variant='danger'
+								style={{
+									width:
+										Dimensions.get('window').width * 0.45,
+									height: 50,
+									marginLeft: '7.5%'
+								}}
+								onClick={() => submitRating()}
+							>
+								Avaliar
+							</Button>
+							<Button
+								variant='danger'
+								style={{
+									marginLeft: '10%',
+									marginRight: 'auto',
+
+									width:
+										Dimensions.get('window').width * 0.45,
+									borderRadius: 5
+								}}
+								onClick={async (): Promise<void> => {
+									await fetch(
+										`${global.getApiUrl()}/api/restauranteById`,
+										{
+											method: 'POST',
+											headers: new Headers({
+												'Content-Type':
+													'application/json',
+												Accept: 'application/json'
+											}),
+											body: JSON.stringify({
+												idRestaurante: idRestaurante
+											})
+										}
+									)
+										.then(
+											(
+												response: Response
+											): Promise<JSON> => response.json()
+										)
+										.then((json: JSON): void => {
+											console.log(json[0])
+
+											navigation.navigate('About', {
+												restaurante: json[0],
+												previousPage: 'Ratings'
+											})
+										})
+										.catch((error: Error): void => {
+											console.log(error)
+										})
+								}}
+							>
+								<View
+									style={{
+										flexDirection: 'row',
+										padding: 5,
+										paddingLeft: '15%'
+									}}
+								>
+									<Icon
+										name='arrow-back'
+										tvParallaxProperties={undefined}
+										color='#fff'
+									/>
+									<Text
+										style={{
+											color: '#fff',
+											marginLeft: 15,
+											marginTop: 5,
+											fontWeight: 'bold',
+											fontSize: 16
+										}}
+									>
+										Voltar
+									</Text>
+								</View>
+							</Button>
+						</View>
 
 						<View
 							style={{

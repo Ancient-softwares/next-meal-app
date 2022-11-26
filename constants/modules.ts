@@ -29,4 +29,31 @@ const getLetter = (name: string): string => {
 	return letters[getLetterIndex(getFirstLetter(name))][0]
 }
 
-export { getLetter, getLetterIndex, getFirstLetter }
+const getRestaurantById = async (idRestaurante: string): Promise<JSON> => {
+	let restaurante: JSON
+
+	await fetch(`${global.getApiUrl()}/api/restauranteById`, {
+		method: 'POST',
+		headers: new Headers({
+			'Content-Type': 'application/json',
+			Accept: 'application/json'
+		}),
+		body: JSON.stringify({
+			idRestaurante: idRestaurante
+		})
+	})
+		.then((response: Response): Promise<JSON> => response.json())
+		.then((json: JSON): void => {
+			restaurante = json[0]
+
+			return json[0]
+		})
+		.catch((error: Error): void => {
+			console.log(error)
+		})
+
+	console.log('restaurante', restaurante)
+	return restaurante
+}
+
+export { getLetter, getLetterIndex, getFirstLetter, getRestaurantById }

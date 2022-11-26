@@ -134,7 +134,8 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 								variant='primary'
 								onClick={() => {
 									navigation.navigate('About', {
-										...item[0].item
+										restaurante: item[0].item,
+										previousPage: 'Restaurants'
 									})
 								}}
 							>

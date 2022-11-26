@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Card, ListGroup } from 'react-bootstrap'
 import {
 	ActivityIndicator,
+	Dimensions,
 	FlatList,
 	Modal,
 	RefreshControl,
@@ -10,6 +11,8 @@ import {
 	Text,
 	View
 } from 'react-native'
+import { Icon } from 'react-native-elements'
+import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
 const Menu = ({ navigation, route }: any) => {
@@ -107,37 +110,6 @@ const Menu = ({ navigation, route }: any) => {
 	}
 
 	const renderCardapio = (item: any): JSX.Element => {
-		const letters = [
-			['a', 'b', 'c', 'd'],
-			['e', 'f', 'g', 'h'],
-			['i', 'j', 'k', 'l'],
-			['m', 'n', 'o', 'p'],
-			['q', 'r', 's', 't'],
-			['u', 'v', 'w', 'x', 'y', 'z']
-		]
-
-		const getFirstLetter = (name: string): string => {
-			return name.charAt(0).toLowerCase()
-		}
-
-		const getLetterIndex = (letter: string): number => {
-			let index = 0
-			letters.forEach((array: string[], i: number) => {
-				if (array.includes(letter)) {
-					if (typeof i === 'number') {
-						index = i
-					}
-				}
-			})
-			return index
-		}
-
-		const getLetter = (name: string): string => {
-			return letters[getLetterIndex(getFirstLetter(name))][0]
-		}
-
-		let firstLetter = getLetterIndex(getFirstLetter(item.item.nomePrato))
-
 		return (
 			<View style={{ width: '100%' }}>
 				<Card style={styles.card}>
@@ -147,7 +119,7 @@ const Menu = ({ navigation, route }: any) => {
 							style={styles.cardImg}
 							src={require(`../../../assets/Cardapio/${
 								// global.indexes[Math.floor(Math.random() * 5)]
-								firstLetter
+								getLetterIndex(item.item.nomePrato)
 							}.png`)}
 						/>
 					</View>
@@ -325,6 +297,29 @@ const Menu = ({ navigation, route }: any) => {
 		)
 	}
 
+	const getWeekDay = (date: Date): string => {
+		const weekDay = date.getDay()
+
+		switch (weekDay) {
+			case 0:
+				return 'Domingo'
+			case 1:
+				return 'Segunda-feira'
+			case 2:
+				return 'Terça-feira'
+			case 3:
+				return 'Quarta-feira'
+			case 4:
+				return 'Quinta-feira'
+			case 5:
+				return 'Sexta-feira'
+			case 6:
+				return 'Sábado'
+			default:
+				return ''
+		}
+	}
+
 	return (
 		<>
 			{loading ? (
@@ -364,11 +359,94 @@ const Menu = ({ navigation, route }: any) => {
 						scrollEnabled={true}
 						showsVerticalScrollIndicator={false}
 					>
+						<View>
+							<Text
+								style={[
+									styles.subtitle,
+									{
+										marginVertical: '5%',
+										fontSize: 20,
+										fontStyle: 'italic',
+										textAlign: 'center',
+										marginHorizontal: '15%'
+									}
+								]}
+							>
+								Pratos disponíveis para {getWeekDay(new Date())}
+							</Text>
+						</View>
+
+						<Button
+							variant='danger'
+							style={{
+								marginLeft: '25%',
+								marginRight: '15%',
+								marginTop: 10,
+								width: Dimensions.get('window').width * 0.45,
+								borderRadius: 5
+							}}
+							onClick={async (): Promise<void> => {
+								await fetch(
+									`${global.getApiUrl()}/api/restauranteById`,
+									{
+										method: 'POST',
+										headers: new Headers({
+											'Content-Type': 'application/json',
+											Accept: 'application/json'
+										}),
+										body: JSON.stringify({
+											idRestaurante: idRestaurante
+										})
+									}
+								)
+									.then(
+										(response: Response): Promise<JSON> =>
+											response.json()
+									)
+									.then((json: JSON): void => {
+										console.log(json[0])
+
+										navigation.navigate('About', {
+											restaurante: json[0],
+											previousPage: 'Ratings'
+										})
+									})
+									.catch((error: Error): void => {
+										console.log(error)
+									})
+							}}
+						>
+							<View
+								style={{
+									flexDirection: 'row',
+									padding: 5,
+									paddingLeft: '15%'
+								}}
+							>
+								<Icon
+									name='arrow-back'
+									tvParallaxProperties={undefined}
+									color='#fff'
+								/>
+								<Text
+									style={{
+										color: '#fff',
+										marginLeft: 15,
+										marginTop: 5,
+										fontWeight: 'bold',
+										fontSize: 16
+									}}
+								>
+									Voltar
+								</Text>
+							</View>
+						</Button>
+
 						<View style={styles.rowList}>
 							<View
 								style={{
-									marginLeft: '6%',
-									marginTop: '2.5%'
+									marginLeft: '10%',
+									marginTop: '-5%'
 								}}
 							>
 								<ListGroup>

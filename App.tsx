@@ -65,6 +65,13 @@ const App = (): JSX.Element => {
 						tabBarButton: (): React.ReactNode => null,
 						TabBarVisible: false
 					}}
+					// adds a back button to the header
+					listeners={({ navigation, route }: any): unknown => ({
+						tabPress: (e: any): void => {
+							e.preventDefault()
+							navigation.navigate('Restaurants')
+						}
+					})}
 				/>
 				<Tab.Screen
 					name='Profile'

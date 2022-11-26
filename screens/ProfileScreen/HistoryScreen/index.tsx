@@ -7,10 +7,11 @@ import {
 	Text,
 	View
 } from 'react-native'
+import { getLetterIndex, getRestaurantById } from '../../../constants/modules'
 import styles from './style'
 
 const HistoryScreen = ({ navigation }: any) => {
-	const [data, setData] = React.useState<Array<Object>>([])
+	const [data, setData] = React.useState<Array<any>>([])
 	const [isLoading, setIsLoading] = React.useState<boolean>(true)
 	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
 
@@ -29,9 +30,7 @@ const HistoryScreen = ({ navigation }: any) => {
 			})
 				.then((response: Response): Promise<JSON> => response.json())
 				.then((json: any): void => {
-					json.data.map((item: any) => {
-						data.push(item)
-					})
+					setData(json.data)
 				})
 				.catch((error: Error): void => {
 					console.error(error)
@@ -58,11 +57,26 @@ const HistoryScreen = ({ navigation }: any) => {
 					direction='horizontal'
 					gap={2}
 					style={{ marginLeft: 96 }}
+					onClick={async (): Promise<void> => {
+						console.log('item', item)
+						let restaurante = await getRestaurantById(
+							item.idRestaurante
+						)
+
+						if (restaurante) {
+							console.log('restaurante', restaurante)
+							navigation.navigate('About', {
+								restaurante: restaurante,
+								previousPage: 'History'
+							})
+						}
+					}}
 				>
 					<div style={styles.PositionImgRestaurant}>
 						<img
 							src={require(`../../../assets/Restaurante/${
-								global.indexes[Math.floor(Math.random() * 5)]
+								// global.indexes[Math.floor(Math.random() * 5)]
+								getLetterIndex(item.restaurante)
 							}.png`)}
 							className='rounded-circle'
 							style={{
