@@ -147,6 +147,24 @@ const Account = ({ navigation }: any): JSX.Element => {
 			})
 	}
 
+	const base64ToBlob = (base64: string, mime: string): Blob => {
+		mime = mime || ''
+		const sliceSize = 1024
+		const byteChars = window.atob(base64)
+		const byteArrays = []
+
+		for (let offset = 0; offset < byteChars.length; offset += sliceSize) {
+			const slice = byteChars.slice(offset, offset + sliceSize)
+			const byteNumbers = new Array(slice.length)
+			for (let i = 0; i < slice.length; i++) {
+				byteNumbers[i] = slice.charCodeAt(i)
+			}
+			const byteArray = new Uint8Array(byteNumbers)
+			byteArrays.push(byteArray)
+		}
+		return new Blob(byteArrays, { type: mime })
+	}
+
 	return (
 		<>
 			<SafeAreaView style={styles.container} key={uniqueValue}>
@@ -216,11 +234,15 @@ const Account = ({ navigation }: any): JSX.Element => {
 							</>
 						) : (
 							<>
-								<MaterialIcons
-									style={styles.accountIcon}
-									name='account-circle'
-									size={64}
-									color='#963333'
+								<Image
+									source={require('../../../assets/user-logged.png')}
+									style={{
+										width: 64,
+										height: 64,
+										marginTop: 10,
+										marginBottom: 10,
+										alignSelf: 'flex-start'
+									}}
 									onPress={() => {
 										handleChoosePhoto()
 									}}
