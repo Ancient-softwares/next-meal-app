@@ -24,7 +24,7 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 	const [message, setMessage] = React.useState<string>('')
 	const [page, setPage] = React.useState<number>(0)
 	const [gottaUpdate, setGottaUpdate] = React.useState<boolean>(
-		route.params.gottaUpdate || false
+		false // This is a workaround to update the page
 	)
 
 	const schema: Joi.ObjectSchema<any> = Joi.object({
@@ -328,7 +328,9 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 		})
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
-			if (gottaUpdate) {
+			if (global.isLogged) {
+				console.log('update')
+
 				await fetch(`${API_URL}/api/updateCliente`, {
 					method: 'PATCH',
 					headers: new Headers({
@@ -363,29 +365,31 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 						})
 					})
 					.catch((error: Error): void => console.error(error))
+			} else {
+				await fetch(`${API_URL}/api/cadastroCliente`, {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json'
+					},
+					body: packets
+				})
+					.then(
+						(response: Response): Promise<JSON> => response.json()
+					)
+					.then((json: any): void => {
+						if (json.status === 201) {
+							setMessage('Cadastro realizado com sucesso!')
+							navigation.navigate('Login')
+						} else {
+							setMessage(json.message)
+						}
+					})
+					.catch((error) => {
+						console.log(error)
+						console.log(JSON.parse(packets))
+					})
 			}
-
-			await fetch(`${API_URL}/api/cadastroCliente`, {
-				method: 'POST',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json'
-				},
-				body: packets
-			})
-				.then((response: Response): Promise<JSON> => response.json())
-				.then((json: any): void => {
-					if (json.status === 201) {
-						setMessage('Cadastro realizado com sucesso!')
-						navigation.navigate('Login')
-					} else {
-						setMessage(json.message)
-					}
-				})
-				.catch((error) => {
-					console.log(error)
-					console.log(JSON.parse(packets))
-				})
 		} else {
 			if (!cpf.isValid(cpff)) {
 				setMessage('CPF inválido!')

@@ -23,7 +23,7 @@ const Index = ({ navigation, route }: any): JSX.Element => {
 				name='Register'
 				component={RegisterScreen}
 				options={{
-					title: 'Cadastro',
+					title: global.isLogged ? 'Editar Perfil' : 'Criar Conta',
 					headerStyle: {
 						backgroundColor: '#fff'
 					},

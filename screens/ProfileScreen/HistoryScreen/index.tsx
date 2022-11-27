@@ -59,7 +59,7 @@ const HistoryScreen = ({ navigation }: any) => {
 					style={{ marginLeft: 96 }}
 					onClick={async (): Promise<void> => {
 						console.log('item', item)
-						let restaurante = await getRestaurantById(
+						let restaurante: JSON = await getRestaurantById(
 							item.idRestaurante
 						)
 
@@ -144,6 +144,13 @@ const HistoryScreen = ({ navigation }: any) => {
 				<>
 					<FlatList
 						data={data}
+						ListEmptyComponent={
+							<View style={styles.container}>
+								<Text style={styles.subtitle}>
+									Você ainda não fez nenhuma reserva!
+								</Text>
+							</View>
+						}
 						renderItem={renderItem}
 						keyExtractor={(item) => item.idReserva}
 					/>
