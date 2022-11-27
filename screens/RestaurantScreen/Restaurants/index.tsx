@@ -217,9 +217,13 @@ const RestaurantsScreen = ({ navigation }: any): JSX.Element => {
 							]}
 							placeholder='Pesquisar restaurantes...'
 							placeholderTextColor='gray'
-							onChangeText={(text: string): void =>
+							onChangeText={(text: string): void => {
+								if (text.length === 0) {
+									setFilteredDataSource(masterDataSource)
+								}
+
 								setSearch(text)
-							}
+							}}
 							value={search}
 						/>
 						<Button

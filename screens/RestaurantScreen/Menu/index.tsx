@@ -53,7 +53,7 @@ const Menu = ({ navigation, route }: any) => {
 				} else idRestaurante = 1
 			}, 1000)
 		})
-	}, [navigation, route.params.idRestaurante])
+	}, [navigation])
 
 	const refreshScreen = (): boolean => {
 		try {
@@ -108,8 +108,6 @@ const Menu = ({ navigation, route }: any) => {
 				.catch((err: Error): void => console.error(err))
 		} catch (error: unknown) {
 			console.error(error)
-		} finally {
-			setLoading(false)
 		}
 	}
 
@@ -444,21 +442,43 @@ const Menu = ({ navigation, route }: any) => {
 								}}
 							>
 								<ListGroup>
-									<FlatList
-										data={cardapio}
-										showsHorizontalScrollIndicator={false}
-										scrollEnabled={true}
-										keyExtractor={(item: any) =>
-											item.idPrato
-										}
-										renderItem={renderCardapio}
-										refreshControl={
-											<RefreshControl
-												refreshing={refresh}
-												onRefresh={onRefresh}
-											/>
-										}
-									/>
+									{cardapio.length > 0 ? (
+										<FlatList
+											data={cardapio}
+											showsHorizontalScrollIndicator={
+												false
+											}
+											scrollEnabled={true}
+											keyExtractor={(item: any) =>
+												item.idPrato
+											}
+											renderItem={renderCardapio}
+											refreshControl={
+												<RefreshControl
+													refreshing={refresh}
+													onRefresh={onRefresh}
+												/>
+											}
+										/>
+									) : (
+										<View
+											style={{
+												marginTop: '10%',
+												marginBottom: '10%'
+											}}
+										>
+											<Text
+												style={{
+													fontSize: 20,
+													fontStyle: 'italic',
+													textAlign: 'center'
+												}}
+											>
+												Não há pratos disponíveis para{' '}
+												{getWeekDay(new Date())}
+											</Text>
+										</View>
+									)}
 								</ListGroup>
 							</View>
 						</View>

@@ -1,14 +1,15 @@
+import { FontAwesome } from '@expo/vector-icons'
 import React from 'react'
+
 import { Button, Card } from 'react-bootstrap'
 import {
 	ActivityIndicator,
 	FlatList,
-	Keyboard,
 	RefreshControl,
 	SafeAreaView,
+	TextInput,
 	View
 } from 'react-native'
-import { SearchBar } from 'react-native-elements'
 import { getLetterIndex } from '../../../constants/modules'
 import styles from './style'
 
@@ -153,12 +154,8 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	}
 
 	const searchFilterFunction = (text: string) => {
-		// Check if searched text is not blank
 		if (text) {
-			// Inserted text is not blank
-			// Filter the masterDataSource and update FilteredDataSource
 			const newData = masterDataSource.filter((item: any) => {
-				// Applying filter for the inserted text in search bar
 				const itemData = item.title
 					? item.title.toUpperCase()
 					: ''.toUpperCase()
@@ -170,47 +167,89 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 			setFilteredDataSource(newData)
 			setSearch(text)
 		} else {
-			// Inserted text is blank
-			// Update FilteredDataSource with masterDataSource
 			setFilteredDataSource(masterDataSource)
 			setSearch(text)
 		}
+	}
+
+	const filterByEverything = async (text: string) => {
+		await fetch(`${global.getApiUrl()}/api/filterByMealsOrIngredients`, {
+			method: 'post',
+			headers: {
+				Accept: 'Application/json',
+				'Content-Type': 'Application/json'
+			},
+			body: JSON.stringify({
+				input: text
+			})
+		})
+			.then((response: Response) => response.json())
+			.then((json: any) => {
+				if (json.length > 0) {
+					setFilteredDataSource(json)
+				} else {
+					setFilteredDataSource(masterDataSource)
+				}
+			})
+			.catch((err: Error) => console.error(err))
 	}
 
 	return (
 		<SafeAreaView style={styles.container} key={key}>
 			{!isLoading ? (
 				<>
-					<SearchBar
-						placeholder='Pesquisar restaurantes...'
-						lightTheme
-						platform='android'
-						round
-						value={search}
-						onChange={(event: any) =>
-							searchFilterFunction(event.nativeEvent.text)
-						}
-						onSubmitEditing={() => {
-							Keyboard.dismiss()
-						}}
-						autoFocus={true}
+					<View
 						style={{
-							width: '72vw'
+							display: 'flex',
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignItems: 'center',
+							width: '100%',
+							marginTop: 20,
+							marginBottom: 20
 						}}
-						onBlur={undefined}
-						onChangeText={undefined}
-						onFocus={undefined}
-						onClear={undefined}
-						loadingProps={undefined}
-						autoCompleteType={undefined}
-						clearIcon={undefined}
-						searchIcon={undefined}
-						showLoading={false}
-						onCancel={undefined}
-						cancelButtonTitle={''}
-						cancelButtonProps={undefined}
-						showCancel={false}
-					/>
+					>
+						<FontAwesome
+							style={{
+								marginLeft: 20
+							}}
+							name='search'
+							size={24}
+							color='grey'
+						/>
+						<TextInput
+							style={[
+								styles.searchBar,
+								{
+									width: '80%',
+									marginLeft: 20,
+									marginRight: 20,
+									height: 40
+								}
+							]}
+							placeholder='Pesquisar restaurantes...'
+							placeholderTextColor='gray'
+							onChangeText={(text: string): void => {
+								if (text.length === 0) {
+									setFilteredDataSource(masterDataSource)
+								}
+
+								setSearch(text)
+							}}
+							value={search}
+						/>
+						<Button
+							variant='danger'
+							style={{
+								marginRight: 20
+							}}
+							onClick={(): Promise<void> =>
+								filterByEverything(search)
+							}
+						>
+							Pesquisar
+						</Button>
+					</View>
 					<FlatList
 						data={filteredDataSource}
 						renderItem={renderItem}
