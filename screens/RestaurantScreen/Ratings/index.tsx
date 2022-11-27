@@ -21,7 +21,8 @@ const Ratings = ({ navigation, route }: any) => {
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	const [feedback, setFeedback] = React.useState<string>('')
 	const [rating, setRating] = React.useState<string>('')
-	let idRestaurante = route.params.idRestaurante
+	let idRestaurante = global.idRestaurante
+	let previousPage = route.params.previousPage
 	const [refresh, setRefresh] = React.useState(false)
 	const [loading, setLoading] = React.useState(true)
 	const [isSuccess, setIsSuccess] = React.useState(false)
@@ -33,9 +34,9 @@ const Ratings = ({ navigation, route }: any) => {
 			checkIfClientHasAlreadyRated()
 
 			setTimeout((): void => {
-				if (route.params.idRestaurante != idRestaurante) {
+				if (global.idRestaurante != idRestaurante) {
 					forceRemount()
-					idRestaurante = route.params.idRestaurante
+					idRestaurante = global.idRestaurante
 					getRestaurant()
 				} else {
 					if (refreshScreen()) {
@@ -413,7 +414,7 @@ const Ratings = ({ navigation, route }: any) => {
 
 									navigation.navigate('About', {
 										restaurante: restaurante,
-										previousPage: 'Ratings'
+										previousPage: previousPage
 									})
 								}}
 							>

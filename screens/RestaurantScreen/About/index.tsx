@@ -10,12 +10,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 	const [date, setDate] = React.useState<Date>(new Date())
 	const [hour, setHour] = React.useState<Date>(new Date())
 	const [people, setPeople] = React.useState<number>()
-	const [restaurante, setRestaurante] = React.useState<any>(
-		route.params.restaurante
-	)
-	const [previousPage, setPreviousPage] = React.useState(
-		route.params.previousPage
-	)
+	const restaurante: any = route.params.restaurante
+	const previousPage = route.params.previousPage
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState(1)
 	let firstLetter = getLetterIndex(
@@ -572,7 +568,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 									}}
 									onClick={() =>
 										navigation.navigate('Ratings', {
-											idRestaurante: global.idRestaurante
+											idRestaurante: global.idRestaurante,
+											previousPage: previousPage
 										})
 									}
 								>
