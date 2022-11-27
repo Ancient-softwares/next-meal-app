@@ -371,7 +371,8 @@ const AboutScreen = ({ navigation, route }: any): JSX.Element => {
 						}}
 						onClick={() => {
 							navigation.navigate('Menu', {
-								idRestaurante: global.idRestaurante
+								idRestaurante: global.idRestaurante,
+								previousPage: previousPage
 							})
 						}}
 					>

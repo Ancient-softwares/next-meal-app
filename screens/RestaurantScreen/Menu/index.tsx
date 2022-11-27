@@ -18,7 +18,7 @@ import styles from './style'
 const Menu = ({ navigation, route }: any) => {
 	const [message, setMessage] = React.useState<string>('')
 	const [uniqueValue, setUniqueValue] = React.useState<number>(1)
-	let idRestaurante = route.params.idRestaurante
+	let idRestaurante = global.idRestaurante
 	const [cardapio, setCardapio] = React.useState<any[]>([])
 	const exampleImage: string = require('../../../assets/example.jpeg')
 	const [refresh, setRefresh] = React.useState<boolean>(false)
@@ -404,7 +404,7 @@ const Menu = ({ navigation, route }: any) => {
 
 								navigation.navigate('About', {
 									restaurante: restaurante,
-									previousPage: 'Menu'
+									previousPage: route.params.previousPage
 								})
 							}}
 						>
