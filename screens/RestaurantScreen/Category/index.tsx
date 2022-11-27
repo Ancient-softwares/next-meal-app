@@ -173,16 +173,20 @@ const RestaurantsScreen = ({ navigation, route }: any): JSX.Element => {
 	}
 
 	const filterByEverything = async (text: string) => {
-		await fetch(`${global.getApiUrl()}/api/filterByMealsOrIngredients`, {
-			method: 'post',
-			headers: {
-				Accept: 'Application/json',
-				'Content-Type': 'Application/json'
-			},
-			body: JSON.stringify({
-				input: text
-			})
-		})
+		await fetch(
+			`${global.getApiUrl()}/api/filterByMealsOrIngredientsByCategory`,
+			{
+				method: 'post',
+				headers: {
+					Accept: 'Application/json',
+					'Content-Type': 'Application/json'
+				},
+				body: JSON.stringify({
+					input: text,
+					tipoRestaurante: tipoRestaurante
+				})
+			}
+		)
 			.then((response: Response) => response.json())
 			.then((json: any) => {
 				if (json.length > 0) {
