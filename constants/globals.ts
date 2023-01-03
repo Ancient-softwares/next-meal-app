@@ -1,4 +1,6 @@
 import 'react-native-gesture-handler'
+import { Client } from '../entities/Cliente'
+require('dotenv').config()
 
 declare global {
 	// attributes
@@ -9,8 +11,7 @@ declare global {
 	var constants: any
 	var maps: any
 	var credentials: any
-	var user: any
-	var restaurant: any
+	var user: Client
 	var defaultImage: string
 	var isLogged: boolean
 	var color: string
@@ -71,27 +72,6 @@ declare global {
 // attributes
 global.user = null
 
-global.restaurant = {
-	id: 0,
-	name: '',
-	email: '',
-	avatar: '',
-	phone: '',
-	city: '',
-	state: '',
-	cep: '',
-	number: '',
-	street: '',
-	neightborhood: '',
-	occupation: '',
-	capacity: '',
-	rating: 0,
-	opening: '',
-	closing: '',
-	description: '',
-	type: ''
-}
-
 global.defaultImage = '../assets/example.jpeg'
 global.color = '#963333'
 global.indexes = [0, 1, 2, 3, 4, 5]
@@ -107,15 +87,14 @@ global.setToken = (token: string) => (global.TOKEN = token)
 global.setMapsId = (id: string) => (global.MAPS_ID = id)
 global.setMapsToken = (token: string) => (global.GOOGLE_MAPS_APIKEY = token)
 global.setApiUrl = (url: string) => (global.API_URL = url)
-global.updateUserScreen = false
 
 // set global variables
 global.setApiUrl('http://127.0.0.1:8000')
-global.setMapsId('google-map-script')
-global.setMapsToken('AIzaSyCmrE9qeUQP20VEA6AT53UKRDNqbywCvYw')
+global.setMapsId(process.env.MAPS_ID)
+global.setMapsToken(process.env.GOOGLE_MAPS_TOKEN)
 
 // functions
-global.setUser = (user: any) => (global.user = user)
+global.setUser = (user: Client) => (global.user = user)
 global.getUser = () => global.user
 global.setToken('')
 global.logout = () => {

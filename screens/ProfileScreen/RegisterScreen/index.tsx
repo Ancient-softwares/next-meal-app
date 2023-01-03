@@ -1,9 +1,8 @@
-import axios, { AxiosResponse } from 'axios'
 import { cpf } from 'cpf-cnpj-validator'
 import Joi from 'joi'
 import React from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Dimensions, SafeAreaView, Text, TextInput, View } from 'react-native'
+import { SafeAreaView, Text, TextInput, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import MaskInput from 'react-native-mask-input'
 import '../../../constants/globals'
@@ -15,12 +14,6 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 	const [cel, setCellphone] = React.useState<string>('')
 	const [password, setPassword] = React.useState<string>('')
 	const [email, setEmail] = React.useState<string>('')
-	const [cep, setCep] = React.useState<string>('')
-	const [rua, setRua] = React.useState<string>('')
-	const [numero, setNumero] = React.useState<string>('')
-	const [bairro, setBairro] = React.useState<string>('')
-	const [cidade, setCidade] = React.useState<string>('')
-	const [estado, setEstado] = React.useState<string>('')
 	const [message, setMessage] = React.useState<string>('')
 	const [page, setPage] = React.useState<number>(0)
 	const [gottaUpdate, setGottaUpdate] = React.useState<boolean>(
@@ -151,161 +144,14 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 		)
 	}
 
-	const ThirdStep = (): JSX.Element => {
-		return (
-			<>
-				<Form.Group className='mb-3' controlId='formBasicCEP'>
-					<Form.Label>CEP</Form.Label>
-					<br></br>
-					<MaskInput
-						placeholderTextColor={'gray'}
-						style={[
-							styles.formInput,
-							{
-								width: Dimensions.get('window').width * 0.3
-							}
-						]}
-						value={cep}
-						onChangeText={(masked, unmasked) => {
-							setCep(masked)
-						}}
-						mask={[
-							/\d/,
-							/\d/,
-							/\d/,
-							/\d/,
-							/\d/,
-							'-',
-							/\d/,
-							/\d/,
-							/\d/
-						]}
-					/>
-					<Button
-						style={{
-							marginLeft: 32,
-							fontSize: 14
-						}}
-						variant='outline-danger'
-						onClick={getAddress}
-					>
-						Buscar endereço
-					</Button>
-				</Form.Group>
-
-				<Form.Group className='mb-3' controlId='formBasicState'>
-					<Form.Label>Estado</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						value={estado}
-						onChangeText={(estado) => setEstado(estado)}
-						placeholder='Estado'
-						placeholderTextColor={'gray'}
-					/>
-				</Form.Group>
-
-				<Form.Group className='mb-3' controlId='formBasicCity'>
-					<Form.Label>Cidade</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						value={cidade}
-						onChangeText={(cidade) => setCidade(cidade)}
-						placeholder='Cidade'
-						placeholderTextColor={'gray'}
-					/>
-				</Form.Group>
-			</>
-		)
-	}
-
-	const FourthStep = (): JSX.Element => {
-		return (
-			<>
-				<Form.Group className='mb-3' controlId='formBasicBairro'>
-					<Form.Label>Bairro</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						value={bairro}
-						onChangeText={(bairro) => setBairro(bairro)}
-						placeholder='Bairro'
-						placeholderTextColor={'gray'}
-					/>
-				</Form.Group>
-
-				<Form.Group className='mb-3' controlId='formBasicRua'>
-					<Form.Label>Rua</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						value={rua}
-						onChangeText={(rua) => setRua(rua)}
-						placeholder='Rua'
-						placeholderTextColor={'gray'}
-					/>
-				</Form.Group>
-
-				<Form.Group className='mb-3' controlId='formBasicNumber'>
-					<Form.Label>Numero</Form.Label>
-					<br></br>
-					<TextInput
-						style={styles.formInput}
-						value={numero}
-						onChangeText={(numero) => setNumero(numero)}
-						placeholder='Numero'
-						placeholderTextColor={'gray'}
-					/>
-				</Form.Group>
-			</>
-		)
-	}
-
 	const renderSection = (): JSX.Element => {
 		switch (page) {
 			case 0:
 				return FirstStep()
 			case 1:
 				return SecondStep()
-			case 2:
-				return ThirdStep()
-			case 3:
-				return FourthStep()
 			default:
 				return FirstStep()
-		}
-	}
-
-	const getAddress = async (): Promise<true | false> => {
-		if (cep) {
-			await axios({
-				url: `https://viacep.com.br/ws/${cep}/json/`,
-				method: 'get',
-				headers: {
-					Accept: 'application/json',
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*'
-				},
-				data: JSON.stringify({ cep })
-			})
-				.then((response: AxiosResponse): void => {
-					const address = JSON.parse(JSON.stringify(response.data))
-
-					console.table(JSON.parse(JSON.stringify(response.data)))
-
-					setBairro(JSON.stringify(address.bairro).replace(/"/g, ''))
-					setCidade(
-						JSON.stringify(address.localidade).replace(/"/g, '')
-					)
-					setEstado(JSON.stringify(address.uf).replace(/"/g, ''))
-					setRua(JSON.stringify(address.logradouro).replace(/"/g, ''))
-				})
-				.catch((error: Error): void => console.error('ERROR::' + error))
-
-			return true
-		} else {
-			return false
 		}
 	}
 
@@ -317,14 +163,7 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 			cpfCliente: cpff,
 			telefoneCliente: cel,
 			senhaCliente: password,
-			fotoCliente: 'user.png',
-			cepCliente: cep,
-			emailCliente: email,
-			ruaCliente: rua,
-			numCasa: numero,
-			bairroCliente: bairro,
-			cidadeCliente: cidade,
-			estadoCliente: estado
+			emailCliente: email
 		})
 
 		if (schema.validate(packets) && cpf.isValid(cpff)) {
@@ -351,13 +190,7 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 							id: json.data.idCliente,
 							name: json.data.nomeCliente,
 							email: json.data.emailCliente,
-							phone: json.data.telefoneCliente,
-							photo: json.data.fotoCliente,
-							cep: json.data.cepCliente,
-							number: json.data.numCasa,
-							neighborhood: json.data.bairroCliente,
-							city: json.data.cidadeCliente,
-							state: json.data.estadoCliente
+							phone: json.data.telefoneCliente
 						})
 
 						navigation.navigate('Main', {
@@ -437,17 +270,9 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 										borderRadius: 10
 									}}
 									onClick={(event: any) => {
-										if (page === 0) {
-											setPage(1)
-										} else if (page === 1) {
-											setPage(2)
-										} else if (page === 2) {
-											setPage(3)
-										} else if (page === 3) {
-											handleSubmit(event)
-										} else if (page === 4) {
-											handleSubmit(event)
-										}
+										if (page === 0) setPage(1)
+										else if (page === 1) setPage(2)
+										else if (page === 2) handleSubmit(event)
 
 										setMessage('')
 									}}
@@ -458,7 +283,7 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 											fontSize: 20
 										}}
 									>
-										{page === 3 ? 'Finalizar' : 'Próximo'}
+										{page === 1 ? 'Finalizar' : 'Próximo'}
 									</Text>
 								</Button>
 								{(page !== 0 && (
@@ -473,17 +298,9 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 											marginLeft: '10%'
 										}}
 										onClick={() => {
-											if (page === 0) {
-												return
-											} else if (page === 1) {
-												setPage(0)
-											} else if (page === 2) {
-												setPage(1)
-											} else if (page === 3) {
-												setPage(2)
-											} else if (page === 4) {
-												setPage(3)
-											}
+											if (page === 0) return
+											else if (page === 1) setPage(0)
+											else if (page === 2) setPage(1)
 
 											setMessage('')
 										}}
@@ -546,13 +363,7 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 											styles.progressBarDiv,
 											{
 												width:
-													page === 0
-														? '25%'
-														: page === 1
-														? '50%'
-														: page === 2
-														? '75%'
-														: '100%'
+													page === 0 ? '50%' : '95%'
 											}
 										]}
 									>
@@ -571,25 +382,14 @@ function RegisterScreen({ navigation, route }: any): JSX.Element {
 													marginLeft:
 														page === 0
 															? '10%'
-															: page === 1
-															? '50%'
-															: page === 2
-															? '65%'
-															: '77.5%',
-
+															: '40%',
 													width: 150,
 													marginTop: 12
 												}}
 											>
 												{page === 0
 													? 'Dados Pessoais'
-													: page === 1
-													? 'Contato'
-													: page === 2
-													? 'Endereço'
-													: page === 3
-													? 'Finalizar'
-													: ''}
+													: 'Contato'}
 											</Text>
 										</View>
 									</View>

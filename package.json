@@ -8,7 +8,7 @@
 		"android": "expo start --android",
 		"ios": "expo start --ios",
 		"web": "expo start --web",
-		"bash": "NODE_OPTIONS=--openssl-legacy-provider expo start --web",
+		"bash": "NODE_OPTIONS=--openssl-legacy-provider expo start",
 		"cmd": "set NODE_OPTIONS=--openssl-legacy-provider npx expo start --web",
 		"powershell": "$env:NODE_OPTIONS=--openssl-legacy-provider; expo start --web"
 	},
